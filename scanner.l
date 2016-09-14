@@ -37,6 +37,7 @@ static void DoBeforeEachAction();
 %s N
 %x COPY COMM
 %option stack
+%option noyywrap
 
 /* Definitions
  * -----------
