@@ -84,6 +84,10 @@ strip : $(PRODUCTS)
 depend:
 	makedepend -- $(CFLAGS) -- $(SRCS)
 
+.PHONY: test
+test: $(COMPILER)
+	@./test.sh
+
 clean:
 	rm -f $(JUNK) y.output $(PRODUCTS)
 
