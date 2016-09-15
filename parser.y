@@ -17,6 +17,7 @@
  * by your code here.
  */
 #include "scanner.h" // for yylex
+#include <string.h>
 #include "parser.h"
 #include "errors.h"
 
@@ -39,13 +40,16 @@ void yyerror(const char *msg); // standard error-handling routine
  *      attributes to your non-terminal symbols.
  */
 %union {
-    int integerConstant;
-    bool boolConstant;
-    char *stringConstant;
-    double doubleConstant;
-    char identifier[MaxIdentLen+1]; // +1 for terminating null
-    Decl *decl;
-    List<Decl*> *declList;
+  int integerConstant;
+  bool boolConstant;
+  char* stringConstant;
+  double doubleConstant;
+  char identifier[MaxIdentLen+1]; // +1 for terminating null
+  Decl* decl;
+  VarDecl* varDecl;
+  Type* type;
+
+  List<Decl*> *declList;
 }
 
 
@@ -79,8 +83,10 @@ void yyerror(const char *msg); // standard error-handling routine
  * of the union named "declList" which is of type List<Decl*>.
  * pp2: You'll need to add many of these of your own.
  */
-%type <declList>  DeclList 
-%type <decl>      Decl
+%type <declList> DeclList
+%type <decl> Decl
+%type <varDecl> VariableDecl
+%type <type> Type
 
 %%
 /* Rules
@@ -106,9 +112,17 @@ DeclList
 | Decl { ($$ = new List<Decl*>)->Append($1); }
 ;
 
-Decl      :    T_Void               { /* pp2: replace with correct rules  */ } 
-          ;
-          
+Decl
+: VariableDecl ';' { $$ = $1; }
+;
+
+VariableDecl
+: Type T_Identifier { $$ = new VarDecl(new Identifier(yylloc, strdup($2)), $1); }
+;
+
+Type
+: T_Int { $$ = Type::intType; }
+;
 
 
 %%
