@@ -86,6 +86,7 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <declList> DeclList
 %type <decl> Decl
 %type <varDecl> VariableDecl
+%type <varDecl> Variable
 %type <type> Type
 
 %%
@@ -113,15 +114,22 @@ DeclList
 ;
 
 Decl
-: VariableDecl ';' { $$ = $1; }
+: VariableDecl { $$ = $1; }
 ;
 
 VariableDecl
-: Type T_Identifier { $$ = new VarDecl(new Identifier(yylloc, strdup($2)), $1); }
+: Variable ';' { $$ = $1; }
 ;
+
+Variable
+: Type T_Identifier { $$ = new VarDecl(new Identifier(yylloc, strdup($2)), $1);  }
 
 Type
 : T_Int { $$ = Type::intType; }
+| T_Double { $$ = Type::doubleType; }
+| T_String { $$ = Type::stringType; }
+| T_Bool { $$ = Type::boolType; }
+| T_Identifier { $$ = new Type(strdup($1)); }
 ;
 
 
