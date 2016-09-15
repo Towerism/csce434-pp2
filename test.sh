@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SAMPLEIN=$(find . -name '*.frag' -o \( -name '*.decaf' \))
 TEST_NUM=$(wc -w <<< "$SAMPLEIN")
@@ -23,8 +23,14 @@ for SAMPLE in $SAMPLEIN; do
 
     rm -f out
     $(./dcc < $SAMPLE &> out) # suppress shell output
-    (cmp --silent out $EXPECTEDOUT && echo -e "${GREEN}PASS${NC}" && let "PASSED_NUM++") \
-        || (echo -e "${RED} FAIL${NC}")
+    cmp --silent out $EXPECTEDOUT
+    if [[ $? != 0 ]]; then
+        echo -e "${RED} FAIL${NC}"
+    else
+        echo -e "${GREEN} PASS${NC}"
+        ((PASSED_NUM+=1))
+    fi
+
     rm out
 
 done
