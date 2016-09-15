@@ -22,8 +22,11 @@ for SAMPLE in $SAMPLEIN; do
     printf "${GREEN}[ Test $SAMPLE ]${NC}"
 
     rm -f out
+
     $(./dcc < $SAMPLE &> out) # suppress shell output
+
     cmp --silent out $EXPECTEDOUT
+
     if [[ $? != 0 ]]; then
         echo -e "${RED} FAIL${NC}"
     else
@@ -32,7 +35,6 @@ for SAMPLE in $SAMPLEIN; do
     fi
 
     rm out
-
 done
 
 if [ $PASSED_NUM -lt $TEST_NUM ]; then
