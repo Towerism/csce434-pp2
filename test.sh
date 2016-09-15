@@ -43,3 +43,7 @@ fi
 echo ""
 echo "${RESULT_COLOR}${SEPARATOR}"
 echo "$PASSED_NUM/$TEST_NUM Passed$NC"
+
+if [ $PASSED_NUM -lt $TEST_NUM ]; then
+    exit 1
+fi
