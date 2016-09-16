@@ -170,7 +170,7 @@ Type
 | T_Double { $$ = Type::doubleType; }
 | T_String { $$ = Type::stringType; }
 | T_Bool { $$ = Type::boolType; }
-| T_Identifier { $$ = new Type(strdup($1)); }
+| Identifier { $$ = new NamedType($1); }
 | Type T_Dims { $$ = new ArrayType(yylloc, $1); }
 ;
 

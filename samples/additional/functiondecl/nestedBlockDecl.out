@@ -5,7 +5,8 @@
   1      Identifier: asdf
          (body) StmtBlock: 
   2         VarDecl: 
-               Type: Asdf
+  2            NamedType: 
+  2               Identifier: Asdf
   2            Identifier: fdsA
             StmtBlock: 
   4            VarDecl: 

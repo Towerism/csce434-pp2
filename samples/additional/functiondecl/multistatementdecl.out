@@ -15,5 +15,6 @@
                   Type: bool
   4            Identifier: qwer
   5         VarDecl: 
-               Type: Asdf
+  5            NamedType: 
+  5               Identifier: Asdf
   5            Identifier: fdsa

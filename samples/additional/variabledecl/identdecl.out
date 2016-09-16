@@ -1,5 +1,6 @@
 
    Program: 
   1   VarDecl: 
-         Type: Asdf
+  1      NamedType: 
+  1         Identifier: Asdf
   1      Identifier: asdf

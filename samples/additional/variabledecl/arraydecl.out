@@ -18,5 +18,6 @@
   4      Identifier: asdf
   5   VarDecl: 
   5      ArrayType: 
-            Type: asdf
+  5         NamedType: 
+  5            Identifier: asdf
   5      Identifier: asdf
