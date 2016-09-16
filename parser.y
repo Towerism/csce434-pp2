@@ -95,7 +95,7 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <stmtList> Stmts
 %type <type> Type
 %type <expr> Constant
-%type <varDeclList> VarDecls Formals FormalsPrime
+%type <varDeclList> VarDecls Formals FormalsOptional
 
 %%
 /* Rules
@@ -133,22 +133,22 @@ Identifier
 : T_Identifier { $$ = new Identifier(@1, strdup($1)); }
 
 FunctionDecl
-: Type Identifier '(' Formals ')' StmtBlock {
+: Type Identifier '(' FormalsOptional ')' StmtBlock {
   $$ = new FnDecl($2, $1, $4);
   $$->SetFunctionBody($6); }
-| T_Void Identifier '(' Formals ')' StmtBlock {
+| T_Void Identifier '(' FormalsOptional ')' StmtBlock {
   $$ = new FnDecl($2, Type::voidType, $4);
   $$->SetFunctionBody($6); }
 ;
 
-Formals
-: FormalsPrime { $$ = $1; }
+FormalsOptional
+: Formals { $$ = $1; }
 | { $$ = new List<VarDecl*>; }
 
-FormalsPrime
+Formals
 : Variable { ($$=new List<VarDecl*>)->Append($1); }
-| FormalsPrime ',' Variable { ($$=$1)->Append($3); }
-
+| Formals ',' Variable { ($$=$1)->Append($3); }
+;
 
 StmtBlock
 : '{' VarDecls Stmts '}' { $$ = new StmtBlock($2, $3); }
