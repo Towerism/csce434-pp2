@@ -162,6 +162,8 @@ Type
 | Type T_Dims { $$ = new ArrayType(yylloc, $1); }
 ;
 
+Constant
+: T_IntConstant { $$ = new IntConstant(yylloc, $1); }
 
 %%
 
