@@ -149,7 +149,8 @@ StmtBlock
 ;
 
 VarDecls
-: VariableDecl { ($$ = new List<VarDecl*>)->Append($1); }
+: VarDecls VariableDecl { ($$=$1)->Append($2); }
+| VariableDecl { ($$ = new List<VarDecl*>)->Append($1); }
 | { $$ = new List<VarDecl*>(); }
 ;
 

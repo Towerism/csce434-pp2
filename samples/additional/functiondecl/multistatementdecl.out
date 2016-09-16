@@ -1,0 +1,19 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: asdf
+         (body) StmtBlock: 
+  2         VarDecl: 
+               Type: int
+  2            Identifier: asdf
+  3         VarDecl: 
+               Type: string
+  3            Identifier: asdf
+  4         VarDecl: 
+  4            ArrayType: 
+                  Type: bool
+  4            Identifier: qwer
+  5         VarDecl: 
+               Type: Asdf
+  5            Identifier: fdsa
