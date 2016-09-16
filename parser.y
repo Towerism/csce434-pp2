@@ -45,12 +45,15 @@ void yyerror(const char *msg); // standard error-handling routine
   char* stringConstant;
   double doubleConstant;
   char identifier[MaxIdentLen+1]; // +1 for terminating null
+  Identifier* identifierNode;
   Decl* decl;
+  VarDecl* varDecl;
   FnDecl* fnDecl;
   Type* type;
   Expr* expr;
   Stmt* stmt;
   List<Decl*>* declList;
+  List<VarDecl*>* varDeclList;
 }
 
 /* Tokens * ------
@@ -83,11 +86,14 @@ void yyerror(const char *msg); // standard error-handling routine
  * pp2: You'll need to add many of these of your own.
  */
 %type <declList> DeclList
-%type <decl> Decl VariableDecl Variable
+%type <decl> Decl
+%type <varDecl> VariableDecl Variable
+%type <identifierNode> Identifier
 %type <fnDecl> FunctionDecl
 %type <stmt> StmtBlock
 %type <type> Type
 %type <expr> Constant
+%type <varDeclList> VarDecls
 
 %%
 /* Rules
@@ -123,19 +129,28 @@ VariableDecl
 ;
 
 Variable
-: Type T_Identifier { $$ = new VarDecl(new Identifier(yylloc, strdup($2)), $1);  }
+: Type Identifier { $$ = new VarDecl($2, $1);  }
+
+Identifier
+: T_Identifier { $$ = new Identifier(yyloc, strdup($1)); }
 
 FunctionDecl
-: Type T_Identifier '(' ')' StmtBlock {
-  $$ = new FnDecl(new Identifier(yylloc, strdup($2)), $1, new List<VarDecl*>());
+: Type Identifier '(' ')' StmtBlock {
+  $$ = new FnDecl($2, $1, new List<VarDecl*>);
   $$->SetFunctionBody($5); }
-| T_Void T_Identifier '(' ')' StmtBlock {
-  $$ = new FnDecl(new Identifier(yylloc, strdup($2)), Type::voidType, new List<VarDecl*>());
+| T_Void Identifier '(' ')' StmtBlock {
+  $$ = new FnDecl($2, Type::voidType, new List<VarDecl*>);
   $$->SetFunctionBody($5); }
 ;
 
+
 StmtBlock
-: '{' '}' { $$ = new StmtBlock(new List<VarDecl*>(), new List<Stmt*>()); }
+: '{' VarDecls '}' { $$ = new StmtBlock($2, new List<Stmt*>()); }
+;
+
+VarDecls
+: VariableDecl { ($$ = new List<VarDecl*>)->Append($1); }
+| { $$ = new List<VarDecl*>(); }
 ;
 
 Type
