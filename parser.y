@@ -88,14 +88,14 @@ void yyerror(const char *msg); // standard error-handling routine
  */
 %type <declList> DeclList
 %type <decl> Decl
-%type <varDecl> VariableDecl Variable Formals
+%type <varDecl> VariableDecl Variable
 %type <identifierNode> Identifier
 %type <fnDecl> FunctionDecl
 %type <stmt> StmtBlock Stmt
 %type <stmtList> Stmts
 %type <type> Type
 %type <expr> Constant
-%type <varDeclList> VarDecls
+%type <varDeclList> VarDecls Formals FormalsPrime
 
 %%
 /* Rules
@@ -137,13 +137,22 @@ Identifier
 : T_Identifier { $$ = new Identifier(yyloc, strdup($1)); }
 
 FunctionDecl
-: Type Identifier '(' ')' StmtBlock {
-  $$ = new FnDecl($2, $1, new List<VarDecl*>);
-  $$->SetFunctionBody($5); }
-| T_Void Identifier '(' ')' StmtBlock {
-  $$ = new FnDecl($2, Type::voidType, new List<VarDecl*>);
-  $$->SetFunctionBody($5); }
+: Type Identifier '(' Formals ')' StmtBlock {
+  $$ = new FnDecl($2, $1, $4);
+  $$->SetFunctionBody($6); }
+| T_Void Identifier '(' Formals ')' StmtBlock {
+  $$ = new FnDecl($2, Type::voidType, $4);
+  $$->SetFunctionBody($6); }
 ;
+
+Formals
+: FormalsPrime { $$ = $1; }
+| { $$ = new List<VarDecl*>; }
+
+FormalsPrime
+: Variable { ($$=new List<VarDecl*>)->Append($1); }
+| FormalsPrime ',' Variable { ($$=$1)->Append($3); }
+
 
 StmtBlock
 : '{' VarDecls Stmts '}' { $$ = new StmtBlock($2, $3); }

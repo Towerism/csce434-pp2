@@ -1,0 +1,10 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: asdf
+  1      (formals) VarDecl: 
+  1         NamedType: 
+  1            Identifier: Asdf
+  1         Identifier: fdsA
+         (body) StmtBlock: 
