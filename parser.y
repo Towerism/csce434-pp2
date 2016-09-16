@@ -105,10 +105,6 @@ void yyerror(const char *msg); // standard error-handling routine
 
  */
 Program : DeclList {
-  @1;
-  /* pp2: The @1 is needed to convince
-   * yacc to set up yylloc. You can remove
-   * it once you have other uses of @n*/
   Program *program = new Program($1);
   // if no errors, advance to next phase
   if (ReportError::NumErrors() == 0)
@@ -134,7 +130,7 @@ Variable
 : Type Identifier { $$ = new VarDecl($2, $1);  }
 
 Identifier
-: T_Identifier { $$ = new Identifier(yyloc, strdup($1)); }
+: T_Identifier { $$ = new Identifier(@1, strdup($1)); }
 
 FunctionDecl
 : Type Identifier '(' Formals ')' StmtBlock {
@@ -180,11 +176,11 @@ Type
 | T_String { $$ = Type::stringType; }
 | T_Bool { $$ = Type::boolType; }
 | Identifier { $$ = new NamedType($1); }
-| Type T_Dims { $$ = new ArrayType(yylloc, $1); }
+| Type T_Dims { $$ = new ArrayType(@1, $1); }
 ;
 
 Constant
-: T_IntConstant { $$ = new IntConstant(yylloc, $1); }
+: T_IntConstant { $$ = new IntConstant(@1, $1); }
 
 %%
 
