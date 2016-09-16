@@ -46,15 +46,14 @@ void yyerror(const char *msg); // standard error-handling routine
   double doubleConstant;
   char identifier[MaxIdentLen+1]; // +1 for terminating null
   Decl* decl;
-  VarDecl* varDecl;
+  FnDecl* fnDecl;
   Type* type;
-
-  List<Decl*> *declList;
+  Expr* expr;
+  Stmt* stmt;
+  List<Decl*>* declList;
 }
 
-
-/* Tokens
- * ------
+/* Tokens * ------
  * Here we tell yacc about all the token types that we are using.
  * Yacc will assign unique numbers to these and export the #define
  * in the generated y.tab.h header file.
@@ -84,10 +83,11 @@ void yyerror(const char *msg); // standard error-handling routine
  * pp2: You'll need to add many of these of your own.
  */
 %type <declList> DeclList
-%type <decl> Decl
-%type <varDecl> VariableDecl
-%type <varDecl> Variable
+%type <decl> Decl VariableDecl Variable
+%type <fnDecl> FunctionDecl
+%type <stmt> StmtBlock
 %type <type> Type
+%type <expr> Constant
 
 %%
 /* Rules
@@ -115,6 +115,7 @@ DeclList
 
 Decl
 : VariableDecl { $$ = $1; }
+| FunctionDecl { $$ = $1; }
 ;
 
 VariableDecl
@@ -123,6 +124,19 @@ VariableDecl
 
 Variable
 : Type T_Identifier { $$ = new VarDecl(new Identifier(yylloc, strdup($2)), $1);  }
+
+FunctionDecl
+: Type T_Identifier '(' ')' StmtBlock {
+  $$ = new FnDecl(new Identifier(yylloc, strdup($2)), $1, new List<VarDecl*>());
+  $$->SetFunctionBody($5); }
+| T_Void T_Identifier '(' ')' StmtBlock {
+  $$ = new FnDecl(new Identifier(yylloc, strdup($2)), Type::voidType, new List<VarDecl*>());
+  $$->SetFunctionBody($5); }
+;
+
+StmtBlock
+: '{' '}' { $$ = new StmtBlock(new List<VarDecl*>(), new List<Stmt*>()); }
+;
 
 Type
 : T_Int { $$ = Type::intType; }
