@@ -54,6 +54,7 @@ void yyerror(const char *msg); // standard error-handling routine
   Stmt* stmt;
   List<Decl*>* declList;
   List<VarDecl*>* varDeclList;
+  List<Stmt*>* stmtList;
 }
 
 /* Tokens * ------
@@ -87,10 +88,11 @@ void yyerror(const char *msg); // standard error-handling routine
  */
 %type <declList> DeclList
 %type <decl> Decl
-%type <varDecl> VariableDecl Variable
+%type <varDecl> VariableDecl Variable Formals
 %type <identifierNode> Identifier
 %type <fnDecl> FunctionDecl
-%type <stmt> StmtBlock
+%type <stmt> StmtBlock Stmt
+%type <stmtList> Stmts
 %type <type> Type
 %type <expr> Constant
 %type <varDeclList> VarDecls
@@ -143,9 +145,10 @@ FunctionDecl
   $$->SetFunctionBody($5); }
 ;
 
-
 StmtBlock
-: '{' VarDecls '}' { $$ = new StmtBlock($2, new List<Stmt*>()); }
+: '{' VarDecls Stmts '}' { $$ = new StmtBlock($2, $3); }
+| '{' Stmts '}' { $$ = new StmtBlock(new List<VarDecl*>, $2); }
+| '{' VarDecls '}' { $$ = new StmtBlock($2, new List<Stmt*>); }
 | '{' '}' { $$ = new StmtBlock(new List<VarDecl*>, new List<Stmt*>); }
 ;
 
@@ -153,6 +156,14 @@ VarDecls
 : VarDecls VariableDecl { ($$=$1)->Append($2); }
 | VariableDecl { ($$ = new List<VarDecl*>)->Append($1); }
 ;
+
+Stmts
+: Stmts Stmt { ($$=$1)->Append($2); }
+| Stmt { ($$ = new List<Stmt*>)->Append($1); }
+;
+
+Stmt
+: StmtBlock { $$ = $1; }
 
 Type
 : T_Int { $$ = Type::intType; }

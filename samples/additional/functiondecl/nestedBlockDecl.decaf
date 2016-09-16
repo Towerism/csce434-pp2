@@ -1,0 +1,9 @@
+int asdf() {
+    Asdf fdsA;
+    {
+        int qwer;
+        {
+            string rewq;
+        }
+    }
+}
