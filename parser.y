@@ -23,6 +23,9 @@
 
 void yyerror(const char *msg); // standard error-handling routine
 
+static Operator* makeOperator(yyltype loc, char c);
+static Operator* makeOperator(yyltype loc, const char* str);
+
 %}
 
 /* The section before the first %% is the Definitions section of the yacc
@@ -303,6 +306,7 @@ Expr
 | LValue { $$ = $1; }
 | Call { $$ = $1; }
 | T_This { $$ = new This(@1); }
+| Expr '+' Expr { $$ = new ArithmeticExpr($1, new Operator(@1, "+"), $3); }
 | T_ReadInteger '(' ')' { $$ = new ReadIntegerExpr(@1); }
 | T_ReadLine '(' ')' { $$ = new ReadLineExpr(@1); }
 | T_New '(' Identifier ')' { $$ = new NewExpr(@1, new NamedType($3)); }
@@ -364,4 +368,12 @@ void InitParser()
 {
   PrintDebug("parser", "Initializing parser");
   yydebug = false;
+}
+
+Operator* makeOperator(yyltype loc, char c) {
+  char str[1] = { c };
+  return makeOperator(loc, str);
+}
+Operator* makeOperator(yyltype loc, const char* str) {
+  return new Operator(loc, str);
 }
