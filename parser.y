@@ -146,12 +146,12 @@ FunctionDecl
 
 StmtBlock
 : '{' VarDecls '}' { $$ = new StmtBlock($2, new List<Stmt*>()); }
+| '{' '}' { $$ = new StmtBlock(new List<VarDecl*>, new List<Stmt*>); }
 ;
 
 VarDecls
 : VarDecls VariableDecl { ($$=$1)->Append($2); }
 | VariableDecl { ($$ = new List<VarDecl*>)->Append($1); }
-| { $$ = new List<VarDecl*>(); }
 ;
 
 Type
