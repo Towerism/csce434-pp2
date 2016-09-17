@@ -97,7 +97,7 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <interfaceDecl> InterfaceDecl
 %type <identifierNode> Identifier
 %type <fnDecl> FunctionSignature FunctionDecl
-%type <stmt> StmtBlock Stmt
+%type <stmt> StmtBlock Stmt BreakStmt
 %type <stmtList> Stmts
 %type <type> Type
 %type <expr> Constant
@@ -227,7 +227,11 @@ Stmts
 ;
 
 Stmt
-: StmtBlock { $$ = $1; }
+: BreakStmt ';' { $$ = $1; }
+| StmtBlock { $$ = $1; }
+
+BreakStmt
+: T_Break { $$ = new BreakStmt(@1); }
 
 Type
 : T_Int { $$ = Type::intType; }
