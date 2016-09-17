@@ -312,6 +312,8 @@ Expr
 
 LValue
 : Identifier { $$ = new FieldAccess(NULL, $1); }
+| Expr '.' Identifier { $$ = new FieldAccess($1, $3); }
+| Expr '[' Expr ']' { $$ = new ArrayAccess(@1, $1, $3); }
 ;
 
 Call

@@ -1,0 +1,3 @@
+int asdf() {
+    (asdf = 5).qwer;
+}
