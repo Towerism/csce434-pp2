@@ -100,7 +100,7 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <interfaceDecl> InterfaceDecl
 %type <identifierNode> Identifier
 %type <fnDecl> FunctionSignature FunctionDecl
-%type <stmt> StmtBlock Stmt BreakStmt SemicolonTerminatedStmt
+%type <stmt> StmtBlock Stmt BreakStmt ReturnStmt SemicolonTerminatedStmt
 %type <stmtList> Stmts
 %type <type> Type
 %type <expr> ExprOptional Expr LValue Constant
@@ -237,11 +237,15 @@ Stmt
 
 SemicolonTerminatedStmt
 : BreakStmt { $$ = $1; }
+| ReturnStmt {$$ = $1;}
 | ExprOptional { $$ = $1; }
 ;
 
 BreakStmt
 : T_Break { $$ = new BreakStmt(@1); }
+
+ReturnStmt
+: T_Return ExprOptional { $$ = new ReturnStmt(@1, $2); }
 
 Type
 : T_Int { $$ = Type::intType; }
