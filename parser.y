@@ -178,12 +178,13 @@ Implements
 
 InterfaceDecl
 : T_Interface Identifier '{' Prototypes '}' { $$ = new InterfaceDecl($2, $4); }
+| T_Interface Identifier '{' '}' { $$ = new InterfaceDecl($2, new List<Decl*>); }
+;
 
 Prototypes
 : Prototypes Prototype { ($$=$1)->Append($2); }
 | Prototype { ($$ = new List<Decl*>)->Append($1); }
-| { $$ = new List<Decl*>; }
-
+;
 
 Prototype
 : FunctionSignature ';' { $$ = $1; }
