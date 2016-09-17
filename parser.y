@@ -91,6 +91,9 @@ void yyerror(const char *msg); // standard error-handling routine
 %precedence '!' '-'
 %precedence '[' '.'
 
+%nonassoc T_NoElse
+%nonassoc T_Else
+
 /* Non-terminal types
  * ------------------
  * In order for yacc to assign/access the correct field of $$, $1, we
@@ -109,7 +112,8 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <interfaceDecl> InterfaceDecl
 %type <identifierNode> Identifier
 %type <fnDecl> FunctionSignature FunctionDecl
-%type <stmt> StmtBlock Stmt BreakStmt ReturnStmt WhileStmt ForStmt PrintStmt SemicolonTerminatedStmt
+%type <stmt> StmtBlock Stmt BreakStmt ReturnStmt WhileStmt
+%type <stmt> ForStmt PrintStmt SemicolonTerminatedStmt IfStmt
 %type <stmtList> Stmts
 %type <type> Type
 %type <expr> ExprOptional Expr LValue Constant Call
@@ -241,6 +245,7 @@ Stmts
 
 Stmt
 : SemicolonTerminatedStmt ';' { $$ = $1; }
+| IfStmt { $$ = $1; }
 | WhileStmt { $$ = $1; }
 | ForStmt { $$ = $1; }
 | StmtBlock { $$ = $1; }
@@ -252,6 +257,10 @@ SemicolonTerminatedStmt
 | PrintStmt { $$ = $1; }
 | ExprOptional { $$ = $1; }
 ;
+
+IfStmt
+: T_If '(' Expr ')' Stmt %prec T_NoElse { $$ = new IfStmt($3, $5, NULL); }
+| T_If '(' Expr ')' Stmt T_Else Stmt { $$ = new IfStmt($3, $5, $7); }
 
 BreakStmt
 : T_Break { $$ = new BreakStmt(@1); }
