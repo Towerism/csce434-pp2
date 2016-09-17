@@ -144,11 +144,12 @@ Identifier
 ClassDecl
 : T_Class Identifier Extends ImplementsOptional '{' Fields '}' {
   $$ = new ClassDecl($2, $3, $4, $6); }
+| T_Class Identifier Extends ImplementsOptional '{' '}' {
+  $$ = new ClassDecl($2, $3, $4, new List<Decl*>); }
 
 Fields
 : Fields Field { ($$=$1)->Append($2); }
 | Field { ($$ = new List<Decl*>)->Append($1); }
-| { $$ = new List<Decl*>; }
 ;
 
 Field
