@@ -1,0 +1,9 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: asdf
+         (body) StmtBlock: 
+  2         NewExpr: 
+  2            NamedType: 
+  2               Identifier: qwer

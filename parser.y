@@ -303,6 +303,10 @@ Expr
 | LValue { $$ = $1; }
 | Call { $$ = $1; }
 | T_This { $$ = new This(@1); }
+| T_ReadInteger '(' ')' { $$ = new ReadIntegerExpr(@1); }
+| T_ReadLine '(' ')' { $$ = new ReadLineExpr(@1); }
+| T_New '(' Identifier ')' { $$ = new NewExpr(@1, new NamedType($3)); }
+| T_NewArray '(' Expr ',' Type ')' { $$ = new NewArrayExpr(@1, $3, $5); }
 | '(' Expr ')' { $$ = $2; }
 ;
 
