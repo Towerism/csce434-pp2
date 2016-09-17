@@ -1,0 +1,11 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: asdf
+         (body) StmtBlock: 
+            ForStmt: 
+               (init) Empty: 
+  2            (test) IntConstant: 5
+               (step) Empty: 
+               (body) Empty: 
