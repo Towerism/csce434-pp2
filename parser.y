@@ -97,7 +97,7 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <interfaceDecl> InterfaceDecl
 %type <identifierNode> Identifier
 %type <fnDecl> FunctionSignature FunctionDecl
-%type <stmt> StmtBlock Stmt BreakStmt
+%type <stmt> StmtBlock Stmt BreakStmt SemicolonTerminatedStmt
 %type <stmtList> Stmts
 %type <type> Type
 %type <expr> Constant
@@ -227,8 +227,13 @@ Stmts
 ;
 
 Stmt
-: BreakStmt ';' { $$ = $1; }
+: SemicolonTerminatedStmt ';' { $$ = $1; }
 | StmtBlock { $$ = $1; }
+;
+
+SemicolonTerminatedStmt
+: BreakStmt
+;
 
 BreakStmt
 : T_Break { $$ = new BreakStmt(@1); }
