@@ -258,7 +258,7 @@ ExprOptional
 ;
 
 Expr
-: LValue Assignment Constant { $$ = new AssignExpr($1, $2, $3); }
+: LValue Assignment Expr { $$ = new AssignExpr($1, $2, $3); }
 | Constant { $$ = $1; }
 ;
 
@@ -274,6 +274,7 @@ Constant
 : T_IntConstant { $$ = new IntConstant(@1, $1); }
 | T_DoubleConstant { $$ = new DoubleConstant(@1, $1); }
 | T_StringConstant { $$ = new StringConstant(@1, $1); }
+| T_BoolConstant { $$ = new BoolConstant(@1, $1); }
 ;
 
 %%
