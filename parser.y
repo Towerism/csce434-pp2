@@ -56,7 +56,6 @@ void yyerror(const char *msg); // standard error-handling routine
   NamedType* namedType;
   Expr* expr;
   Stmt* stmt;
-  Operator* op;
   List<Decl*>* declList;
   List<VarDecl*>* varDeclList;
   List<Stmt*>* stmtList;
@@ -82,6 +81,15 @@ void yyerror(const char *msg); // standard error-handling routine
 %token <boolConstant> T_BoolConstant
 %token <punctuation> '='
 
+%precedence '='
+%left T_OR
+%left T_AND
+%precedence T_Equal T_NotEqual
+%precedence '<' T_LessEqual '>' T_GreaterEqual
+%left '+'
+%left '*' '/' '%'
+%precedence '!' '-'
+%precedence '[' '.'
 
 /* Non-terminal types
  * ------------------
@@ -105,7 +113,6 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <stmtList> Stmts
 %type <type> Type
 %type <expr> ExprOptional Expr LValue Constant Call
-%type <op> Assignment
 %type <namedType> Extends
 %type <varDeclList> VarDecls Formals FormalsOptional
 %type <namedTypeList> Implements ImplementsOptional
@@ -282,14 +289,11 @@ ExprOptional
 ;
 
 Expr
-: LValue Assignment Expr { $$ = new AssignExpr($1, $2, $3); }
+: LValue '=' Expr { $$ = new AssignExpr($1, new Operator(@2, "="), $3); }
 | Constant { $$ = $1; }
 | LValue { $$ = $1; }
 | Call { $$ = $1; }
-;
-
-Assignment
-: '=' { $$ = new Operator(@1, "="); }
+| '(' Expr ')' { $$ = $2; }
 ;
 
 LValue
