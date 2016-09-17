@@ -50,6 +50,7 @@ void yyerror(const char *msg); // standard error-handling routine
   VarDecl* varDecl;
   FnDecl* fnDecl;
   ClassDecl* classDecl;
+  InterfaceDecl* interfaceDecl;
   Type* type;
   NamedType* namedType;
   Expr* expr;
@@ -89,12 +90,13 @@ void yyerror(const char *msg); // standard error-handling routine
  * of the union named "declList" which is of type List<Decl*>.
  * pp2: You'll need to add many of these of your own.
  */
-%type <declList> DeclList Fields
-%type <decl> Decl Field
+%type <declList> DeclList Fields Prototypes
+%type <decl> Decl Field Prototype
 %type <varDecl> VariableDecl Variable
 %type <classDecl> ClassDecl
+%type <interfaceDecl> InterfaceDecl
 %type <identifierNode> Identifier
-%type <fnDecl> FunctionDecl
+%type <fnDecl> FunctionSignature FunctionDecl
 %type <stmt> StmtBlock Stmt
 %type <stmtList> Stmts
 %type <type> Type
@@ -127,6 +129,7 @@ Decl
 : VariableDecl { $$ = $1; }
 | FunctionDecl { $$ = $1; }
 | ClassDecl { $$ = $1; }
+| InterfaceDecl { $$ = $1; }
 ;
 
 VariableDecl
@@ -146,6 +149,7 @@ ClassDecl
   $$ = new ClassDecl($2, $3, $4, $6); }
 | T_Class Identifier Extends ImplementsOptional '{' '}' {
   $$ = new ClassDecl($2, $3, $4, new List<Decl*>); }
+;
 
 Fields
 : Fields Field { ($$=$1)->Append($2); }
@@ -172,18 +176,32 @@ Implements
 | Implements ',' Identifier {($$=$1)->Append(new NamedType($3)); }
 ;
 
+InterfaceDecl
+: T_Interface Identifier '{' Prototypes '}' { $$ = new InterfaceDecl($2, $4); }
+
+Prototypes
+: Prototypes Prototype { ($$=$1)->Append($2); }
+| Prototype { ($$ = new List<Decl*>)->Append($1); }
+| { $$ = new List<Decl*>; }
+
+
+Prototype
+: FunctionSignature ';' { $$ = $1; }
+;
+
 FunctionDecl
-: Type Identifier '(' FormalsOptional ')' StmtBlock {
-  $$ = new FnDecl($2, $1, $4);
-  $$->SetFunctionBody($6); }
-| T_Void Identifier '(' FormalsOptional ')' StmtBlock {
-  $$ = new FnDecl($2, Type::voidType, $4);
-  $$->SetFunctionBody($6); }
+: FunctionSignature StmtBlock { ($$=$1)->SetFunctionBody($2); }
+;
+
+FunctionSignature
+: Type Identifier '(' FormalsOptional ')' { $$ = new FnDecl($2, $1, $4); }
+| T_Void Identifier '(' FormalsOptional ')' { $$ = new FnDecl($2, Type::voidType, $4); }
 ;
 
 FormalsOptional
 : Formals { $$ = $1; }
 | { $$ = new List<VarDecl*>; }
+;
 
 Formals
 : Variable { ($$=new List<VarDecl*>)->Append($1); }
@@ -221,6 +239,7 @@ Type
 
 Constant
 : T_IntConstant { $$ = new IntConstant(@1, $1); }
+;
 
 %%
 
