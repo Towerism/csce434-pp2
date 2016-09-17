@@ -45,6 +45,7 @@ void yyerror(const char *msg); // standard error-handling routine
   char* stringConstant;
   double doubleConstant;
   char identifier[MaxIdentLen+1]; // +1 for terminating null
+  char punctuation;
   Identifier* identifierNode;
   Decl* decl;
   VarDecl* varDecl;
@@ -55,6 +56,7 @@ void yyerror(const char *msg); // standard error-handling routine
   NamedType* namedType;
   Expr* expr;
   Stmt* stmt;
+  Operator* op;
   List<Decl*>* declList;
   List<VarDecl*>* varDeclList;
   List<Stmt*>* stmtList;
@@ -72,11 +74,12 @@ void yyerror(const char *msg); // standard error-handling routine
 %token   T_While T_For T_If T_Else T_Return T_Break
 %token   T_New T_NewArray T_Print T_ReadInteger T_ReadLine
 
-%token   <identifier> T_Identifier
-%token   <stringConstant> T_StringConstant
-%token   <integerConstant> T_IntConstant
-%token   <doubleConstant> T_DoubleConstant
-%token   <boolConstant> T_BoolConstant
+%token <identifier> T_Identifier
+%token <stringConstant> T_StringConstant
+%token <integerConstant> T_IntConstant
+%token <doubleConstant> T_DoubleConstant
+%token <boolConstant> T_BoolConstant
+%token <punctuation> '='
 
 
 /* Non-terminal types
@@ -100,7 +103,8 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <stmt> StmtBlock Stmt BreakStmt SemicolonTerminatedStmt
 %type <stmtList> Stmts
 %type <type> Type
-%type <expr> Constant
+%type <expr> ExprOptional Expr LValue Constant
+%type <op> Assignment
 %type <namedType> Extends
 %type <varDeclList> VarDecls Formals FormalsOptional
 %type <namedTypeList> Implements ImplementsOptional
@@ -232,7 +236,8 @@ Stmt
 ;
 
 SemicolonTerminatedStmt
-: BreakStmt
+: BreakStmt { $$ = $1; }
+| ExprOptional { $$ = $1; }
 ;
 
 BreakStmt
@@ -245,6 +250,24 @@ Type
 | T_Bool { $$ = Type::boolType; }
 | Identifier { $$ = new NamedType($1); }
 | Type T_Dims { $$ = new ArrayType(@1, $1); }
+;
+
+ExprOptional
+: Expr { $$ = $1; }
+| { $$ = new EmptyExpr(); }
+;
+
+Expr
+: LValue Assignment Constant { $$ = new AssignExpr($1, $2, $3); }
+| Constant { $$ = $1; }
+;
+
+Assignment
+: '=' { $$ = new Operator(@1, "="); }
+;
+
+LValue
+: Identifier { $$ = new FieldAccess(NULL, $1); }
 ;
 
 Constant
@@ -275,5 +298,4 @@ Constant
 void InitParser()
 {
   PrintDebug("parser", "Initializing parser");
-  yydebug = false;
 }
