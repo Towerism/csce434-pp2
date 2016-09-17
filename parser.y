@@ -100,7 +100,7 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <interfaceDecl> InterfaceDecl
 %type <identifierNode> Identifier
 %type <fnDecl> FunctionSignature FunctionDecl
-%type <stmt> StmtBlock Stmt BreakStmt ReturnStmt ForStmt SemicolonTerminatedStmt
+%type <stmt> StmtBlock Stmt BreakStmt ReturnStmt WhileStmt ForStmt PrintStmt SemicolonTerminatedStmt
 %type <stmtList> Stmts
 %type <type> Type
 %type <expr> ExprOptional Expr LValue Constant
@@ -232,6 +232,7 @@ Stmts
 
 Stmt
 : SemicolonTerminatedStmt ';' { $$ = $1; }
+| WhileStmt { $$ = $1; }
 | ForStmt { $$ = $1; }
 | StmtBlock { $$ = $1; }
 ;
@@ -247,6 +248,9 @@ BreakStmt
 
 ReturnStmt
 : T_Return ExprOptional { $$ = new ReturnStmt(@1, $2); }
+
+WhileStmt
+: T_While '(' Expr ')' Stmt { $$ = new WhileStmt($3, $5); }
 
 ForStmt
 : T_For '(' ExprOptional ';' Expr ';' ExprOptional ')' Stmt { $$ = new ForStmt($3, $5, $7, $9); }
@@ -309,4 +313,5 @@ Constant
 void InitParser()
 {
   PrintDebug("parser", "Initializing parser");
+  yydebug = false;
 }
