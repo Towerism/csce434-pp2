@@ -23,8 +23,7 @@
 
 void yyerror(const char *msg); // standard error-handling routine
 
-static Operator* makeOperator(yyltype loc, char c);
-static Operator* makeOperator(yyltype loc, const char* str);
+static Operator* makeOp(yyltype loc, const char* str);
 
 %}
 
@@ -301,12 +300,13 @@ ExprOptional
 ;
 
 Expr
-: LValue '=' Expr { $$ = new AssignExpr($1, new Operator(@2, "="), $3); }
+: LValue '=' Expr { $$ = new AssignExpr($1, makeOp(@2, "="), $3); }
 | Constant { $$ = $1; }
 | LValue { $$ = $1; }
 | Call { $$ = $1; }
 | T_This { $$ = new This(@1); }
-| Expr '+' Expr { $$ = new ArithmeticExpr($1, new Operator(@1, "+"), $3); }
+| Expr '+' Expr { $$ = new ArithmeticExpr($1, makeOp(@1, "+"), $3); }
+| Expr '-' Expr { $$ = new ArithmeticExpr($1, makeOp(@1, "-"), $3); }
 | T_ReadInteger '(' ')' { $$ = new ReadIntegerExpr(@1); }
 | T_ReadLine '(' ')' { $$ = new ReadLineExpr(@1); }
 | T_New '(' Identifier ')' { $$ = new NewExpr(@1, new NamedType($3)); }
@@ -369,11 +369,6 @@ void InitParser()
   PrintDebug("parser", "Initializing parser");
   yydebug = false;
 }
-
-Operator* makeOperator(yyltype loc, char c) {
-  char str[1] = { c };
-  return makeOperator(loc, str);
-}
-Operator* makeOperator(yyltype loc, const char* str) {
+Operator* makeOp(yyltype loc, const char* str) {
   return new Operator(loc, str);
 }
