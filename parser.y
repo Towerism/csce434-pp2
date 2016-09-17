@@ -104,12 +104,12 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <stmt> StmtBlock Stmt BreakStmt ReturnStmt WhileStmt ForStmt PrintStmt SemicolonTerminatedStmt
 %type <stmtList> Stmts
 %type <type> Type
-%type <expr> ExprOptional Expr LValue Constant
+%type <expr> ExprOptional Expr LValue Constant Call
 %type <op> Assignment
 %type <namedType> Extends
 %type <varDeclList> VarDecls Formals FormalsOptional
 %type <namedTypeList> Implements ImplementsOptional
-%type <exprList> ExprList;
+%type <exprList> ExprList ActualsOptional Actuals;
 
 %%
 /* Rules
@@ -285,6 +285,7 @@ Expr
 : LValue Assignment Expr { $$ = new AssignExpr($1, $2, $3); }
 | Constant { $$ = $1; }
 | LValue { $$ = $1; }
+| Call { $$ = $1; }
 ;
 
 Assignment
@@ -293,6 +294,21 @@ Assignment
 
 LValue
 : Identifier { $$ = new FieldAccess(NULL, $1); }
+;
+
+Call
+: Identifier '(' ActualsOptional ')' { $$ = new Call(@1, NULL, $1, $3); }
+| Expr '.' Identifier '(' ActualsOptional ')' { $$ = new Call(@1, $1, $3, $5); }
+;
+
+ActualsOptional
+: Actuals { $$ = $1; }
+| { $$ = new List<Expr*>; }
+;
+
+Actuals
+: Expr { ($$=new List<Expr*>)->Append($1); }
+| Actuals ',' Expr { ($$=$1)->Append($3); }
 ;
 
 Constant
