@@ -49,12 +49,15 @@ void yyerror(const char *msg); // standard error-handling routine
   Decl* decl;
   VarDecl* varDecl;
   FnDecl* fnDecl;
+  ClassDecl* classDecl;
   Type* type;
+  NamedType* namedType;
   Expr* expr;
   Stmt* stmt;
   List<Decl*>* declList;
   List<VarDecl*>* varDeclList;
   List<Stmt*>* stmtList;
+  List<NamedType*>* namedTypeList;
 }
 
 /* Tokens * ------
@@ -86,16 +89,19 @@ void yyerror(const char *msg); // standard error-handling routine
  * of the union named "declList" which is of type List<Decl*>.
  * pp2: You'll need to add many of these of your own.
  */
-%type <declList> DeclList
-%type <decl> Decl
+%type <declList> DeclList Fields
+%type <decl> Decl Field
 %type <varDecl> VariableDecl Variable
+%type <classDecl> ClassDecl
 %type <identifierNode> Identifier
 %type <fnDecl> FunctionDecl
 %type <stmt> StmtBlock Stmt
 %type <stmtList> Stmts
 %type <type> Type
 %type <expr> Constant
+%type <namedType> Extends
 %type <varDeclList> VarDecls Formals FormalsOptional
+%type <namedTypeList> Implements ImplementsOptional
 
 %%
 /* Rules
@@ -120,6 +126,7 @@ DeclList
 Decl
 : VariableDecl { $$ = $1; }
 | FunctionDecl { $$ = $1; }
+| ClassDecl { $$ = $1; }
 ;
 
 VariableDecl
@@ -128,9 +135,41 @@ VariableDecl
 
 Variable
 : Type Identifier { $$ = new VarDecl($2, $1);  }
+;
 
 Identifier
 : T_Identifier { $$ = new Identifier(@1, strdup($1)); }
+;
+
+ClassDecl
+: T_Class Identifier Extends ImplementsOptional '{' Fields '}' {
+  $$ = new ClassDecl($2, $3, $4, $6); }
+
+Fields
+: Fields Field { ($$=$1)->Append($2); }
+| Field { ($$ = new List<Decl*>)->Append($1); }
+| { $$ = new List<Decl*>; }
+;
+
+Field
+: VariableDecl { $$ = $1; }
+| FunctionDecl { $$ = $1; }
+;
+
+Extends
+: T_Extends Identifier { $$ = new NamedType($2); }
+| {$$ = NULL; }
+;
+
+ImplementsOptional
+: T_Implements Implements { $$ = $2; }
+| { $$ = new List<NamedType*>; }
+;
+
+Implements
+: Identifier { ($$=new List<NamedType*>)->Append(new NamedType($1)); }
+| Implements ',' Identifier {($$=$1)->Append(new NamedType($3)); }
+;
 
 FunctionDecl
 : Type Identifier '(' FormalsOptional ')' StmtBlock {

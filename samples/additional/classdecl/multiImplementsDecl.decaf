@@ -1,0 +1,3 @@
+class Asdf implements Fdsa, Qwer, Rewq {
+      int asdf;
+}
