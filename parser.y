@@ -302,6 +302,7 @@ Expr
 | Constant { $$ = $1; }
 | LValue { $$ = $1; }
 | Call { $$ = $1; }
+| T_This { $$ = new This(@1); }
 | '(' Expr ')' { $$ = $2; }
 ;
 
