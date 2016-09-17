@@ -61,6 +61,7 @@ void yyerror(const char *msg); // standard error-handling routine
   List<VarDecl*>* varDeclList;
   List<Stmt*>* stmtList;
   List<NamedType*>* namedTypeList;
+  List<Expr*>* exprList;
 }
 
 /* Tokens * ------
@@ -108,6 +109,7 @@ void yyerror(const char *msg); // standard error-handling routine
 %type <namedType> Extends
 %type <varDeclList> VarDecls Formals FormalsOptional
 %type <namedTypeList> Implements ImplementsOptional
+%type <exprList> ExprList;
 
 %%
 /* Rules
@@ -240,6 +242,7 @@ Stmt
 SemicolonTerminatedStmt
 : BreakStmt { $$ = $1; }
 | ReturnStmt {$$ = $1;}
+| PrintStmt { $$ = $1; }
 | ExprOptional { $$ = $1; }
 ;
 
@@ -254,6 +257,15 @@ WhileStmt
 
 ForStmt
 : T_For '(' ExprOptional ';' Expr ';' ExprOptional ')' Stmt { $$ = new ForStmt($3, $5, $7, $9); }
+
+PrintStmt
+: T_Print '(' ExprList ')' { $$ = new PrintStmt($3); }
+;
+
+ExprList
+: Expr { ($$=new List<Expr*>)->Append($1); }
+| ExprList ',' Expr { ($$=$1)->Append($3); }
+;
 
 Type
 : T_Int { $$ = Type::intType; }
@@ -272,6 +284,7 @@ ExprOptional
 Expr
 : LValue Assignment Expr { $$ = new AssignExpr($1, $2, $3); }
 | Constant { $$ = $1; }
+| LValue { $$ = $1; }
 ;
 
 Assignment
