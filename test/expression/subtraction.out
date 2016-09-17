@@ -1,0 +1,10 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: asdf
+         (body) StmtBlock: 
+  2         ArithmeticExpr: 
+  2            IntConstant: 1
+  2            Operator: -
+  2            IntConstant: 2

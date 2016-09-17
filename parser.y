@@ -83,15 +83,15 @@ static Operator* makeOp(yyltype loc, const char* str);
 %token <boolConstant> T_BoolConstant
 %token <punctuation> '='
 
-%precedence '='
-%left T_OR
-%left T_AND
-%precedence T_Equal T_NotEqual
-%precedence '<' T_LessEqual '>' T_GreaterEqual
-%left '+'
+%nonassoc '='
+%left T_Or
+%left T_And
+%nonassoc T_Equal T_NotEqual
+%nonassoc '<' T_LessEqual '>' T_GreaterEqual
+%left '+' '-'
 %left '*' '/' '%'
-%precedence '!' '-'
-%precedence '[' '.'
+%nonassoc '!' P_UnaryMinus
+%nonassoc '[' '.'
 
 %nonassoc T_NoElse
 %nonassoc T_Else
@@ -301,15 +301,28 @@ ExprOptional
 
 Expr
 : LValue '=' Expr { $$ = new AssignExpr($1, makeOp(@2, "="), $3); }
+| Expr '+' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "+"), $3); }
+| Expr '-' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "-"), $3); }
+| Expr '*' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "*"), $3); }
+| Expr '/' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "/"), $3); }
+| Expr '%' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "%"), $3); }
+| Expr '<' Expr { $$ = new RelationalExpr($1, makeOp(@2, "<"), $3); }
+| Expr '>' Expr { $$ = new RelationalExpr($1, makeOp(@2, ">"), $3); }
+| Expr T_LessEqual Expr { $$ = new RelationalExpr($1, makeOp(@2, "<="), $3); }
+| Expr T_GreaterEqual Expr { $$ = new RelationalExpr($1, makeOp(@2, ">="), $3); }
+| Expr T_Equal Expr { $$ = new EqualityExpr($1, makeOp(@2, "=="), $3); }
+| Expr T_NotEqual Expr { $$ = new EqualityExpr($1, makeOp(@2, "!="), $3); }
+| Expr T_Or Expr { $$ = new LogicalExpr($1, makeOp(@2, "||"), $3); }
+| Expr T_And Expr { $$ = new LogicalExpr($1, makeOp(@2, "&&"), $3); }
+| '!' Expr { $$ = new LogicalExpr(makeOp(@1, "!"), $2); }
+| '-' Expr %prec P_UnaryMinus { $$ = new ArithmeticExpr(makeOp(@1, "-"), $2); }
 | Constant { $$ = $1; }
-| LValue { $$ = $1; }
-| Call { $$ = $1; }
 | T_This { $$ = new This(@1); }
-| Expr '+' Expr { $$ = new ArithmeticExpr($1, makeOp(@1, "+"), $3); }
-| Expr '-' Expr { $$ = new ArithmeticExpr($1, makeOp(@1, "-"), $3); }
 | T_ReadInteger '(' ')' { $$ = new ReadIntegerExpr(@1); }
 | T_ReadLine '(' ')' { $$ = new ReadLineExpr(@1); }
 | T_New '(' Identifier ')' { $$ = new NewExpr(@1, new NamedType($3)); }
+| LValue { $$ = $1; }
+| Call { $$ = $1; }
 | T_NewArray '(' Expr ',' Type ')' { $$ = new NewArrayExpr(@1, $3, $5); }
 | '(' Expr ')' { $$ = $2; }
 ;
