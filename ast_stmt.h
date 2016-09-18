@@ -106,9 +106,9 @@ class SwitchStmt : public Stmt {
 protected:
   Expr* test;
   List<CaseStmt*>* cases;
-  Stmt* defaultCase;
+  List<Stmt*>* defaultStmts;
 public:
-  SwitchStmt(Expr *test, List<CaseStmt*>* cases, Stmt* defaultCase);
+  SwitchStmt(Expr *test, List<CaseStmt*>* cases, List<Stmt*>* defaultStmts);
   const char *GetPrintNameForNode() { return "SwitchStmt"; }
   void PrintChildren(int identLevel);
 };

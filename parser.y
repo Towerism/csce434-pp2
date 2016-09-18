@@ -58,11 +58,13 @@ static Operator* makeOp(yyltype loc, const char* str);
   NamedType* namedType;
   Expr* expr;
   Stmt* stmt;
+  CaseStmt* caseStmt;
   List<Decl*>* declList;
   List<VarDecl*>* varDeclList;
   List<Stmt*>* stmtList;
   List<NamedType*>* namedTypeList;
   List<Expr*>* exprList;
+  List<CaseStmt*>* caseStmtList;
 }
 
 /* Tokens * ------
@@ -75,7 +77,7 @@ static Operator* makeOp(yyltype loc, const char* str);
 %token   T_And T_Or T_Null T_Extends T_This T_Interface T_Implements
 %token   T_While T_For T_If T_Else T_Return T_Break
 %token   T_New T_NewArray T_Print T_ReadInteger T_ReadLine
-%token   T_Incr T_Decr
+%token   T_Incr T_Decr T_Switch T_Case T_Default
 
 %token <identifier> T_Identifier
 %token <stringConstant> T_StringConstant
@@ -95,8 +97,12 @@ static Operator* makeOp(yyltype loc, const char* str);
 %nonassoc P_IncrHigher
 %nonassoc '[' '.'
 
-%nonassoc T_NoElse
+%nonassoc P_NoElse
 %nonassoc T_Else
+%nonassoc P_CaseMatchedStmt
+%nonassoc P_DefaultMatchedStmt
+%nonassoc P_CaseEmpty
+%nonassoc P_DefaultEmpty
 
 /* Non-terminal types
  * ------------------
@@ -117,8 +123,10 @@ static Operator* makeOp(yyltype loc, const char* str);
 %type <identifierNode> Identifier
 %type <fnDecl> FunctionSignature FunctionDecl
 %type <stmt> StmtBlock Stmt BreakStmt ReturnStmt WhileStmt
-%type <stmt> ForStmt PrintStmt SemicolonTerminatedStmt IfStmt
-%type <stmtList> Stmts
+%type <stmt> ForStmt PrintStmt SemicolonTerminatedStmt IfStmt SwitchStmt
+%type <caseStmtList> CaseStmts
+%type <caseStmt> CaseStmt
+%type <stmtList> Stmts DefaultStmt
 %type <type> Type
 %type <expr> ExprOptional Expr LValue Constant Call
 %type <namedType> Extends
@@ -252,6 +260,7 @@ Stmt
 | IfStmt { $$ = $1; }
 | WhileStmt { $$ = $1; }
 | ForStmt { $$ = $1; }
+| SwitchStmt { $$ = $1; }
 | StmtBlock { $$ = $1; }
 ;
 
@@ -263,20 +272,45 @@ SemicolonTerminatedStmt
 ;
 
 IfStmt
-: T_If '(' Expr ')' Stmt %prec T_NoElse { $$ = new IfStmt($3, $5, NULL); }
+: T_If '(' Expr ')' Stmt %prec P_NoElse { $$ = new IfStmt($3, $5, NULL); }
 | T_If '(' Expr ')' Stmt T_Else Stmt { $$ = new IfStmt($3, $5, $7); }
+;
 
 BreakStmt
 : T_Break { $$ = new BreakStmt(@1); }
+;
 
 ReturnStmt
 : T_Return ExprOptional { $$ = new ReturnStmt(@1, $2); }
+;
 
 WhileStmt
 : T_While '(' Expr ')' Stmt { $$ = new WhileStmt($3, $5); }
+;
 
 ForStmt
 : T_For '(' ExprOptional ';' Expr ';' ExprOptional ')' Stmt { $$ = new ForStmt($3, $5, $7, $9); }
+;
+
+SwitchStmt
+: T_Switch '(' Expr ')' '{' CaseStmts DefaultStmt '}' { $$ = new SwitchStmt($3, $6, $7); }
+;
+
+CaseStmts
+: CaseStmts CaseStmt { ($$=$1)->Append($2); }
+| CaseStmt { ($$ = new List<CaseStmt*>)->Append($1); }
+;
+
+CaseStmt
+: T_Case T_IntConstant ':' Stmts %prec P_CaseMatchedStmt { $$ = new CaseStmt(new IntConstant(@2, $2), $4); }
+| T_Case T_IntConstant ':' %prec P_CaseEmpty { $$ = new CaseStmt(new IntConstant(@2, $2), new List<Stmt*>); }
+;
+
+DefaultStmt
+: T_Default ':' Stmts %prec P_DefaultMatchedStmt { $$ = $3; }
+| T_Default ':' %prec P_DefaultEmpty { $$ = new List<Stmt*>; }
+| { $$ = NULL; }
+;
 
 PrintStmt
 : T_Print '(' ExprList ')' { $$ = new PrintStmt($3); }

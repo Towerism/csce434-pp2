@@ -71,17 +71,17 @@ void CaseStmt::PrintChildren(int identLevel) {
   this->body->PrintAll(identLevel+1, "(body) ");
 }
 
-SwitchStmt::SwitchStmt(Expr* test, List<CaseStmt*>* cases, Stmt* defaultCase)
-  : test(test), cases(cases), defaultCase(defaultCase) {
+SwitchStmt::SwitchStmt(Expr* test, List<CaseStmt*>* cases, List<Stmt*>* defaultStmts)
+  : test(test), cases(cases), defaultStmts(defaultStmts) {
   this->test->SetParent(this);
   this->cases->SetParentAll(this);
-  this->defaultCase->SetParent(this);
+  this->defaultStmts->SetParentAll(this);
 }
 
 void SwitchStmt::PrintChildren(int identLevel) {
   this->test->Print(identLevel+1, "(test) ");
   this->cases->PrintAll(identLevel+1, NULL);
-  this->defaultCase->Print(identLevel+1, "(default) ");
+  this->defaultStmts->PrintAll(identLevel+1, "(default) ");
 }
 
 ReturnStmt::ReturnStmt(yyltype loc, Expr *e) : Stmt(loc) {    Assert(e != NULL);

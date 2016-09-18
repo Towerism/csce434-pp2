@@ -52,7 +52,7 @@ DOUBLE            ({INTEGER}"."{DIGIT}*{EXPONENT}?)
 BEG_STRING        (\"[^"\n]*)
 STRING            ({BEG_STRING}\")
 IDENTIFIER        ([a-zA-Z][a-zA-Z_0-9]*)
-OPERATOR          ([-+/*%=.,;!<>()[\]{}])
+OPERATOR          ([-+/*%=.,:;!<>()[\]{}])
 BEG_COMMENT       ("/*")
 END_COMMENT       ("*/")
 SINGLE_COMMENT    ("//"[^\n]*)
@@ -96,6 +96,9 @@ SINGLE_COMMENT    ("//"[^\n]*)
 "for"               { return T_For;         }
 "if"                { return T_If;          }
 "else"              { return T_Else;        }
+"switch"            { return T_Switch;      }
+"case"              { return T_Case;        }
+"default"           { return T_Default;     }
 "return"            { return T_Return;      }
 "break"             { return T_Break;       }
 "New"               { return T_New;         }
