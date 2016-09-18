@@ -75,6 +75,7 @@ static Operator* makeOp(yyltype loc, const char* str);
 %token   T_And T_Or T_Null T_Extends T_This T_Interface T_Implements
 %token   T_While T_For T_If T_Else T_Return T_Break
 %token   T_New T_NewArray T_Print T_ReadInteger T_ReadLine
+%token   T_Incr T_Decr
 
 %token <identifier> T_Identifier
 %token <stringConstant> T_StringConstant
@@ -90,7 +91,8 @@ static Operator* makeOp(yyltype loc, const char* str);
 %nonassoc '<' T_LessEqual '>' T_GreaterEqual
 %left '+' '-'
 %left '*' '/' '%'
-%nonassoc '!' P_UnaryMinus
+%left '!' P_UnaryMinus T_Incr T_Decr
+%nonassoc P_IncrHigher
 %nonassoc '[' '.'
 
 %nonassoc T_NoElse
@@ -301,6 +303,7 @@ ExprOptional
 
 Expr
 : LValue '=' Expr { $$ = new AssignExpr($1, makeOp(@2, "="), $3); }
+| LValue { $$ = $1; }
 | Expr '+' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "+"), $3); }
 | Expr '-' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "-"), $3); }
 | Expr '*' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "*"), $3); }
@@ -316,12 +319,13 @@ Expr
 | Expr T_And Expr { $$ = new LogicalExpr($1, makeOp(@2, "&&"), $3); }
 | '!' Expr { $$ = new LogicalExpr(makeOp(@1, "!"), $2); }
 | '-' Expr %prec P_UnaryMinus { $$ = new ArithmeticExpr(makeOp(@1, "-"), $2); }
+| Expr T_Incr { $$ = new PostfixExpr($1, makeOp(@2, "++")); }
+| Expr T_Decr { $$ = new PostfixExpr($1, makeOp(@2, "--")); }
 | Constant { $$ = $1; }
 | T_This { $$ = new This(@1); }
 | T_ReadInteger '(' ')' { $$ = new ReadIntegerExpr(@1); }
 | T_ReadLine '(' ')' { $$ = new ReadLineExpr(@1); }
 | T_New '(' Identifier ')' { $$ = new NewExpr(@1, new NamedType($3)); }
-| LValue { $$ = $1; }
 | Call { $$ = $1; }
 | T_NewArray '(' Expr ',' Type ')' { $$ = new NewArrayExpr(@1, $3, $5); }
 | '(' Expr ')' { $$ = $2; }

@@ -114,7 +114,8 @@ SINGLE_COMMENT    ("//"[^\n]*)
 "&&"                { return T_And;         }
 "||"                { return T_Or;          }
 {OPERATOR}          { return yytext[0];     }
-    
+"++"                { return T_Incr;        }
+"--"                { return T_Decr;        }
 "[]"                { return T_Dims;        }
 
  /* -------------------- Constants ------------------------------ */
