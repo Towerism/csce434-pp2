@@ -68,20 +68,28 @@ CaseStmt::CaseStmt(IntConstant* label, List<Stmt*>* body) : label(label), body(b
 
 void CaseStmt::PrintChildren(int identLevel) {
   this->label->Print(identLevel+1, "(label) ");
-  this->body->PrintAll(identLevel+1, "(body) ");
+  this->body->PrintAll(identLevel+1);
 }
 
-SwitchStmt::SwitchStmt(Expr* test, List<CaseStmt*>* cases, List<Stmt*>* defaultStmts)
-  : test(test), cases(cases), defaultStmts(defaultStmts) {
+DefaultStmt::DefaultStmt(List<Stmt*>* body) : body(body) {
+  this->body->SetParentAll(this);
+}
+
+void DefaultStmt::PrintChildren(int identLevel) {
+  this->body->PrintAll(identLevel+1);
+}
+
+SwitchStmt::SwitchStmt(Expr* test, List<CaseStmt*>* cases, DefaultStmt* defaultStmt)
+  : test(test), cases(cases), defaultStmt(defaultStmt) {
   this->test->SetParent(this);
   this->cases->SetParentAll(this);
-  this->defaultStmts->SetParentAll(this);
+  this->defaultStmt->SetParent(this);
 }
 
 void SwitchStmt::PrintChildren(int identLevel) {
   this->test->Print(identLevel+1, "(test) ");
   this->cases->PrintAll(identLevel+1, NULL);
-  this->defaultStmts->PrintAll(identLevel+1, "(default) ");
+  this->defaultStmt->Print(identLevel+1, "(default) ");
 }
 
 ReturnStmt::ReturnStmt(yyltype loc, Expr *e) : Stmt(loc) {    Assert(e != NULL);

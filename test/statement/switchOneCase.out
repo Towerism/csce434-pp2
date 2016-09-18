@@ -8,5 +8,6 @@
   2            (test) IntConstant: 1
                CaseStmt: 
   3               (label) IntConstant: 1
-  3               (body) BreakStmt: 
-  4            (default) BreakStmt: 
+  3               BreakStmt: 
+               (default) DefaultStmt: 
+  4               BreakStmt: 

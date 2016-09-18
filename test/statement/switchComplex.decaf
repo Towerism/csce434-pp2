@@ -11,5 +11,9 @@ int asdf() {
          rewq;
     case 5:
     default:
+         1234;
+         rewq;
+         qwer;
+         fdsa;
     }
 }

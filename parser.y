@@ -59,6 +59,7 @@ static Operator* makeOp(yyltype loc, const char* str);
   Expr* expr;
   Stmt* stmt;
   CaseStmt* caseStmt;
+  DefaultStmt* defaultStmt;
   List<Decl*>* declList;
   List<VarDecl*>* varDeclList;
   List<Stmt*>* stmtList;
@@ -125,8 +126,10 @@ static Operator* makeOp(yyltype loc, const char* str);
 %type <stmt> StmtBlock Stmt BreakStmt ReturnStmt WhileStmt
 %type <stmt> ForStmt PrintStmt SemicolonTerminatedStmt IfStmt SwitchStmt
 %type <caseStmtList> CaseStmts
+%type <defaultStmt> DefaultStmt
+
 %type <caseStmt> CaseStmt
-%type <stmtList> Stmts DefaultStmt
+%type <stmtList> Stmts
 %type <type> Type
 %type <expr> ExprOptional Expr LValue Constant Call
 %type <namedType> Extends
@@ -307,8 +310,8 @@ CaseStmt
 ;
 
 DefaultStmt
-: T_Default ':' Stmts %prec P_DefaultMatchedStmt { $$ = $3; }
-| T_Default ':' %prec P_DefaultEmpty { $$ = new List<Stmt*>; }
+: T_Default ':' Stmts %prec P_DefaultMatchedStmt { $$ = new DefaultStmt($3); }
+| T_Default ':' %prec P_DefaultEmpty { $$ = new DefaultStmt(new List<Stmt*>); }
 | { $$ = NULL; }
 ;
 

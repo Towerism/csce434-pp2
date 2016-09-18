@@ -102,13 +102,22 @@ public:
   void PrintChildren(int identLevel);
 };
 
+class DefaultStmt : public Stmt {
+protected:
+  List<Stmt*>* body;
+public:
+  DefaultStmt(List<Stmt*>* body);
+  const char *GetPrintNameForNode() { return "DefaultStmt";}
+  void PrintChildren(int identLevel);
+};
+
 class SwitchStmt : public Stmt {
 protected:
   Expr* test;
   List<CaseStmt*>* cases;
-  List<Stmt*>* defaultStmts;
+  DefaultStmt* defaultStmt;
 public:
-  SwitchStmt(Expr *test, List<CaseStmt*>* cases, List<Stmt*>* defaultStmts);
+  SwitchStmt(Expr *test, List<CaseStmt*>* cases, DefaultStmt* defaultStmt);
   const char *GetPrintNameForNode() { return "SwitchStmt"; }
   void PrintChildren(int identLevel);
 };
