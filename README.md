@@ -1,8 +1,13 @@
 # csce434-pp2
 ## Operator Precedence
-For the most part, I used precedence directives to tell bison when and when not
-to shift when it came to expressions in order to keep those expression
+For the most part, I used precedence directives to tell bison explicitly when it
+should shift when it came to expressions in order to keep those expression
 productions relatively shallow.
+
+Additionally, rather than capturing precedence in the grammar itself, I chose to
+use precedence directives to resolve shift reduce conflicts surrounding if/else
+and empty case/default statements.
+surrounding 
 ## Resolving Shift/Reduce Conflicts
 In some cases, it was not obvious how to rewrite the productions to avoid these
 conflicts in an elegant way. For example, in the case of the Statement Block, I resolved the
