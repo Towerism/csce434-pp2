@@ -7,7 +7,6 @@ productions relatively shallow.
 Additionally, rather than capturing precedence in the grammar itself, I chose to
 use precedence directives to resolve shift reduce conflicts surrounding if/else
 and empty case/default statements.
-surrounding 
 ## Resolving Shift/Reduce Conflicts
 In some cases, it was not obvious how to rewrite the productions to avoid these
 conflicts in an elegant way. For example, in the case of the Statement Block, I resolved the
