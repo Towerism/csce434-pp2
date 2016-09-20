@@ -4,16 +4,16 @@
          (return type) Type: int
   1      Identifier: asdf
          (body) StmtBlock: 
-            SwitchStmt: 
+  2         SwitchStmt: 
   2            (test) IntConstant: 1
-               CaseStmt: 
+  3            CaseStmt: 
   3               (label) IntConstant: 1
   3               BreakStmt: 
-               CaseStmt: 
+  4            CaseStmt: 
   4               (label) IntConstant: 2
   4               BreakStmt: 
-               CaseStmt: 
+  5            CaseStmt: 
   5               (label) IntConstant: 3
   5               BreakStmt: 
-               (default) DefaultStmt: 
+  6            (default) DefaultStmt: 
   6               BreakStmt: 

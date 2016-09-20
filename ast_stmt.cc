@@ -61,7 +61,8 @@ void IfStmt::PrintChildren(int indentLevel) {
   if (elseBody) elseBody->Print(indentLevel+1, "(else) ");
 }
 
-CaseStmt::CaseStmt(IntConstant* label, List<Stmt*>* body) : label(label), body(body) {
+CaseStmt::CaseStmt(yyltype loc, IntConstant* label, List<Stmt*>* body)
+  : Stmt(loc), label(label), body(body) {
   this->label->SetParent(this);
   this->body->SetParentAll(this);
 }
@@ -71,7 +72,7 @@ void CaseStmt::PrintChildren(int identLevel) {
   this->body->PrintAll(identLevel+1);
 }
 
-DefaultStmt::DefaultStmt(List<Stmt*>* body) : body(body) {
+DefaultStmt::DefaultStmt(yyltype loc, List<Stmt*>* body) : Stmt(loc), body(body) {
   this->body->SetParentAll(this);
 }
 
@@ -79,8 +80,8 @@ void DefaultStmt::PrintChildren(int identLevel) {
   this->body->PrintAll(identLevel+1);
 }
 
-SwitchStmt::SwitchStmt(Expr* test, List<CaseStmt*>* cases, DefaultStmt* defaultStmt)
-  : test(test), cases(cases), defaultStmt(defaultStmt) {
+SwitchStmt::SwitchStmt(yyltype loc, Expr* test, List<CaseStmt*>* cases, DefaultStmt* defaultStmt)
+  : Stmt(loc), test(test), cases(cases), defaultStmt(defaultStmt) {
   this->test->SetParent(this);
   this->cases->SetParentAll(this);
   this->defaultStmt->SetParent(this);

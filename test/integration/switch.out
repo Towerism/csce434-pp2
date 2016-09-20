@@ -14,30 +14,30 @@
  10               Identifier: n
  10            Operator: =
  10            ReadIntegerExpr: 
-            SwitchStmt: 
+ 12         SwitchStmt: 
  12            (test) FieldAccess: 
  12               Identifier: n
-               CaseStmt: 
+ 13            CaseStmt: 
  13               (label) IntConstant: 1
                   PrintStmt: 
  13                  (args) StringConstant: "Ace"
  13               BreakStmt: 
-               CaseStmt: 
+ 14            CaseStmt: 
  14               (label) IntConstant: 11
                   PrintStmt: 
  14                  (args) StringConstant: "Jack"
  14               BreakStmt: 
-               CaseStmt: 
+ 15            CaseStmt: 
  15               (label) IntConstant: 12
                   PrintStmt: 
  15                  (args) StringConstant: "Queen"
  15               BreakStmt: 
-               CaseStmt: 
+ 16            CaseStmt: 
  16               (label) IntConstant: 13
                   PrintStmt: 
  16                  (args) StringConstant: "King"
  16               BreakStmt: 
-               (default) DefaultStmt: 
+ 17            (default) DefaultStmt: 
                   PrintStmt: 
  17                  (args) FieldAccess: 
  17                     Identifier: n
@@ -62,7 +62,7 @@
  27               Identifier: b
  27            Operator: =
  27            ReadIntegerExpr: 
-            SwitchStmt: 
+ 29         SwitchStmt: 
  29            (test) ArithmeticExpr: 
  29               ArithmeticExpr: 
  29                  ArithmeticExpr: 
@@ -75,7 +75,7 @@
  29                     Identifier: b
  29               Operator: /
  29               IntConstant: 14
-               CaseStmt: 
+ 30            CaseStmt: 
  30               (label) IntConstant: 123
                   PrintStmt: 
  30                  (args) FieldAccess: 
@@ -85,13 +85,13 @@
  31                     Identifier: b
  31                  Operator: =
  31                  IntConstant: 23
-               CaseStmt: 
+ 33            CaseStmt: 
  33               (label) IntConstant: 224
                   PrintStmt: 
  33                  (args) FieldAccess: 
  33                     Identifier: b
  33               BreakStmt: 
-               CaseStmt: 
+ 35            CaseStmt: 
  35               (label) IntConstant: 233
  35               AssignExpr: 
  35                  FieldAccess: 
@@ -113,10 +113,10 @@
  37                  Operator: =
  37                  IntConstant: 23
  38               BreakStmt: 
-               CaseStmt: 
+ 40            CaseStmt: 
  40               (label) IntConstant: 41
  40               BreakStmt: 
-               (default) DefaultStmt: 
+ 42            (default) DefaultStmt: 
  42               BreakStmt: 
  47   FnDecl: 
          (return type) Type: void
@@ -135,18 +135,18 @@
  52               Identifier: inputvar
  52            Operator: =
  52            ReadIntegerExpr: 
-            SwitchStmt: 
+ 54         SwitchStmt: 
  54            (test) FieldAccess: 
  54               Identifier: inputvar
-               CaseStmt: 
+ 56            CaseStmt: 
  56               (label) IntConstant: 2
-               CaseStmt: 
+ 57            CaseStmt: 
  57               (label) IntConstant: 4
-               CaseStmt: 
+ 58            CaseStmt: 
  58               (label) IntConstant: 6
-               CaseStmt: 
+ 59            CaseStmt: 
  59               (label) IntConstant: 8
-               CaseStmt: 
+ 60            CaseStmt: 
  60               (label) IntConstant: 10
                   ForStmt: 
  61                  (init) AssignExpr: 
@@ -170,15 +170,15 @@
                   PrintStmt: 
  63                  (args) StringConstant: "even"
  64               BreakStmt: 
-               CaseStmt: 
+ 66            CaseStmt: 
  66               (label) IntConstant: 1
-               CaseStmt: 
+ 67            CaseStmt: 
  67               (label) IntConstant: 3
-               CaseStmt: 
+ 68            CaseStmt: 
  68               (label) IntConstant: 5
-               CaseStmt: 
+ 69            CaseStmt: 
  69               (label) IntConstant: 7
-               CaseStmt: 
+ 70            CaseStmt: 
  70               (label) IntConstant: 9
                   StmtBlock: 
                      ForStmt: 
@@ -203,7 +203,7 @@
                      PrintStmt: 
  73                     (args) StringConstant: "odd"
  74                  BreakStmt: 
-               (default) DefaultStmt: 
+ 77            (default) DefaultStmt: 
                   PrintStmt: 
  77                  (args) StringConstant: "not between 1 and 10"
  82   FnDecl: 

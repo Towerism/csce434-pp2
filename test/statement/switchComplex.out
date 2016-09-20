@@ -4,26 +4,26 @@
          (return type) Type: int
   1      Identifier: asdf
          (body) StmtBlock: 
-            SwitchStmt: 
+  2         SwitchStmt: 
   2            (test) IntConstant: 1
-               CaseStmt: 
+  3            CaseStmt: 
   3               (label) IntConstant: 1
   4               FieldAccess: 
   4                  Identifier: qwer
   5               IntConstant: 1
   6               BreakStmt: 
-               CaseStmt: 
+  7            CaseStmt: 
   7               (label) IntConstant: 2
-               CaseStmt: 
+  8            CaseStmt: 
   8               (label) IntConstant: 3
-               CaseStmt: 
+  9            CaseStmt: 
   9               (label) IntConstant: 4
  10               IntConstant: 5
  11               FieldAccess: 
  11                  Identifier: rewq
-               CaseStmt: 
+ 12            CaseStmt: 
  12               (label) IntConstant: 5
-               (default) DefaultStmt: 
+ 13            (default) DefaultStmt: 
  14               IntConstant: 1234
  15               FieldAccess: 
  15                  Identifier: rewq

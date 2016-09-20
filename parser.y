@@ -296,7 +296,7 @@ ForStmt
 ;
 
 SwitchStmt
-: T_Switch '(' Expr ')' '{' CaseStmts DefaultStmt '}' { $$ = new SwitchStmt($3, $6, $7); }
+: T_Switch '(' Expr ')' '{' CaseStmts DefaultStmt '}' { $$ = new SwitchStmt(@1, $3, $6, $7); }
 ;
 
 CaseStmts
@@ -305,13 +305,13 @@ CaseStmts
 ;
 
 CaseStmt
-: T_Case T_IntConstant ':' Stmts %prec P_CaseMatchedStmt { $$ = new CaseStmt(new IntConstant(@2, $2), $4); }
-| T_Case T_IntConstant ':' %prec P_CaseEmpty { $$ = new CaseStmt(new IntConstant(@2, $2), new List<Stmt*>); }
+: T_Case T_IntConstant ':' Stmts %prec P_CaseMatchedStmt { $$ = new CaseStmt(@1, new IntConstant(@2, $2), $4); }
+| T_Case T_IntConstant ':' %prec P_CaseEmpty { $$ = new CaseStmt(@1, new IntConstant(@2, $2), new List<Stmt*>); }
 ;
 
 DefaultStmt
-: T_Default ':' Stmts %prec P_DefaultMatchedStmt { $$ = new DefaultStmt($3); }
-| T_Default ':' %prec P_DefaultEmpty { $$ = new DefaultStmt(new List<Stmt*>); }
+: T_Default ':' Stmts %prec P_DefaultMatchedStmt { $$ = new DefaultStmt(@1, $3); }
+| T_Default ':' %prec P_DefaultEmpty { $$ = new DefaultStmt(@1, new List<Stmt*>); }
 | { $$ = NULL; }
 ;
 

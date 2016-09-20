@@ -97,7 +97,7 @@ protected:
   IntConstant* label;
   List<Stmt*>* body;
 public:
-  CaseStmt(IntConstant* label, List<Stmt*>* body);
+  CaseStmt(yyltype loc, IntConstant* label, List<Stmt*>* body);
   const char *GetPrintNameForNode() { return "CaseStmt";}
   void PrintChildren(int identLevel);
 };
@@ -106,7 +106,7 @@ class DefaultStmt : public Stmt {
 protected:
   List<Stmt*>* body;
 public:
-  DefaultStmt(List<Stmt*>* body);
+  DefaultStmt(yyltype loc, List<Stmt*>* body);
   const char *GetPrintNameForNode() { return "DefaultStmt";}
   void PrintChildren(int identLevel);
 };
@@ -117,7 +117,7 @@ protected:
   List<CaseStmt*>* cases;
   DefaultStmt* defaultStmt;
 public:
-  SwitchStmt(Expr *test, List<CaseStmt*>* cases, DefaultStmt* defaultStmt);
+  SwitchStmt(yyltype loc, Expr *test, List<CaseStmt*>* cases, DefaultStmt* defaultStmt);
   const char *GetPrintNameForNode() { return "SwitchStmt"; }
   void PrintChildren(int identLevel);
 };
