@@ -1,9 +1,0 @@
-
-   Program: 
-  1   ClassDecl: 
-  1      Identifier: Asdf
-  2      FnDecl: 
-            (return type) Type: int
-  2         Identifier: asdf
-            (body) StmtBlock: 
-               StmtBlock: 

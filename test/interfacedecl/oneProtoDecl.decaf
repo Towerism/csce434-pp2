@@ -1,3 +1,0 @@
-interface IAsdf {
-          int asdf();
-}

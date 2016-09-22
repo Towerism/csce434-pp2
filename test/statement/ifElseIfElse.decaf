@@ -1,8 +1,0 @@
-int asdf() {
-    if (asdf)
-       qwer;
-    else if (fdsa)
-       rewq;
-    else
-       rEwq;
-}

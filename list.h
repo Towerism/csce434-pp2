@@ -34,10 +34,10 @@ class Node;
 
 template<class Element> class List {
 
-private:
+ private:
   std::deque<Element> elems;
 
-public:
+ public:
   // Create a new empty list
   List() {}
 

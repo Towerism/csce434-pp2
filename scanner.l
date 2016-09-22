@@ -1,7 +1,7 @@
 /* File:  scanner.l
- * ----------------
- * Lex inupt file to generate the scanner for the compiler.
- */
+* ----------------
+* Lex inupt file to generate the scanner for the compiler.
+*/
 
 %{
 
@@ -15,34 +15,34 @@
 #define TAB_SIZE 8
 
 /* Global variables
- * ----------------
- * (For shame!) But we need a few to keep track of things that are
- * preserved between calls to yylex or used outside the scanner.
- */
+* ----------------
+* (For shame!) But we need a few to keep track of things that are
+* preserved between calls to yylex or used outside the scanner.
+*/
 static int curLineNum, curColNum;
 List<const char*> savedLines;
 
-static void DoBeforeEachAction(); 
+static void DoBeforeEachAction();
 #define YY_USER_ACTION DoBeforeEachAction();
 
 %}
 
 /* States
- * ------
- * A little wrinkle on states is the COPY exclusive state which
- * I added to first match each line and copy it ot the list of lines
- * read before re-processing it. This allows us to print the entire
- * line later to provide context on errors.
- */
+* ------
+* A little wrinkle on states is the COPY exclusive state which
+* I added to first match each line and copy it ot the list of lines
+* read before re-processing it. This allows us to print the entire
+* line later to provide context on errors.
+*/
 %s N
 %x COPY COMM
 %option stack
 %option noyywrap
 
 /* Definitions
- * -----------
- * To make our rules more readable, we establish some definitions here.
- */
+* -----------
+* To make our rules more readable, we establish some definitions here.
+*/
 DIGIT             ([0-9])
 HEX_DIGIT         ([0-9a-fA-F])
 HEX_INTEGER       (0[Xx]{HEX_DIGIT}+)
@@ -130,7 +130,7 @@ SINGLE_COMMENT    ("//"[^\n]*)
                          return T_IntConstant; }
 {DOUBLE}            { yylval.doubleConstant = atof(yytext);
                          return T_DoubleConstant; }
-{STRING}            { yylval.stringConstant = strdup(yytext); 
+{STRING}            { yylval.stringConstant = strdup(yytext);
                          return T_StringConstant; }
 {BEG_STRING}        { ReportError::UntermString(&yylloc, yytext); }
 
@@ -196,7 +196,7 @@ static void DoBeforeEachAction()
  */
 const char *GetLineNumbered(int num) {
    if (num <= 0 || num > savedLines.NumElements()) return NULL;
-   return savedLines.Nth(num-1); 
+   return savedLines.Nth(num-1);
 }
 
 
