@@ -1,3 +1,0 @@
-class Asdf extends Fdsa implements Qwer, Rewq, Poiu {
-      int asdf;
-}

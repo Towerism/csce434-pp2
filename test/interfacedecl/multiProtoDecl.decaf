@@ -1,6 +1,0 @@
-interface IAsdf {
-          int asdf();
-          void fdsa();
-          string qwer();
-          Asdf[] rewq();
-}
