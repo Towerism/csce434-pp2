@@ -330,7 +330,7 @@ Type
 | T_String { $$ = Type::stringType; }
 | T_Bool { $$ = Type::boolType; }
 | Identifier { $$ = new NamedType($1); }
-| Type T_Dims { $$ = new ArrayType(@1, $1); }
+| Type T_Dims { $$ = new ArrayType(Join(@1, @2), $1); }
 ;
 
 ExprOptional
@@ -360,11 +360,11 @@ Expr
 | LValue { $$ = $1; }
 | Constant { $$ = $1; }
 | T_This { $$ = new This(@1); }
-| T_ReadInteger '(' ')' { $$ = new ReadIntegerExpr(@1); }
-| T_ReadLine '(' ')' { $$ = new ReadLineExpr(@1); }
-| T_New '(' Identifier ')' { $$ = new NewExpr(@1, new NamedType($3)); }
+| T_ReadInteger '(' ')' { $$ = new ReadIntegerExpr(Join(@1, @3)); }
+| T_ReadLine '(' ')' { $$ = new ReadLineExpr(Join(@1, @3)); }
+| T_New '(' Identifier ')' { $$ = new NewExpr(Join(@1, @4), new NamedType($3)); }
 | Call { $$ = $1; }
-| T_NewArray '(' Expr ',' Type ')' { $$ = new NewArrayExpr(@1, $3, $5); }
+| T_NewArray '(' Expr ',' Type ')' { $$ = new NewArrayExpr(Join(@1, @6), $3, $5); }
 | '(' Expr ')' { $$ = $2; }
 ;
 
@@ -376,12 +376,12 @@ LValueExpr
 LValue
 : Identifier { $$ = new FieldAccess(NULL, $1); }
 | Expr '.' Identifier { $$ = new FieldAccess($1, $3); }
-| Expr '[' Expr ']' { $$ = new ArrayAccess(@1, $1, $3); }
+| Expr '[' Expr ']' { $$ = new ArrayAccess(Join(@1, @4), $1, $3); }
 ;
 
 Call
-: Identifier '(' ActualsOptional ')' { $$ = new Call(@1, NULL, $1, $3); }
-| Expr '.' Identifier '(' ActualsOptional ')' { $$ = new Call(@1, $1, $3, $5); }
+: Identifier '(' ActualsOptional ')' { $$ = new Call(Join(@1, @4), NULL, $1, $3); }
+| Expr '.' Identifier '(' ActualsOptional ')' { $$ = new Call(Join(@1, @6), $1, $3, $5); }
 ;
 
 ActualsOptional
