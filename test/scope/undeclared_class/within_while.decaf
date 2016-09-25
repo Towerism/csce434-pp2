@@ -1,0 +1,8 @@
+int asdf() {
+    int i;
+    i = 0;
+    while (i < 6) {
+        Asdf fdsa;
+        i++;
+    }
+}

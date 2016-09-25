@@ -1,0 +1,6 @@
+int asdf() {
+    int i;
+    for (i = 0; i < 6; i++) {
+        Asdf fdsa;
+    }
+}

@@ -43,10 +43,15 @@ void StmtBlock::PrintChildren(int indentLevel) {
 
 void StmtBlock::analyze(Scope_stack& scope_stack) {
   decls->Apply([&](VarDecl* decl) { decl->analyze(scope_stack); });
+  stmts->Apply([&](Stmt* stmt) { stmt->analyze(scope_stack); });
 }
 
 ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) {    Assert(t != NULL && b != NULL);
   (test=t)->SetParent(this);    (body=b)->SetParent(this);
+}
+
+void ConditionalStmt::analyze(Scope_stack& scope_stack) {
+  body->analyze(scope_stack);
 }
 
 ForStmt::ForStmt(Expr *i, Expr *t, Expr *s, Stmt *b): LoopStmt(t, b) {    Assert(i != NULL && t != NULL && s != NULL && b != NULL);
@@ -69,6 +74,11 @@ void WhileStmt::PrintChildren(int indentLevel) {
 IfStmt::IfStmt(Expr *t, Stmt *tb, Stmt *eb): ConditionalStmt(t, tb) {    Assert(t != NULL && tb != NULL); // else can be NULL
   elseBody = eb;
   if (elseBody) elseBody->SetParent(this);
+}
+
+void IfStmt::analyze(Scope_stack& scope_stack) {
+  ConditionalStmt::analyze(scope_stack);
+  if (elseBody) elseBody->analyze(scope_stack);
 }
 
 void IfStmt::PrintChildren(int indentLevel) {

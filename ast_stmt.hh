@@ -61,6 +61,7 @@ protected:
   Stmt *body;
 public:
   ConditionalStmt(Expr *testExpr, Stmt *body);
+  virtual void analyze(Scope_stack& scope_stack) override;
 };
 
 class LoopStmt : public ConditionalStmt{
@@ -92,6 +93,7 @@ public:
   IfStmt(Expr *test, Stmt *thenBody, Stmt *elseBody);
   const char *GetPrintNameForNode() { return "IfStmt"; }
   void PrintChildren(int indentLevel);
+  void analyze(Scope_stack& scope_stack) override;
 };
 
 class BreakStmt : public Stmt{

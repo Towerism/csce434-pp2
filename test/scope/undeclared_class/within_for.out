@@ -1,0 +1,6 @@
+
+*** Error line 4.
+        Asdf fdsa;
+        ^^^^
+*** No declaration found for class 'Asdf'
+

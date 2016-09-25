@@ -1,0 +1,8 @@
+int asdf() {
+    int i;
+    i = 0;
+    if (i != 1);
+    else {
+        Asdf fdsa;
+    }
+}
