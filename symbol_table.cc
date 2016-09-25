@@ -24,52 +24,28 @@ void Symbol_table::declare(Decl* declaration) {
 }
 
 void Symbol_table::declare_class(ClassDecl* class_declaration) {
-  auto* prev_decl = class_exists(class_declaration->getName());
+  auto* prev_decl = classes.contains(class_declaration->getName());
   if (prev_decl)
     ReportError::DeclConflict(class_declaration, prev_decl);
-  std::string name = class_declaration->getName();
-  class_declarations[name] = class_declaration;
+  classes.declare(class_declaration);
 }
 
 void Symbol_table::declare_interface(InterfaceDecl* interface_declaration) {
-  auto* prev_decl = interface_exists(interface_declaration->getName());
+  auto* prev_decl = interfaces.contains(interface_declaration->getName());
   if (prev_decl)
     ReportError::DeclConflict(interface_declaration, prev_decl);
-  std::string name = interface_declaration->getName();
-  interface_declarations[name] = interface_declaration;
+  interfaces.declare(interface_declaration);
 }
 
 void Symbol_table::declare_variable(VarDecl* variable_declaration) {
-  Decl* prev_decl = variable_exists(variable_declaration->getName());
+  Decl* prev_decl = variables.contains(variable_declaration->getName());
   if (!prev_decl)
-    prev_decl = class_exists(variable_declaration->getName());
+    prev_decl = classes.contains(variable_declaration->getName());
   if (prev_decl)
     ReportError::DeclConflict(variable_declaration, prev_decl);
-  std::string name = variable_declaration->getName();
-  variable_declarations[name] = variable_declaration;
+  variables.declare(variable_declaration);
 }
 
 bool Symbol_table::type_exists(std::string name) {
-  return class_exists(name) || interface_exists(name);
-}
-
-ClassDecl* Symbol_table::class_exists(std::string name) {
-  auto key_value = class_declarations.find(name);
-  if (key_value != class_declarations.end())
-    return key_value->second;
-  return nullptr;
-}
-
-InterfaceDecl* Symbol_table::interface_exists(std::string name) {
-  auto key_value = interface_declarations.find(name);
-  if (key_value != interface_declarations.end())
-    return key_value->second;
-  return nullptr;
-}
-
-VarDecl* Symbol_table::variable_exists(std::string name) {
-  auto key_value = variable_declarations.find(name);
-  if (key_value != variable_declarations.end())
-    return key_value->second;
-  return nullptr;
+  return classes.contains(name) || interfaces.contains(name);
 }

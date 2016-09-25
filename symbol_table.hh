@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <string>
 
+#include "declaration_table.hh"
+
 class Decl;
 class ClassDecl;
 class InterfaceDecl;
@@ -18,13 +20,9 @@ public:
   bool type_exists(std::string name);
 
 private:
-  std::unordered_map<std::string, ClassDecl*> class_declarations;
-  std::unordered_map<std::string, InterfaceDecl*> interface_declarations;
-  std::unordered_map<std::string, VarDecl*> variable_declarations;
-
-  ClassDecl* class_exists(std::string name);
-  InterfaceDecl* interface_exists(std::string name);
-  VarDecl* variable_exists(std::string name);
+  Declaration_table<ClassDecl> classes;
+  Declaration_table<InterfaceDecl> interfaces;
+  Declaration_table<VarDecl> variables;
 };
 
 #endif // SYMBOL_TABLE_H
