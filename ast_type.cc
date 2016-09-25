@@ -43,7 +43,7 @@ void NamedType::PrintChildren(int indentLevel) {
 }
 
 void NamedType::analyze(Scope_stack& scope_stack) {
-  if (!Program::symbol_table.class_exists(id->getName()))
+  if (!Program::symbol_table.type_exists(id->getName()))
       ReportError::IdentifierNotDeclared(id, LookingForClass);
 }
 
