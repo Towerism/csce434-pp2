@@ -44,6 +44,7 @@ class VarDecl : public Decl
   const char *GetPrintNameForNode() { return "VarDecl"; }
   void PrintChildren(int indentLevel);
   void analyze(Scope_stack& scope_stack) override;
+  void analyze(Scope_stack& scope_stack, reasonT focus) override;
 };
 
 class ClassDecl : public Decl
@@ -90,6 +91,7 @@ class FnDecl : public Decl
   void PrintChildren(int indentLevel);
   void build_table() override;
   void analyze(Scope_stack& scope_stack) override;
+  void analyze(Scope_stack& scope_stack, reasonT focus) override;
 };
 
 #endif

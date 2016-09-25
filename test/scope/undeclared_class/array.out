@@ -1,0 +1,6 @@
+
+*** Error line 1.
+ABlock[] test;
+^^^^^^
+*** No declaration found for type 'ABlock'
+

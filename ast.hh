@@ -61,6 +61,7 @@ class Node : public Analyzable
   virtual void PrintChildren(int indentLevel)  {}
 
   virtual void analyze(Scope_stack& scope_stack) override {}
+  virtual void analyze(Scope_stack& scope_stack, reasonT focus) override {}
 };
 
 

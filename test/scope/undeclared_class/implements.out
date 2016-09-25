@@ -2,5 +2,5 @@
 *** Error line 1.
 class Asdf implements Qwer {
                       ^^^^
-*** No declaration found for class 'Qwer'
+*** No declaration found for interface 'Qwer'
 

@@ -2,5 +2,5 @@
 *** Error line 2.
     Asdf fdsa;
     ^^^^
-*** No declaration found for class 'Asdf'
+*** No declaration found for type 'Asdf'
 

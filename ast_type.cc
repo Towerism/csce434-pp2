@@ -43,8 +43,12 @@ void NamedType::PrintChildren(int indentLevel) {
 }
 
 void NamedType::analyze(Scope_stack& scope_stack) {
+  analyze(scope_stack, LookingForType);
+}
+
+void NamedType::analyze(Scope_stack& scope_stack, reasonT focus) {
   if (!Program::symbol_table.type_exists(id->getName()))
-      ReportError::IdentifierNotDeclared(id, LookingForClass);
+    ReportError::IdentifierNotDeclared(id, focus);
 }
 
 ArrayType::ArrayType(yyltype loc, Type *et) : Type(loc) {
@@ -56,4 +60,9 @@ void ArrayType::PrintChildren(int indentLevel) {
 }
 
 void ArrayType::analyze(Scope_stack& scope_stack) {
+  elemType->analyze(scope_stack);
+}
+
+void ArrayType::analyze(Scope_stack& scope_stack, reasonT focus) {
+  elemType->analyze(scope_stack, focus);
 }

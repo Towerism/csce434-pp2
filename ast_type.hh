@@ -12,7 +12,7 @@
 #include "ast.hh"
 #include "list.hh"
 #include "ast_stmt.hh"
-
+#include "errors.hh"
 
 class Type : public Node
 {
@@ -41,6 +41,7 @@ class NamedType : public Type
   const char *GetPrintNameForNode() { return "NamedType"; }
   void PrintChildren(int indentLevel);
   void analyze(Scope_stack& scope_stack) override;
+  void analyze(Scope_stack& scope_stack, reasonT focus) override;
 };
 
 class ArrayType : public Type
@@ -54,6 +55,7 @@ class ArrayType : public Type
   const char *GetPrintNameForNode() { return "ArrayType"; }
   void PrintChildren(int indentLevel);
   void analyze(Scope_stack& scope_stack) override;
+  void analyze(Scope_stack& scope_stack, reasonT focus) override;
 };
 
 

@@ -40,7 +40,9 @@ void Symbol_table::declare_interface(InterfaceDecl* interface_declaration) {
 }
 
 void Symbol_table::declare_variable(VarDecl* variable_declaration) {
-  auto* prev_decl = variable_exists(variable_declaration->getName());
+  Decl* prev_decl = variable_exists(variable_declaration->getName());
+  if (!prev_decl)
+    prev_decl = class_exists(variable_declaration->getName());
   if (prev_decl)
     ReportError::DeclConflict(variable_declaration, prev_decl);
   std::string name = variable_declaration->getName();

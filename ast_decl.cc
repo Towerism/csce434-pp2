@@ -5,6 +5,7 @@
 #include "ast_decl.hh"
 #include "ast_type.hh"
 #include "ast_stmt.hh"
+#include "errors.hh"
 
 
 Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {
@@ -27,6 +28,10 @@ void VarDecl::analyze(Scope_stack& scope_stack) {
   type->analyze(scope_stack);
 }
 
+void VarDecl::analyze(Scope_stack& scope_stack, reasonT focus) {
+  type->analyze(scope_stack, focus);
+}
+
 ClassDecl::ClassDecl(Identifier *n, NamedType *ex, List<NamedType*> *imp, List<Decl*> *m) : Decl(n) {
   // extends can be NULL, impl & mem may be empty lists but cannot be NULL
   Assert(n != NULL && imp != NULL && m != NULL);
@@ -45,12 +50,13 @@ void ClassDecl::PrintChildren(int indentLevel) {
 
 void ClassDecl::build_table() {
   members->Apply([&](Decl* decl) { symbol_table.declare(decl); });
+  members->Apply([&](Decl* decl) { decl->build_table(); });
 }
 
 void ClassDecl::analyze(Scope_stack& scope_stack) {
-  members->Apply([&](Decl* decl) { decl->analyze(scope_stack); });
-  if (extends) extends->analyze(scope_stack);
-  implements->Apply([&](NamedType* type) { type->analyze(scope_stack); });
+  members->Apply([&](Decl* decl) { decl->analyze(scope_stack, LookingForType); });
+  if (extends) extends->analyze(scope_stack, LookingForClass);
+  implements->Apply([&](NamedType* type) { type->analyze(scope_stack, LookingForInterface); });
 }
 
 InterfaceDecl::InterfaceDecl(Identifier *n, List<Decl*> *m) : Decl(n) {
@@ -85,11 +91,16 @@ void FnDecl::PrintChildren(int indentLevel) {
 }
 
 void FnDecl::build_table() {
-  body->build_table();
+  formals->Apply([&](VarDecl* decl) { symbol_table.declare(decl); });
+  if (body)
+    body->build_table();
 }
 
 void FnDecl::analyze(Scope_stack& scope_stack) {
-  formals->Apply([&](VarDecl* decl) { symbol_table.declare(decl); });
+  formals->Apply([&](VarDecl* decl) { decl->analyze(scope_stack); });
   if (body)
     body->analyze(scope_stack);
+}
+
+void FnDecl::analyze(Scope_stack& scope_stack, reasonT focus) {
 }
