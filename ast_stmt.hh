@@ -51,6 +51,7 @@ public:
   StmtBlock(List<VarDecl*> *variableDeclarations, List<Stmt*> *statements);
   const char *GetPrintNameForNode() { return "StmtBlock"; }
   void PrintChildren(int indentLevel);
+  void analyze(Scope_stack& scope_stack) override;
 };
 
 class ConditionalStmt : public Stmt

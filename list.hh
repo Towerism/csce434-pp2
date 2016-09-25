@@ -29,6 +29,7 @@
 #define _H_list
 
 #include <deque>
+#include <functional>
 #include "utility.hh"  // for Assert()
 class Node;
 
@@ -76,6 +77,11 @@ template<class Element> class List {
   void PrintAll(int indentLevel, const char *label = NULL)
   { for (int i = 0; i < NumElements(); i++)
       Nth(i)->Print(indentLevel, label); }
+  void Apply(std::function<void(Element&)> action) {
+    for (auto& elem : elems) {
+      action(elem);
+    }
+  }
 
 };
 

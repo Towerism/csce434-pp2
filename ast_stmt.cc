@@ -41,6 +41,10 @@ void StmtBlock::PrintChildren(int indentLevel) {
   stmts->PrintAll(indentLevel+1);
 }
 
+void StmtBlock::analyze(Scope_stack& scope_stack) {
+  decls->Apply([&](VarDecl* decl) { decl->analyze(scope_stack); });
+}
+
 ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) {    Assert(t != NULL && b != NULL);
   (test=t)->SetParent(this);    (body=b)->SetParent(this);
 }

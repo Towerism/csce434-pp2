@@ -79,5 +79,6 @@ void FnDecl::PrintChildren(int indentLevel) {
 }
 
 void FnDecl::analyze(Scope_stack& scope_stack) {
-
+  if (body)
+    body->analyze(scope_stack);
 }
