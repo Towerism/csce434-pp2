@@ -1,0 +1,3 @@
+int asdf() {
+    this[asdf = 5];
+}

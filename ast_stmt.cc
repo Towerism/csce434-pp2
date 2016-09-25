@@ -2,11 +2,12 @@
  * -----------------
  * Implementation of statement node classes.
  */
-#include "ast_stmt.h"
-#include "ast_type.h"
-#include "ast_decl.h"
-#include "ast_expr.h"
+#include "ast_stmt.hh"
+#include "ast_type.hh"
+#include "ast_decl.hh"
+#include "ast_expr.hh"
 
+Symbol_table Program::symbol_table;
 
 Program::Program(List<Decl*> *d) {
   Assert(d != NULL);
@@ -16,6 +17,17 @@ Program::Program(List<Decl*> *d) {
 void Program::PrintChildren(int indentLevel) {
   decls->PrintAll(indentLevel+1);
   printf("\n");
+}
+
+void Program::analyze(Scope_stack& scope_stack) {
+  for (int i = 0; i < decls->NumElements(); ++i) {
+    Program::symbol_table.declare(decls->Nth(i));
+  }
+
+  for (int i = 0; i < decls->NumElements(); ++i) {
+    auto d = decls->Nth(i);
+    d->analyze(scope_stack);
+  }
 }
 
 StmtBlock::StmtBlock(List<VarDecl*> *d, List<Stmt*> *s) {

@@ -16,15 +16,18 @@
  * file inclusions or C++ variable declarations/prototypes that are needed
  * by your code here.
  */
-#include "scanner.h" // for yylex
+#include "scanner.hh" // for yylex
 #include <string.h>
-#include "parser.h"
-#include "errors.h"
+#include "parser.hh"
+#include "errors.hh"
+#include "scope_stack.hh"
+#include "utility.hh"
 
-void yyerror(const char *msg); // standard error-handling routine
+  void yyerror(const char *msg); // standard error-handling routine
 
-static Operator* makeOp(yyltype loc, const char* str);
+  static Operator* makeOp(yyltype loc, const char* str);
 
+  Scope_stack scopes;
 %}
 
 /* The section before the first %% is the Definitions section of the yacc
@@ -146,6 +149,12 @@ static Operator* makeOp(yyltype loc, const char* str);
  */
 Program : DeclList {
   Program *program = new Program($1);
+  if (ReportError::NumErrors() == 0) {
+    if (getTestType() == SyntaxTest)
+      program->Print(0);
+    else
+      program->analyze(scopes);
+  }
  }
 ;
 

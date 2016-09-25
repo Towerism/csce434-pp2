@@ -1,0 +1,3 @@
+int asdf() {
+    if (e = 6) asdf;
+}

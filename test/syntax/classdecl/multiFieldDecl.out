@@ -1,0 +1,17 @@
+
+   Program: 
+  1   ClassDecl: 
+  1      Identifier: Asdf
+  2      VarDecl: 
+            Type: int
+  2         Identifier: asdf
+  3      VarDecl: 
+            Type: string
+  3         Identifier: fdsa
+  4      FnDecl: 
+            (return type) Type: void
+  4         Identifier: qwer
+            (body) StmtBlock: 
+  5      VarDecl: 
+            Type: int
+  5         Identifier: rewq

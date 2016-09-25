@@ -6,9 +6,9 @@
 
 #include <string.h>
 #include <stdio.h>
-#include "utility.h"
-#include "errors.h"
-#include "parser.h"
+#include "utility.hh"
+#include "errors.hh"
+#include "parser.hh"
 
 
 /* Function: main()

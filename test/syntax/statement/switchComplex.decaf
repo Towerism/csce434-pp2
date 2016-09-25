@@ -1,0 +1,19 @@
+int asdf() {
+    switch(1) {
+    case 1:
+         qwer;
+         1;
+         break;
+    case 2:
+    case 3:
+    case 4:
+         5;
+         rewq;
+    case 5:
+    default:
+         1234;
+         rewq;
+         qwer;
+         fdsa;
+    }
+}

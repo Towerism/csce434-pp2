@@ -2,8 +2,8 @@
  * -----------------
  * Implementation of type node classes.
  */
-#include "ast_type.h"
-#include "ast_decl.h"
+#include "ast_type.hh"
+#include "ast_decl.hh"
 #include <string.h>
 
 
@@ -42,6 +42,11 @@ void NamedType::PrintChildren(int indentLevel) {
   id->Print(indentLevel+1);
 }
 
+void NamedType::analyze(Scope_stack& scope_stack) {
+  if (!Program::symbol_table.class_exists(id->getName()))
+      ReportError::IdentifierNotDeclared(id, LookingForClass);
+}
+
 ArrayType::ArrayType(yyltype loc, Type *et) : Type(loc) {
   Assert(et != NULL);
   (elemType=et)->SetParent(this);
@@ -50,4 +55,5 @@ void ArrayType::PrintChildren(int indentLevel) {
   elemType->Print(indentLevel+1);
 }
 
-
+void ArrayType::analyze(Scope_stack& scope_stack) {
+}

@@ -1,0 +1,8 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: adsf
+         (body) StmtBlock: 
+  2         Call: 
+  2            Identifier: fdsa

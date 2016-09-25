@@ -1,0 +1,18 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: asdf
+         (body) StmtBlock: 
+            IfStmt: 
+  2            (test) FieldAccess: 
+  2               Identifier: asdf
+  3            (then) FieldAccess: 
+  3               Identifier: qwer
+               (else) IfStmt: 
+  4               (test) FieldAccess: 
+  4                  Identifier: fdsa
+  5               (then) FieldAccess: 
+  5                  Identifier: rewq
+  7               (else) FieldAccess: 
+  7                  Identifier: rEwq

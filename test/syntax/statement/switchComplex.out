@@ -1,0 +1,33 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: asdf
+         (body) StmtBlock: 
+  2         SwitchStmt: 
+  2            (test) IntConstant: 1
+  3            CaseStmt: 
+  3               (label) IntConstant: 1
+  4               FieldAccess: 
+  4                  Identifier: qwer
+  5               IntConstant: 1
+  6               BreakStmt: 
+  7            CaseStmt: 
+  7               (label) IntConstant: 2
+  8            CaseStmt: 
+  8               (label) IntConstant: 3
+  9            CaseStmt: 
+  9               (label) IntConstant: 4
+ 10               IntConstant: 5
+ 11               FieldAccess: 
+ 11                  Identifier: rewq
+ 12            CaseStmt: 
+ 12               (label) IntConstant: 5
+ 13            (default) DefaultStmt: 
+ 14               IntConstant: 1234
+ 15               FieldAccess: 
+ 15                  Identifier: rewq
+ 16               FieldAccess: 
+ 16                  Identifier: qwer
+ 17               FieldAccess: 
+ 17                  Identifier: fdsa

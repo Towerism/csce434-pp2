@@ -1,0 +1,16 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: asdf
+         (body) StmtBlock: 
+  2         Call: 
+  2            FieldAccess: 
+  2               Identifier: fdsa
+  2            Identifier: qwer
+  2            (actuals) FieldAccess: 
+  2               Identifier: rewq
+  2            (actuals) StringConstant: "asdf"
+  2            (actuals) DoubleConstant: 10000
+  2            (actuals) IntConstant: 5
+  2            (actuals) BoolConstant: true

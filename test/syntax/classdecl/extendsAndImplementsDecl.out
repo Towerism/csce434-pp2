@@ -1,0 +1,15 @@
+
+   Program: 
+  1   ClassDecl: 
+  1      Identifier: Asdf
+  1      (extends) NamedType: 
+  1         Identifier: Fdsa
+  1      (implements) NamedType: 
+  1         Identifier: Qwer
+  1      (implements) NamedType: 
+  1         Identifier: Rewq
+  1      (implements) NamedType: 
+  1         Identifier: Poiu
+  2      VarDecl: 
+            Type: int
+  2         Identifier: asdf

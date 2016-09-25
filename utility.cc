@@ -4,13 +4,14 @@
  * debugging information triggered by keys.
  */
 
-#include "utility.h"
+#include "utility.hh"
 #include <stdarg.h>
-#include "list.h"
+#include "list.hh"
 #include <string.h>
 
 static List<const char*> debugKeys;
 static const int BufferSize = 2048;
+static testT testType = (testT)0;
 
 void Failure(const char *format, ...)
 {
@@ -65,6 +66,9 @@ void PrintDebug(const char *key, const char *format, ...)
   printf("+++ (%s): %s%s", key, buf, buf[strlen(buf)-1] != '\n'? "\n" : "");
 }
 
+testT getTestType() {
+  return testType;
+}
 
 void ParseCommandLine(int argc, char *argv[])
 {
@@ -72,8 +76,14 @@ void ParseCommandLine(int argc, char *argv[])
     return;
 
   if (strcmp(argv[1], "-d") != 0) { // first arg is not -d
-    printf("Usage:   -d <debug-key-1> <debug-key-2> ... \n");
-    exit(2);
+    if (strcmp(argv[1], "-s") == 0) // syntax test
+      testType = SyntaxTest;
+    else if (strcmp(argv[1], "-c") == 0) // scope test
+      testType = ScopeTest;
+    else {
+      printf("Usage: [ -s | -c | [-d <debug-key-1> <debug-key-2> ... ]\n");
+      exit(2);
+    }
   }
 
   for (int i = 2; i < argc; i++)

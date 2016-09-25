@@ -1,0 +1,54 @@
+
+   Program: 
+  1   FnDecl: 
+         (return type) Type: int
+  1      Identifier: asdf
+         (body) StmtBlock: 
+  2         LogicalExpr: 
+  2            LogicalExpr: 
+  2               LogicalExpr: 
+  2                  ArithmeticExpr: 
+  2                     IntConstant: 1
+  2                     Operator: +
+  2                     ArithmeticExpr: 
+  2                        IntConstant: 2
+  2                        Operator: *
+  2                        IntConstant: 3
+  2                  Operator: &&
+  2                  ArithmeticExpr: 
+  2                     IntConstant: 4
+  2                     Operator: -
+  2                     ArithmeticExpr: 
+  2                        IntConstant: 5
+  2                        Operator: /
+  2                        IntConstant: 6
+  2               Operator: ||
+  2               LogicalExpr: 
+  2                  ArithmeticExpr: 
+  2                     IntConstant: 7
+  2                     Operator: -
+  2                     ArithmeticExpr: 
+  2                        IntConstant: 8
+  2                        Operator: *
+  2                        IntConstant: 9
+  2                  Operator: &&
+  2                  ArithmeticExpr: 
+  2                     IntConstant: 10
+  2                     Operator: +
+  2                     ArithmeticExpr: 
+  2                        IntConstant: 11
+  2                        Operator: %
+  2                        IntConstant: 12
+  2            Operator: ||
+  2            LogicalExpr: 
+  2               ArithmeticExpr: 
+  2                  IntConstant: 13
+  2                  Operator: -
+  2                  ArithmeticExpr: 
+  2                     IntConstant: 14
+  2                     Operator: %
+  2                     IntConstant: 15
+  2               Operator: &&
+  2               ArithmeticExpr: 
+  2                  Operator: -
+  2                  IntConstant: 16

@@ -1,9 +1,14 @@
 #!/bin/bash
 
-SAMPLEIN=$(find . -name '*.frag' -o \( -name '*.decaf' \))
+SAMPLEIN=$(find ./test/"$1" -name '*.frag' -o \( -name '*.decaf' \))
 TEST_NUM=$(wc -w <<< "$SAMPLEIN")
 PASSED_NUM=0
 FAILED=
+ARGS=
+
+if [ "$1" = "syntax" ]; then
+   ARGS="-s"
+fi
 
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
@@ -24,7 +29,7 @@ for SAMPLE in $SAMPLEIN; do
 
     rm -f out
 
-    $(./dcc < $SAMPLE &> out) # suppress shell output
+    $(./dcc $ARGS < $SAMPLE &> out) # suppress shell output
 
     cmp --silent out $EXPECTEDOUT
 

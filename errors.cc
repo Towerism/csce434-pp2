@@ -3,18 +3,18 @@
  * Implementation for error-reporting class.
  */
 
-#include "errors.h"
+#include "errors.hh"
 #include <iostream>
 #include <sstream>
 #include <stdarg.h>
 #include <stdio.h>
 using namespace std;
 
-#include "scanner.h" // for GetLineNumbered
-#include "ast_type.h"
-#include "ast_expr.h"
-#include "ast_stmt.h"
-#include "ast_decl.h"
+#include "scanner.hh" // for GetLineNumbered
+#include "ast_type.hh"
+#include "ast_expr.hh"
+#include "ast_stmt.hh"
+#include "ast_decl.hh"
 
 int ReportError::numErrors = 0;
 

@@ -2,9 +2,9 @@
  * ------------
  */
 
-#include "ast.h"
-#include "ast_type.h"
-#include "ast_decl.h"
+#include "ast.hh"
+#include "ast_type.hh"
+#include "ast_decl.hh"
 #include <string.h> // strdup
 #include <stdio.h>  // printf
 

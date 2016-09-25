@@ -2,9 +2,9 @@
  * -----------------
  * Implementation of Decl node classes.
  */
-#include "ast_decl.h"
-#include "ast_type.h"
-#include "ast_stmt.h"
+#include "ast_decl.hh"
+#include "ast_type.hh"
+#include "ast_stmt.hh"
 
 
 Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {
@@ -23,6 +23,10 @@ void VarDecl::PrintChildren(int indentLevel) {
   id->Print(indentLevel+1);
 }
 
+void VarDecl::analyze(Scope_stack& scope_stack) {
+  type->analyze(scope_stack);
+}
+
 ClassDecl::ClassDecl(Identifier *n, NamedType *ex, List<NamedType*> *imp, List<Decl*> *m) : Decl(n) {
   // extends can be NULL, impl & mem may be empty lists but cannot be NULL
   Assert(n != NULL && imp != NULL && m != NULL);
@@ -39,6 +43,9 @@ void ClassDecl::PrintChildren(int indentLevel) {
   members->PrintAll(indentLevel+1);
 }
 
+void ClassDecl::analyze(Scope_stack& scope_stack) {
+
+}
 
 InterfaceDecl::InterfaceDecl(Identifier *n, List<Decl*> *m) : Decl(n) {
   Assert(n != NULL && m != NULL);
@@ -48,6 +55,9 @@ InterfaceDecl::InterfaceDecl(Identifier *n, List<Decl*> *m) : Decl(n) {
 void InterfaceDecl::PrintChildren(int indentLevel) {
   id->Print(indentLevel+1);
   members->PrintAll(indentLevel+1);
+}
+
+void InterfaceDecl::analyze(Scope_stack& scope_stack) {
 }
 
 FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
@@ -68,4 +78,6 @@ void FnDecl::PrintChildren(int indentLevel) {
   if (body) body->Print(indentLevel+1, "(body) ");
 }
 
+void FnDecl::analyze(Scope_stack& scope_stack) {
 
+}

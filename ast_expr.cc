@@ -2,9 +2,9 @@
  * -----------------
  * Implementation of expression node classes.
  */
-#include "ast_expr.h"
-#include "ast_type.h"
-#include "ast_decl.h"
+#include "ast_expr.hh"
+#include "ast_type.hh"
+#include "ast_decl.hh"
 #include <string.h>
 
 IntConstant::IntConstant(yyltype loc, int val) : Expr(loc) {

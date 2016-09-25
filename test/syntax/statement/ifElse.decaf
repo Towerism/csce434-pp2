@@ -1,0 +1,6 @@
+int asdf() {
+    if (asdf)
+       qwer;
+    else
+       rewq;
+}

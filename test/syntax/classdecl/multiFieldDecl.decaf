@@ -1,0 +1,6 @@
+class Asdf {
+      int asdf;
+      string fdsa;
+      void qwer() {}
+      int rewq;
+}

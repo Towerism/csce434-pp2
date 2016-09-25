@@ -6,11 +6,11 @@
 %{
 
 #include <string.h>
-#include "scanner.h"
-#include "utility.h" // for PrintDebug()
-#include "errors.h"
-#include "parser.h" // for token codes, yylval
-#include "list.h"
+#include "scanner.hh"
+#include "utility.hh" // for PrintDebug()
+#include "errors.hh"
+#include "parser.hh" // for token codes, yylval
+#include "list.hh"
 
 #define TAB_SIZE 8
 
