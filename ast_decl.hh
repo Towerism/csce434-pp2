@@ -10,6 +10,7 @@
 #define _H_ast_decl
 
 #include "ast.hh"
+#include "closeable.hh"
 #include "list.hh"
 
 class Type;
@@ -17,7 +18,7 @@ class NamedType;
 class Identifier;
 class Stmt;
 
-class Decl : public Node
+class Decl : public Node, public Closeable
 {
  protected:
   Identifier *id;
@@ -25,6 +26,11 @@ class Decl : public Node
  public:
   Decl(Identifier *name);
   std::string getName() const { return id->getName(); }
+  virtual void build_table() override {}
+
+  friend std::ostream& operator<<(std::ostream& out, Decl* decl) {
+    return out << decl->getName();
+  }
 };
 
 class VarDecl : public Decl

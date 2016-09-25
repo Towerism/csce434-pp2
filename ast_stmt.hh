@@ -15,6 +15,7 @@
 #include "list.hh"
 #include "analyzable.hh"
 #include "ast.hh"
+#include "closeable.hh"
 #include "scope_stack.hh"
 #include "symbol_table.hh"
 
@@ -23,7 +24,7 @@ class VarDecl;
 class Expr;
 class IntConstant;
 
-class Program : public Node
+class Program : public Node, public Closeable
 {
 protected:
   List<Decl*> *decls;
@@ -31,16 +32,18 @@ public:
   Program(List<Decl*> *declList);
   const char *GetPrintNameForNode() { return "Program"; }
   void PrintChildren(int indentLevel);
+  void build_table() override;
   void analyze(Scope_stack& scope_stack) override;
 
   static Symbol_table symbol_table;
 };
 
-class Stmt : public Node
+class Stmt : public Node, public Closeable
 {
 public:
   Stmt() : Node() {}
   Stmt(yyltype loc) : Node(loc) {}
+  virtual void build_table() override {}
 };
 
 class StmtBlock : public Stmt {

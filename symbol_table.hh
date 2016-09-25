@@ -19,8 +19,8 @@ private:
   std::unordered_map<std::string, ClassDecl*> class_declarations;
   std::unordered_map<std::string, InterfaceDecl*> interface_declarations;
 
-  bool class_exists(std::string name);
-  bool interface_exists(std::string name);
+  ClassDecl* class_exists(std::string name);
+  InterfaceDecl* interface_exists(std::string name);
 };
 
 #endif // SYMBOL_TABLE_H

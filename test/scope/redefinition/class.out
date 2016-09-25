@@ -1,0 +1,6 @@
+
+*** Error line 2.
+class Asdf {}
+      ^^^^
+*** Declaration of 'Asdf' here conflicts with declaration on line 1
+

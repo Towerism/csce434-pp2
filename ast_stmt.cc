@@ -19,10 +19,14 @@ void Program::PrintChildren(int indentLevel) {
   printf("\n");
 }
 
-void Program::analyze(Scope_stack& scope_stack) {
+void Program::build_table() {
   for (int i = 0; i < decls->NumElements(); ++i) {
     Program::symbol_table.declare(decls->Nth(i));
   }
+}
+
+void Program::analyze(Scope_stack& scope_stack) {
+  build_table();
 
   for (int i = 0; i < decls->NumElements(); ++i) {
     auto d = decls->Nth(i);

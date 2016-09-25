@@ -2,6 +2,7 @@
 #define SCOPE_H
 
 #include <unordered_map>
+#include <string>
 
 class Decl;
 
@@ -10,7 +11,7 @@ public:
   // return true if declaration successful, false if local conflict
   bool declare(Decl* declaration);
 private:
-  std::unordered_map<Decl*, Decl*> declarations;
+  std::unordered_map<std::string, Decl*> declarations;
 
   bool conflict_exists_with(Decl* declaration);
 };
