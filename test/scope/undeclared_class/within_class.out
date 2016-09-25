@@ -1,0 +1,6 @@
+
+*** Error line 2.
+      Qwer qwer;
+      ^^^^
+*** No declaration found for class 'Qwer'
+

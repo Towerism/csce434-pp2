@@ -44,7 +44,9 @@ void ClassDecl::PrintChildren(int indentLevel) {
 }
 
 void ClassDecl::analyze(Scope_stack& scope_stack) {
-
+  members->Apply([&](Decl* decl) { decl->analyze(scope_stack); });
+  if (extends) extends->analyze(scope_stack);
+  implements->Apply([&](NamedType* type) { type->analyze(scope_stack); });
 }
 
 InterfaceDecl::InterfaceDecl(Identifier *n, List<Decl*> *m) : Decl(n) {
