@@ -1,0 +1,6 @@
+int asdf() {
+    {
+      int a;
+      int a;
+    }
+}

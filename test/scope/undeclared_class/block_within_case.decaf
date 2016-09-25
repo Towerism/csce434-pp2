@@ -1,0 +1,8 @@
+int asdf() {
+    int b;
+    switch(b) {
+       case 0: {
+          Asdf a;
+       }
+    }
+}

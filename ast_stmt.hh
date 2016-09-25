@@ -50,10 +50,12 @@ class StmtBlock : public Stmt {
 protected:
   List<VarDecl*> *decls;
   List<Stmt*> *stmts;
+  Symbol_table symbol_table;
 public:
   StmtBlock(List<VarDecl*> *variableDeclarations, List<Stmt*> *statements);
   const char *GetPrintNameForNode() { return "StmtBlock"; }
   void PrintChildren(int indentLevel);
+  void build_table() override;
   void analyze(Scope_stack& scope_stack) override;
 };
 
@@ -62,8 +64,10 @@ class ConditionalStmt : public Stmt
 protected:
   Expr *test;
   Stmt *body;
+  Symbol_table symbol_table;
 public:
   ConditionalStmt(Expr *testExpr, Stmt *body);
+  virtual void build_table() override;
   virtual void analyze(Scope_stack& scope_stack) override;
 };
 
@@ -96,6 +100,7 @@ public:
   IfStmt(Expr *test, Stmt *thenBody, Stmt *elseBody);
   const char *GetPrintNameForNode() { return "IfStmt"; }
   void PrintChildren(int indentLevel);
+  void build_table() override;
   void analyze(Scope_stack& scope_stack) override;
 };
 
@@ -113,6 +118,8 @@ public:
   CaseStmt(yyltype loc, IntConstant* label, List<Stmt*>* body);
   const char *GetPrintNameForNode() { return "CaseStmt";}
   void PrintChildren(int identLevel);
+  void build_table() override;
+  void analyze(Scope_stack& scope_stack) override;
 };
 
 class DefaultStmt : public Stmt {
@@ -122,6 +129,8 @@ public:
   DefaultStmt(yyltype loc, List<Stmt*>* body);
   const char *GetPrintNameForNode() { return "DefaultStmt";}
   void PrintChildren(int identLevel);
+  void build_table() override;
+  void analyze(Scope_stack& scope_stack) override;
 };
 
 class SwitchStmt : public Stmt {
@@ -133,6 +142,8 @@ public:
   SwitchStmt(yyltype loc, Expr *test, List<CaseStmt*>* cases, DefaultStmt* defaultStmt);
   const char *GetPrintNameForNode() { return "SwitchStmt"; }
   void PrintChildren(int identLevel);
+  void build_table() override;
+  void analyze(Scope_stack& scope_stack) override;
 };
 
 class ReturnStmt : public Stmt{

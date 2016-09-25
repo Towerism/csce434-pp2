@@ -43,6 +43,10 @@ void ClassDecl::PrintChildren(int indentLevel) {
   members->PrintAll(indentLevel+1);
 }
 
+void ClassDecl::build_table() {
+  members->Apply([&](Decl* decl) { symbol_table.declare(decl); });
+}
+
 void ClassDecl::analyze(Scope_stack& scope_stack) {
   members->Apply([&](Decl* decl) { decl->analyze(scope_stack); });
   if (extends) extends->analyze(scope_stack);
@@ -80,7 +84,12 @@ void FnDecl::PrintChildren(int indentLevel) {
   if (body) body->Print(indentLevel+1, "(body) ");
 }
 
+void FnDecl::build_table() {
+  body->build_table();
+}
+
 void FnDecl::analyze(Scope_stack& scope_stack) {
+  formals->Apply([&](VarDecl* decl) { symbol_table.declare(decl); });
   if (body)
     body->analyze(scope_stack);
 }

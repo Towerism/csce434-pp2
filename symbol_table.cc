@@ -16,6 +16,11 @@ void Symbol_table::declare(Decl* declaration) {
     declare_interface(interface_declaration);
     return;
   }
+  auto variable_declaration = dynamic_cast<VarDecl*>(declaration);
+  if (variable_declaration != nullptr) {
+    declare_variable(variable_declaration);
+    return;
+  }
 }
 
 void Symbol_table::declare_class(ClassDecl* class_declaration) {
@@ -34,6 +39,14 @@ void Symbol_table::declare_interface(InterfaceDecl* interface_declaration) {
   interface_declarations[name] = interface_declaration;
 }
 
+void Symbol_table::declare_variable(VarDecl* variable_declaration) {
+  auto* prev_decl = variable_exists(variable_declaration->getName());
+  if (prev_decl)
+    ReportError::DeclConflict(variable_declaration, prev_decl);
+  std::string name = variable_declaration->getName();
+  variable_declarations[name] = variable_declaration;
+}
+
 bool Symbol_table::type_exists(std::string name) {
   return class_exists(name) || interface_exists(name);
 }
@@ -48,6 +61,13 @@ ClassDecl* Symbol_table::class_exists(std::string name) {
 InterfaceDecl* Symbol_table::interface_exists(std::string name) {
   auto key_value = interface_declarations.find(name);
   if (key_value != interface_declarations.end())
+    return key_value->second;
+  return nullptr;
+}
+
+VarDecl* Symbol_table::variable_exists(std::string name) {
+  auto key_value = variable_declarations.find(name);
+  if (key_value != variable_declarations.end())
     return key_value->second;
   return nullptr;
 }

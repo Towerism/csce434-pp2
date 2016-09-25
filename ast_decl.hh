@@ -12,6 +12,7 @@
 #include "ast.hh"
 #include "closeable.hh"
 #include "list.hh"
+#include "symbol_table.hh"
 
 class Type;
 class NamedType;
@@ -51,12 +52,14 @@ class ClassDecl : public Decl
   List<Decl*> *members;
   NamedType *extends;
   List<NamedType*> *implements;
+  Symbol_table symbol_table;
 
  public:
   ClassDecl(Identifier *name, NamedType *extends,
             List<NamedType*> *implements, List<Decl*> *members);
   const char *GetPrintNameForNode() { return "ClassDecl"; }
   void PrintChildren(int indentLevel);
+  void build_table() override;
   void analyze(Scope_stack& scope_stack) override;
 };
 
@@ -78,12 +81,14 @@ class FnDecl : public Decl
   List<VarDecl*> *formals;
   Type *returnType;
   Stmt *body;
+  Symbol_table symbol_table;
 
  public:
   FnDecl(Identifier *name, Type *returnType, List<VarDecl*> *formals);
   void SetFunctionBody(Stmt *b);
   const char *GetPrintNameForNode() { return "FnDecl"; }
   void PrintChildren(int indentLevel);
+  void build_table() override;
   void analyze(Scope_stack& scope_stack) override;
 };
 

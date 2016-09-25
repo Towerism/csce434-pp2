@@ -1,0 +1,11 @@
+int asdf() {
+    int b;
+    switch(b) {
+        case 0:
+            break;
+        default: {
+            int a;
+            int a;
+        }
+    }
+}

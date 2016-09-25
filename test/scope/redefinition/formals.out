@@ -1,0 +1,6 @@
+
+*** Error line 1.
+int asdf(int a, int a) {
+                    ^
+*** Declaration of 'a' here conflicts with declaration on line 1
+

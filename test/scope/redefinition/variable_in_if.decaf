@@ -1,0 +1,6 @@
+int asdf() {
+    if (false) {
+       int a;
+       int a;
+    }
+}
