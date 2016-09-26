@@ -10,3 +10,9 @@ find_package(BISON REQUIRED)
 include_directories(decaf)
 add_subdirectory(decaf)
 add_subdirectory(dcc)
+add_subdirectory(test)
+
+
+add_custom_target(run-tests
+  DEPENDS test-syntax test-scope
+  )

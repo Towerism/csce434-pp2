@@ -1,12 +1,14 @@
 #!/bin/bash
 
-SAMPLEIN=$(find ./test/"$1" -name '*.frag' -o \( -name '*.decaf' \))
+EXECUTABLE="$1"
+DIRECTORY="$2"
+SAMPLEIN=$(find ./$DIRECTORY -name '*.frag' -o \( -name '*.decaf' \))
 TEST_NUM=$(wc -w <<< "$SAMPLEIN")
 PASSED_NUM=0
 FAILED=
 ARGS=
 
-if [ "$1" = "syntax" ]; then
+if [ "$DIRECTORY" = "syntax" ]; then
    ARGS="-s"
 fi
 
@@ -29,7 +31,7 @@ for SAMPLE in $SAMPLEIN; do
 
     rm -f out
 
-    $(./dcc $ARGS < $SAMPLE &> out) # suppress shell output
+    $($EXECUTABLE $ARGS < $SAMPLE &> out) # suppress shell output
 
     cmp --silent out $EXPECTEDOUT
 

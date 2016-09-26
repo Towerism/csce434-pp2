@@ -28,11 +28,11 @@
 *.app
 
 # Bison output
-/lex.cc
-/lex.output
-/parse.cc
-/parse.hh
-/parse.output
+lex.cc
+lex.output
+parse.cc
+parse.hh
+parse.output
 /Makefile.bak
 
 # Build directory
