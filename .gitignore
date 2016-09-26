@@ -26,7 +26,6 @@
 # Executables
 *.exe
 *.app
-/dcc
 
 # Bison output
 /lex.cc
