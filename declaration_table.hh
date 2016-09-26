@@ -18,6 +18,13 @@ public:
       return key_value->second;
     return nullptr;
   }
+
+  typename std::unordered_map<std::string, decl_t*>::iterator begin() {
+    return declarations.begin();
+  }
+  typename std::unordered_map<std::string, decl_t*>::iterator end() {
+    return declarations.end();
+  }
 private:
   std::unordered_map<std::string, decl_t*> declarations;
 };

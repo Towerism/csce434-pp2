@@ -83,6 +83,8 @@ template<class Element> class List {
     }
   }
 
+  typename std::deque<Element>::iterator begin() { return elems.begin(); }
+  typename std::deque<Element>::iterator end() { return elems.end(); }
 };
 
 #endif

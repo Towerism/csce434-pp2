@@ -9,6 +9,9 @@
 #ifndef _H_ast_type
 #define _H_ast_type
 
+#include <string.h>
+#include <string>
+
 #include "ast.hh"
 #include "list.hh"
 #include "ast_stmt.hh"
@@ -28,6 +31,7 @@ class Type : public Node
 
   const char *GetPrintNameForNode() { return "Type"; }
   void PrintChildren(int indentLevel);
+  virtual bool equal(Type* other) { return strcmp(typeName, other->typeName) == 0; }
 };
 
 class NamedType : public Type
@@ -42,6 +46,8 @@ class NamedType : public Type
   void PrintChildren(int indentLevel);
   void analyze(Scope_stack& scope_stack) override;
   void analyze(Scope_stack& scope_stack, reasonT focus) override;
+
+  std::string getName() { return id->getName(); }
 };
 
 class ArrayType : public Type
@@ -56,6 +62,12 @@ class ArrayType : public Type
   void PrintChildren(int indentLevel);
   void analyze(Scope_stack& scope_stack) override;
   void analyze(Scope_stack& scope_stack, reasonT focus) override;
+  bool equal(Type* other) override {
+    auto otherArrayType = dynamic_cast<ArrayType*>(other);
+    if (!otherArrayType)
+      return false;
+    return elemType->equal(otherArrayType->elemType);
+  }
 };
 
 

@@ -45,6 +45,8 @@ class VarDecl : public Decl
   void PrintChildren(int indentLevel);
   void analyze(Scope_stack& scope_stack) override;
   void analyze(Scope_stack& scope_stack, reasonT focus) override;
+
+  Type* getType() { return type; }
 };
 
 class ClassDecl : public Decl
@@ -92,6 +94,7 @@ class FnDecl : public Decl
   void build_table() override;
   void analyze(Scope_stack& scope_stack) override;
   void analyze(Scope_stack& scope_stack, reasonT focus) override;
+  bool matches_signature(FnDecl* other);
 };
 
 #endif

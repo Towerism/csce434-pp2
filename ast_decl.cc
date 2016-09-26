@@ -3,6 +3,9 @@
  * Implementation of Decl node classes.
  */
 #include "ast_decl.hh"
+
+#include <algorithm>
+
 #include "ast_type.hh"
 #include "ast_stmt.hh"
 #include "errors.hh"
@@ -54,9 +57,12 @@ void ClassDecl::build_table() {
 }
 
 void ClassDecl::analyze(Scope_stack& scope_stack) {
-  members->Apply([&](Decl* decl) { decl->analyze(scope_stack, LookingForType); });
-  if (extends) extends->analyze(scope_stack, LookingForClass);
+  if (extends) {
+    extends->analyze(scope_stack, LookingForClass);
+    auto superClass = symbol_table.get_class(extends->getName());
+  }
   implements->Apply([&](NamedType* type) { type->analyze(scope_stack, LookingForInterface); });
+  members->Apply([&](Decl* decl) { decl->analyze(scope_stack, LookingForType); });
 }
 
 InterfaceDecl::InterfaceDecl(Identifier *n, List<Decl*> *m) : Decl(n) {
@@ -103,4 +109,18 @@ void FnDecl::analyze(Scope_stack& scope_stack) {
 }
 
 void FnDecl::analyze(Scope_stack& scope_stack, reasonT focus) {
+}
+
+bool FnDecl::matches_signature(FnDecl* other) {
+  if (formals->NumElements() == 0 && other->formals->NumElements() == 0)
+    return true;
+  if (formals->NumElements() != other->formals->NumElements())
+    return false;
+  return std::equal(formals->begin(), formals->end(), other->formals->begin(),
+                    [](VarDecl* a, VarDecl* b) {
+                      auto ret = true;
+                      ret &= a->getName() == b->getName();
+                      ret &= a->getType()->equal(b->getType());
+                      return ret;
+                    });
 }
