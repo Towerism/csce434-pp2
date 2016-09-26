@@ -10,11 +10,11 @@
 #include <stdio.h>
 using namespace std;
 
-#include "scanner.hh" // for GetLineNumbered
-#include "ast_type.hh"
-#include "ast_expr.hh"
-#include "ast_stmt.hh"
-#include "ast_decl.hh"
+#include <parse/scanner.hh> // for GetLineNumbered
+#include <ast/ast_type.hh>
+#include <ast/ast_expr.hh>
+#include <ast/ast_stmt.hh>
+#include <ast/ast_decl.hh>
 
 int ReportError::numErrors = 0;
 

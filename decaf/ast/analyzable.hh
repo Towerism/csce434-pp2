@@ -1,8 +1,8 @@
 #ifndef CHECKABLE_H
 #define CHECKABLE_H
 
+#include <util/errors.hh>
 #include "scope_stack.hh"
-#include "errors.hh"
 
 class Analyzable {
   virtual void analyze(Scope_stack& scope_stack) = 0;

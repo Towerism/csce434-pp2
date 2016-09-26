@@ -34,9 +34,9 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>   // for NULL
+#include <parse/location.hh>
+#include <util/errors.hh>
 #include "analyzable.hh"
-#include "errors.hh"
-#include "location.hh"
 #include "scope_stack.hh"
 
 class Node : public Analyzable

@@ -12,10 +12,10 @@
 #include <string.h>
 #include <string>
 
+#include <util/errors.hh>
+#include <util/list.hh>
 #include "ast.hh"
-#include "list.hh"
 #include "ast_stmt.hh"
-#include "errors.hh"
 
 class Type : public Node
 {

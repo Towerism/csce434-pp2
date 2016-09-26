@@ -14,7 +14,7 @@
 
 #include <string>
 using std::string;
-#include "location.hh"
+#include <parse/location.hh>
 class Type;
 class Identifier;
 class Expr;

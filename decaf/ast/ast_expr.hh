@@ -9,9 +9,9 @@
 #ifndef _H_ast_expr
 #define _H_ast_expr
 
+#include <util/list.hh>
 #include "ast.hh"
 #include "ast_stmt.hh"
-#include "list.hh"
 
 class NamedType; // for new
 class Type; // for NewArray

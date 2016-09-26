@@ -10,13 +10,13 @@
 // here we need to include things needed for the yylval union
 // (types, classes, constants, etc.)
 
+#include <util/list.hh>       	// because we use all these types
+#include <ast/ast.hh>		// in the union, we need their declarations
+#include <ast/ast_type.hh>
+#include <ast/ast_decl.hh>
+#include <ast/ast_expr.hh>
+#include <ast/ast_stmt.hh>
 #include "scanner.hh"            // for MaxIdentLen
-#include "list.hh"       	// because we use all these types
-#include "ast.hh"		// in the union, we need their declarations
-#include "ast_type.hh"
-#include "ast_decl.hh"
-#include "ast_expr.hh"
-#include "ast_stmt.hh"
 
 
 // Next, we want to get the exported defines for the token codes and
@@ -29,7 +29,7 @@
 // Managing C headers can be such a mess!
 
 #ifndef YYBISON
-#include "y.tab.h"
+#include "parse.hh"
 #endif
 
 int yyparse();              // Defined in the generated y.tab.c file

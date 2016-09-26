@@ -12,7 +12,7 @@
 #ifndef _H_ast_stmt
 #define _H_ast_stmt
 
-#include "list.hh"
+#include <util/list.hh>
 #include "analyzable.hh"
 #include "ast.hh"
 #include "closeable.hh"

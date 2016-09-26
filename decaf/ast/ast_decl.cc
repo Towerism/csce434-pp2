@@ -6,9 +6,9 @@
 
 #include <algorithm>
 
+#include <util/errors.hh>
 #include "ast_type.hh"
 #include "ast_stmt.hh"
-#include "errors.hh"
 
 
 Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {

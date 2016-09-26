@@ -9,9 +9,9 @@
 #ifndef _H_ast_decl
 #define _H_ast_decl
 
+#include <util/list.hh>
 #include "ast.hh"
 #include "closeable.hh"
-#include "list.hh"
 #include "symbol_table.hh"
 
 class Type;

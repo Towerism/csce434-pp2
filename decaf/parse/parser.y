@@ -16,12 +16,13 @@
  * file inclusions or C++ variable declarations/prototypes that are needed
  * by your code here.
  */
-#include "scanner.hh" // for yylex
 #include <string.h>
+
+#include <util/errors.hh>
+#include <ast/scope_stack.hh>
+#include <util/utility.hh>
+#include "scanner.hh" // for yylex
 #include "parser.hh"
-#include "errors.hh"
-#include "scope_stack.hh"
-#include "utility.hh"
 
   void yyerror(const char *msg); // standard error-handling routine
 
