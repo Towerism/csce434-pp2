@@ -134,7 +134,7 @@
 %type <caseStmt> CaseStmt
 %type <stmtList> Stmts
 %type <type> Type
-%type <expr> ExprOptional Expr LValue Constant Call LValueExpr
+%type <expr> ExprOptional Expr LValue Constant Call
 %type <namedType> Extends
 %type <varDeclList> VarDecls Formals FormalsOptional
 %type <namedTypeList> Implements ImplementsOptional
@@ -345,8 +345,8 @@ ExprOptional
 ;
 
 Expr
-: LValueExpr '=' Expr { $$ = new AssignExpr($1, makeOp(@2, "="), $3); }
-| LValue '=' Expr { $$ = new AssignExpr($1, makeOp(@2, "="), $3); }
+: LValue '=' Expr { $$ = new AssignExpr($1, makeOp(@2, "="), $3); }
+| LValue { $$ = $1; }
 | Expr '+' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "+"), $3); }
 | Expr '-' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "-"), $3); }
 | Expr '*' Expr { $$ = new ArithmeticExpr($1, makeOp(@2, "*"), $3); }
@@ -362,8 +362,8 @@ Expr
 | Expr T_And Expr { $$ = new LogicalExpr($1, makeOp(@2, "&&"), $3); }
 | '!' Expr { $$ = new LogicalExpr(makeOp(@1, "!"), $2); }
 | '-' Expr %prec P_UnaryMinus { $$ = new ArithmeticExpr(makeOp(@1, "-"), $2); }
-| LValueExpr { $$ = $1; }
-| LValue { $$ = $1; }
+| Expr T_Incr { $$ = new PostfixExpr($1, makeOp(@2, "++")); }
+| Expr T_Decr { $$ = new PostfixExpr($1, makeOp(@2, "--")); }
 | Constant { $$ = $1; }
 | T_This { $$ = new This(@1); }
 | T_ReadInteger '(' ')' { $$ = new ReadIntegerExpr(Join(@1, @3)); }
@@ -372,11 +372,6 @@ Expr
 | Call { $$ = $1; }
 | T_NewArray '(' Expr ',' Type ')' { $$ = new NewArrayExpr(Join(@1, @6), $3, $5); }
 | '(' Expr ')' { $$ = $2; }
-;
-
-LValueExpr
-: LValue T_Incr { $$ = new PostfixExpr($1, makeOp(@2, "++")); }
-| LValue T_Decr { $$ = new PostfixExpr($1, makeOp(@2, "--")); }
 ;
 
 LValue

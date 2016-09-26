@@ -1,14 +1,6 @@
 
-   Program: 
-  1   FnDecl: 
-         (return type) Type: int
-  1      Identifier: asdf
-         (body) StmtBlock: 
-  2         AssignExpr: 
-  2            PostfixExpr: 
-  2               FieldAccess: 
-  2                  Identifier: i
-  2               Operator: ++
-  2            Operator: =
-  2            FieldAccess: 
-  2               Identifier: asdf
+*** Error line 2.
+    i++ = asdf;
+        ^
+*** syntax error
+
