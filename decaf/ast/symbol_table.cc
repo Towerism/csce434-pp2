@@ -43,16 +43,22 @@ void Symbol_table::detect_previous_declaration(Decl* new_declaration) {
 }
 
 void Symbol_table::check_super(Decl* declaration) {
-  auto* function = dynamic_cast<FnDecl*>(declaration);
-  if (!function)
-    return;
   if (!super)
     return;
   auto* current = super;
   do {
-    auto* super_function = current->functions.contains(function->getName());
-    if (super_function && !function->matches_signature(super_function))
-      ReportError::OverrideMismatch(function);
+    auto* function = dynamic_cast<FnDecl*>(declaration);
+    if (function) {
+      auto* super_function = current->functions.contains(function->getName());
+      if (super_function && !function->matches_signature(super_function))
+        ReportError::OverrideMismatch(function);
+    }
+    auto* variable = dynamic_cast<VarDecl*>(declaration);
+    if (variable) {
+      auto* super_variable = current->variables.contains(variable->getName());
+      if (super_variable)
+        ReportError::DeclConflict(variable, super_variable);
+    }
     current = current->super;
   } while(current != nullptr);
 }

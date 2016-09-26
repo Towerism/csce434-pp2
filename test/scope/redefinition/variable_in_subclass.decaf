@@ -1,0 +1,7 @@
+class Asdf {
+      int a;
+}
+
+class Qwer extends Asdf {
+      int a;
+}
