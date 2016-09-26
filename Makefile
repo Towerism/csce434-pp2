@@ -8,8 +8,8 @@ CMAKE_FLAGS :=
          compile build-dir generate clean clean-build
 
 .DEFAULT:: all
-all:: ##same as test
-all:: test
+all:: ##same as compile
+all:: compile
 
 
 test:: ##compile and run test suite
