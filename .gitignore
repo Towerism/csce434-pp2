@@ -33,6 +33,7 @@
 /lex.output
 /parse.cc
 /parse.hh
+/parse.output
 /Makefile.bak
 
 # Build directory
