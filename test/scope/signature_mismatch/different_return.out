@@ -1,0 +1,6 @@
+
+*** Error line 7.
+      bool asdf() {
+           ^^^^
+*** Method 'asdf' must match inherited type signature
+

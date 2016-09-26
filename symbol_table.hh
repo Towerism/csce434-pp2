@@ -15,8 +15,10 @@ class FnDecl;
 class Symbol_table {
 public:
   void declare(Decl* declaration);
-  void copy_fields_into(Symbol_table& sub_table);
   bool type_exists(std::string name);
+
+  void check_super(Decl* declaration);
+  void set_super(Symbol_table& super_table) { super = &super_table; }
 
   ClassDecl* get_class(std::string name);
 
@@ -25,6 +27,8 @@ private:
   Declaration_table<InterfaceDecl> interfaces;
   Declaration_table<VarDecl> variables;
   Declaration_table<FnDecl> functions;
+
+  Symbol_table* super = nullptr;
 
   void detect_previous_declaration(Decl* new_declaration);
 };

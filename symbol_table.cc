@@ -42,6 +42,21 @@ void Symbol_table::detect_previous_declaration(Decl* new_declaration) {
     ReportError::DeclConflict(new_declaration, prev_decl);
 }
 
+void Symbol_table::check_super(Decl* declaration) {
+  auto* function = dynamic_cast<FnDecl*>(declaration);
+  if (!function)
+    return;
+  if (!super)
+    return;
+  auto* current = super;
+  do {
+    auto* super_function = current->functions.contains(function->getName());
+    if (super_function && !function->matches_signature(super_function))
+      ReportError::OverrideMismatch(function);
+    current = current->super;
+  } while(current != nullptr);
+}
+
 bool Symbol_table::type_exists(std::string name) {
   return classes.contains(name) || interfaces.contains(name);
 }

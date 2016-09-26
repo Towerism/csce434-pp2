@@ -59,9 +59,12 @@ void ClassDecl::build_table() {
 void ClassDecl::analyze(Scope_stack& scope_stack) {
   if (extends) {
     extends->analyze(scope_stack, LookingForClass);
-    auto superClass = symbol_table.get_class(extends->getName());
+    auto superClass = Program::symbol_table.get_class(extends->getName());
+    if (superClass)
+      symbol_table.set_super(superClass->symbol_table);
   }
   implements->Apply([&](NamedType* type) { type->analyze(scope_stack, LookingForInterface); });
+  members->Apply([&](Decl* decl) { symbol_table.check_super(decl); });
   members->Apply([&](Decl* decl) { decl->analyze(scope_stack, LookingForType); });
 }
 
@@ -112,15 +115,11 @@ void FnDecl::analyze(Scope_stack& scope_stack, reasonT focus) {
 }
 
 bool FnDecl::matches_signature(FnDecl* other) {
-  if (formals->NumElements() == 0 && other->formals->NumElements() == 0)
-    return true;
   if (formals->NumElements() != other->formals->NumElements())
     return false;
-  return std::equal(formals->begin(), formals->end(), other->formals->begin(),
+  return returnType->equal(other->returnType) &&
+    std::equal(formals->begin(), formals->end(), other->formals->begin(),
                     [](VarDecl* a, VarDecl* b) {
-                      auto ret = true;
-                      ret &= a->getName() == b->getName();
-                      ret &= a->getType()->equal(b->getType());
-                      return ret;
+                      return a->getType()->equal(b->getType());
                     });
 }

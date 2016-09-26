@@ -48,6 +48,12 @@ class NamedType : public Type
   void analyze(Scope_stack& scope_stack, reasonT focus) override;
 
   std::string getName() { return id->getName(); }
+  bool equal(Type* other) {
+    auto* otherNamedType = dynamic_cast<NamedType*>(other);
+    if (!otherNamedType)
+      return false;
+    return id->getName() == otherNamedType->id->getName();
+  }
 };
 
 class ArrayType : public Type

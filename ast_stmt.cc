@@ -27,10 +27,7 @@ void Program::build_table() {
 void Program::analyze(Scope_stack& scope_stack) {
   build_table();
 
-  for (int i = 0; i < decls->NumElements(); ++i) {
-    auto d = decls->Nth(i);
-    d->analyze(scope_stack);
-  }
+  decls->Apply([&](Decl* decl) { decl->analyze(scope_stack); });
 }
 
 StmtBlock::StmtBlock(List<VarDecl*> *d, List<Stmt*> *s) {

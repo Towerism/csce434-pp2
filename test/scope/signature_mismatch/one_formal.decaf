@@ -1,0 +1,9 @@
+class Asdf {
+      int asdf(int a) {
+      }
+}
+
+class Qwer extends Asdf {
+      int asdf(bool a) {
+      }
+}

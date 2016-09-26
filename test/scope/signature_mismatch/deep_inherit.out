@@ -1,0 +1,6 @@
+
+*** Error line 10.
+      int asdf(bool a, int b) {
+          ^^^^
+*** Method 'asdf' must match inherited type signature
+

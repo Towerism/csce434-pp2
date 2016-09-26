@@ -98,6 +98,25 @@ clean:
 
 # DO NOT DELETE
 
+ast_expr.o: ast_expr.hh ast.hh /usr/include/stdlib.h /usr/include/features.h
+ast_expr.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
+ast_expr.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
+ast_expr.o: /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h
+ast_expr.o: /usr/include/sys/types.h /usr/include/bits/types.h
+ast_expr.o: /usr/include/bits/typesizes.h /usr/include/time.h
+ast_expr.o: /usr/include/endian.h /usr/include/bits/endian.h
+ast_expr.o: /usr/include/bits/byteswap.h /usr/include/bits/byteswap-16.h
+ast_expr.o: /usr/include/sys/select.h /usr/include/bits/select.h
+ast_expr.o: /usr/include/bits/sigset.h /usr/include/bits/time.h
+ast_expr.o: /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h
+ast_expr.o: /usr/include/alloca.h /usr/include/bits/stdlib-float.h
+ast_expr.o: analyzable.hh scope_stack.hh scope.hh errors.hh location.hh
+ast_expr.o: ast_stmt.hh list.hh utility.hh /usr/include/stdio.h
+ast_expr.o: /usr/include/libio.h /usr/include/_G_config.h
+ast_expr.o: /usr/include/wchar.h /usr/include/bits/stdio_lim.h
+ast_expr.o: /usr/include/bits/sys_errlist.h closeable.hh symbol_table.hh
+ast_expr.o: declaration_table.hh ast_type.hh /usr/include/string.h
+ast_expr.o: /usr/include/xlocale.h ast_decl.hh
 symbol_table.o: symbol_table.hh declaration_table.hh ast_decl.hh ast.hh
 symbol_table.o: /usr/include/stdlib.h /usr/include/features.h
 symbol_table.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
@@ -132,25 +151,6 @@ scope.o: scope_stack.hh errors.hh location.hh closeable.hh list.hh utility.hh
 scope.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 scope.o: /usr/include/wchar.h /usr/include/bits/stdio_lim.h
 scope.o: /usr/include/bits/sys_errlist.h symbol_table.hh declaration_table.hh
-ast_expr.o: ast_expr.hh ast.hh /usr/include/stdlib.h /usr/include/features.h
-ast_expr.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
-ast_expr.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
-ast_expr.o: /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h
-ast_expr.o: /usr/include/sys/types.h /usr/include/bits/types.h
-ast_expr.o: /usr/include/bits/typesizes.h /usr/include/time.h
-ast_expr.o: /usr/include/endian.h /usr/include/bits/endian.h
-ast_expr.o: /usr/include/bits/byteswap.h /usr/include/bits/byteswap-16.h
-ast_expr.o: /usr/include/sys/select.h /usr/include/bits/select.h
-ast_expr.o: /usr/include/bits/sigset.h /usr/include/bits/time.h
-ast_expr.o: /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h
-ast_expr.o: /usr/include/alloca.h /usr/include/bits/stdlib-float.h
-ast_expr.o: analyzable.hh scope_stack.hh scope.hh errors.hh location.hh
-ast_expr.o: ast_stmt.hh list.hh utility.hh /usr/include/stdio.h
-ast_expr.o: /usr/include/libio.h /usr/include/_G_config.h
-ast_expr.o: /usr/include/wchar.h /usr/include/bits/stdio_lim.h
-ast_expr.o: /usr/include/bits/sys_errlist.h closeable.hh symbol_table.hh
-ast_expr.o: declaration_table.hh ast_type.hh /usr/include/string.h
-ast_expr.o: /usr/include/xlocale.h ast_decl.hh
 utility.o: utility.hh /usr/include/stdlib.h /usr/include/features.h
 utility.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
 utility.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
@@ -184,7 +184,7 @@ main.o: /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h
 main.o: /usr/include/alloca.h /usr/include/bits/stdlib-float.h errors.hh
 main.o: location.hh parser.hh scanner.hh list.hh ast.hh analyzable.hh
 main.o: scope_stack.hh scope.hh ast_type.hh ast_stmt.hh closeable.hh
-main.o: symbol_table.hh declaration_table.hh ast_decl.hh ast_expr.hh y.tab.h
+main.o: symbol_table.hh declaration_table.hh ast_decl.hh ast_expr.hh
 ast_decl.o: ast_decl.hh ast.hh /usr/include/stdlib.h /usr/include/features.h
 ast_decl.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
 ast_decl.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
