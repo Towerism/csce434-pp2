@@ -29,33 +29,28 @@ void Symbol_table::declare(Decl* declaration) {
 }
 
 void Symbol_table::declare_class(ClassDecl* class_declaration) {
-  auto* prev_decl = classes.contains(class_declaration->getName());
+  auto* prev_decl = detect_previous_declaration(class_declaration);
   if (prev_decl)
     ReportError::DeclConflict(class_declaration, prev_decl);
   classes.declare(class_declaration);
 }
 
 void Symbol_table::declare_interface(InterfaceDecl* interface_declaration) {
-  auto* prev_decl = interfaces.contains(interface_declaration->getName());
+  auto* prev_decl = detect_previous_declaration(interface_declaration);
   if (prev_decl)
     ReportError::DeclConflict(interface_declaration, prev_decl);
   interfaces.declare(interface_declaration);
 }
 
 void Symbol_table::declare_variable(VarDecl* variable_declaration) {
-  Decl* prev_decl = variables.contains(variable_declaration->getName());
-  if (!prev_decl)
-    prev_decl = classes.contains(variable_declaration->getName());
+  auto* prev_decl = detect_previous_declaration(variable_declaration);
   if (prev_decl)
     ReportError::DeclConflict(variable_declaration, prev_decl);
   variables.declare(variable_declaration);
 }
 
 void Symbol_table::declare_function(FnDecl* function_declaration) {
-  Decl* prev_decl = variables.contains(function_declaration->getName());
-  if (!prev_decl) {
-    prev_decl = functions.contains(function_declaration->getName());
-  }
+  auto* prev_decl = detect_previous_declaration(function_declaration);
   if (prev_decl)
     ReportError::DeclConflict(function_declaration, prev_decl);
   functions.declare(function_declaration);
@@ -76,4 +71,16 @@ bool Symbol_table::type_exists(std::string name) {
 
 ClassDecl* Symbol_table::get_class(std::string name) {
   return classes.contains(name);
+}
+
+Decl* Symbol_table::detect_previous_declaration(Decl* new_declaration) {
+  Decl* prev_decl = variables.contains(new_declaration->getName());
+  if (!prev_decl) {
+    prev_decl = functions.contains(new_declaration->getName());
+  }
+  if (!prev_decl)
+    prev_decl = classes.contains(new_declaration->getName());
+  if (!prev_decl)
+    prev_decl = interfaces.contains(new_declaration->getName());
+  return prev_decl;
 }

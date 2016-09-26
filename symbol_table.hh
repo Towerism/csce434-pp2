@@ -29,6 +29,8 @@ private:
   Declaration_table<InterfaceDecl> interfaces;
   Declaration_table<VarDecl> variables;
   Declaration_table<FnDecl> functions;
+
+  Decl* detect_previous_declaration(Decl* new_declaration);
 };
 
 #endif // SYMBOL_TABLE_H
