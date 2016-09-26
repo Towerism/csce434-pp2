@@ -6,74 +6,30 @@
 #include "errors.hh"
 
 void Symbol_table::declare(Decl* declaration) {
+  detect_previous_declaration(declaration);
   auto class_declaration = dynamic_cast<ClassDecl*>(declaration);
   if (class_declaration != nullptr) {
-    declare_class(class_declaration);
+    classes.declare(class_declaration);
     return;
   }
   auto interface_declaration = dynamic_cast<InterfaceDecl*>(declaration);
   if (interface_declaration != nullptr) {
-    declare_interface(interface_declaration);
+    interfaces.declare(interface_declaration);
     return;
   }
   auto variable_declaration = dynamic_cast<VarDecl*>(declaration);
   if (variable_declaration != nullptr) {
-    declare_variable(variable_declaration);
+    variables.declare(variable_declaration);
     return;
   }
   auto function_declaration = dynamic_cast<FnDecl*>(declaration);
   if (function_declaration != nullptr) {
-    declare_function(function_declaration);
+    functions.declare(function_declaration);
     return;
   }
 }
 
-void Symbol_table::declare_class(ClassDecl* class_declaration) {
-  auto* prev_decl = detect_previous_declaration(class_declaration);
-  if (prev_decl)
-    ReportError::DeclConflict(class_declaration, prev_decl);
-  classes.declare(class_declaration);
-}
-
-void Symbol_table::declare_interface(InterfaceDecl* interface_declaration) {
-  auto* prev_decl = detect_previous_declaration(interface_declaration);
-  if (prev_decl)
-    ReportError::DeclConflict(interface_declaration, prev_decl);
-  interfaces.declare(interface_declaration);
-}
-
-void Symbol_table::declare_variable(VarDecl* variable_declaration) {
-  auto* prev_decl = detect_previous_declaration(variable_declaration);
-  if (prev_decl)
-    ReportError::DeclConflict(variable_declaration, prev_decl);
-  variables.declare(variable_declaration);
-}
-
-void Symbol_table::declare_function(FnDecl* function_declaration) {
-  auto* prev_decl = detect_previous_declaration(function_declaration);
-  if (prev_decl)
-    ReportError::DeclConflict(function_declaration, prev_decl);
-  functions.declare(function_declaration);
-}
-
-void Symbol_table::copy_fields_into(Symbol_table& sub_table) {
-  std::for_each(variables.begin(), variables.end(), [&](std::pair<std::string, VarDecl*> pair) {
-      sub_table.declare(pair.second);
-    });
-  std::for_each(functions.begin(), functions.end(), [&](std::pair<std::string, FnDecl*> pair) {
-      sub_table.declare(pair.second);
-    });
-}
-
-bool Symbol_table::type_exists(std::string name) {
-  return classes.contains(name) || interfaces.contains(name);
-}
-
-ClassDecl* Symbol_table::get_class(std::string name) {
-  return classes.contains(name);
-}
-
-Decl* Symbol_table::detect_previous_declaration(Decl* new_declaration) {
+void Symbol_table::detect_previous_declaration(Decl* new_declaration) {
   Decl* prev_decl = variables.contains(new_declaration->getName());
   if (!prev_decl) {
     prev_decl = functions.contains(new_declaration->getName());
@@ -82,5 +38,14 @@ Decl* Symbol_table::detect_previous_declaration(Decl* new_declaration) {
     prev_decl = classes.contains(new_declaration->getName());
   if (!prev_decl)
     prev_decl = interfaces.contains(new_declaration->getName());
-  return prev_decl;
+  if (prev_decl)
+    ReportError::DeclConflict(new_declaration, prev_decl);
+}
+
+bool Symbol_table::type_exists(std::string name) {
+  return classes.contains(name) || interfaces.contains(name);
+}
+
+ClassDecl* Symbol_table::get_class(std::string name) {
+  return classes.contains(name);
 }
