@@ -29,8 +29,11 @@
 /dcc
 
 # Bison output
-/lex.yy.c
-/y.output
-/y.tab.c
-/y.tab.h
+/lex.cc
+/lex.output
+/parse.cc
+/parse.hh
 /Makefile.bak
+
+# Build directory
+/build
