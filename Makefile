@@ -2,6 +2,8 @@ MAKE := make -s
 BUILD_DIR := build
 GENERATOR := Unix Makefiles
 CMAKE_FLAGS :=
+PROJECT := decaf
+BINARY := dcc
 
 .PHONY:: all test cmake-test-flags run-tests \
          coverage cmake-coverage-flags build-coveralls \
@@ -28,6 +30,8 @@ compile generate::
 	@cd $(BUILD_DIR) && cmake $(CMAKE_FLAGS) -G"$(GENERATOR)" ..
 compile::
 	@$(MAKE) -C $(BUILD_DIR)
+compile copy-dcc::
+	@cp $(BUILD_DIR)/$(PROJECT)/$(BINARY)/$(BINARY) .
 
 
 clean:: ##clean build system
@@ -35,6 +39,8 @@ clean:: ##clean build system
 clean clean-build::
 	@echo "-- Removing Build Directory"
 	@rm -rf $(BUILD_DIR)
+clean clean-copied-dcc::
+	@rm -f $(BINARY)
 clean::
 	@echo "-- Done"
 

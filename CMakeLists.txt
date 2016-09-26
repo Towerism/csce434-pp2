@@ -9,5 +9,4 @@ find_package(BISON REQUIRED)
 
 include_directories(decaf)
 add_subdirectory(decaf)
-add_subdirectory(dcc)
 add_subdirectory(test)

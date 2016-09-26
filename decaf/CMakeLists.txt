@@ -7,3 +7,5 @@ add_library(decaf
   $<TARGET_OBJECTS:parse>
   $<TARGET_OBJECTS:util>
   )
+
+add_subdirectory(dcc)
