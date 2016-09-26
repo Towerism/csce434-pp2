@@ -4,6 +4,9 @@ GENERATOR := Unix Makefiles
 CMAKE_FLAGS :=
 PROJECT := decaf
 BINARY := dcc
+# set this to $(BINARY) if you want to copy it to project root
+# otherwise leave empty
+BINARY_TO_COPY :=
 
 .PHONY:: all test cmake-test-flags run-tests \
          coverage cmake-coverage-flags build-coveralls \
@@ -31,7 +34,7 @@ compile generate::
 compile::
 	@$(MAKE) -C $(BUILD_DIR)
 compile copy-dcc::
-	@cp $(BUILD_DIR)/$(PROJECT)/$(BINARY)/$(BINARY) .
+	@cp $(BUILD_DIR)/$(PROJECT)/$(BINARY_TO_COPY)/$(BINARY_TO_COPY) . &>/dev/null ||:
 
 
 clean:: ##clean build system
@@ -40,7 +43,7 @@ clean clean-build::
 	@echo "-- Removing Build Directory"
 	@rm -rf $(BUILD_DIR)
 clean clean-copied-dcc::
-	@rm -f $(BINARY)
+	@rm -f $(BINARY_TO_COPY)
 clean::
 	@echo "-- Done"
 
