@@ -3,4 +3,4 @@ set(UTIL_SRCS
   utility.cc
   )
 
-add_library(util OBJECT ${UTIL_SRCS})
+add_library(util ${UTIL_SRCS})

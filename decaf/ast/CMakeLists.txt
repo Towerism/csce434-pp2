@@ -1,10 +1,16 @@
+add_subdirectory(decl)
+add_subdirectory(expr)
+add_subdirectory(stmt)
+add_subdirectory(type)
 set(AST_SRCS
-  ast.cc
-  ast_decl.cc
-  ast_expr.cc
-  ast_stmt.cc
-  ast_type.cc
+  node.cc
+  identifier.cc
   symbol_table.cc
   )
 
-add_library(ast OBJECT ${AST_SRCS})
+add_library(ast ${AST_SRCS}
+  $<TARGET_OBJECTS:decl>
+  $<TARGET_OBJECTS:expr>
+  $<TARGET_OBJECTS:stmt>
+  $<TARGET_OBJECTS:type>
+  )

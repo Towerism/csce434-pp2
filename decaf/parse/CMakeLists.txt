@@ -25,4 +25,9 @@ set(PARSE_SRCS
   ${FLEX_OUTPUT}
   )
 
-add_library(parse OBJECT ${PARSE_SRCS})
+set(PARSE_LIBS
+  ast
+  util
+  )
+add_library(parse ${PARSE_SRCS})
+target_link_libraries(parse ${PARSE_LIBS})

@@ -27,7 +27,6 @@
  * nodes and wire them up during parsing. Once that's done, printing is a snap!
 
  */
-
 #ifndef _H_ast
 #define _H_ast
 
