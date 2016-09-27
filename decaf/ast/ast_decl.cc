@@ -88,7 +88,8 @@ void InterfaceDecl::PrintChildren(int indentLevel) {
   members->PrintAll(indentLevel+1);
 }
 
-void InterfaceDecl::analyze(reasonT focus) {
+void InterfaceDecl::build_table() {
+  members->Apply([&](Decl* decl) { symbol_table.declare(decl); });
 }
 
 FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {

@@ -1,0 +1,6 @@
+
+*** Error line 4.
+      int asdf() {
+          ^^^^
+*** Declaration of 'asdf' here conflicts with declaration on line 2
+

@@ -69,12 +69,13 @@ class InterfaceDecl : public Decl
 {
  protected:
   List<Decl*> *members;
+  Symbol_table symbol_table;
 
  public:
   InterfaceDecl(Identifier *name, List<Decl*> *members);
   const char *GetPrintNameForNode() { return "InterfaceDecl"; }
   void PrintChildren(int indentLevel);
-  void analyze(reasonT focus) override;
+  void build_table() override;
 
   List<Decl*>* get_members() { return members; }
 };

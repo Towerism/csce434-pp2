@@ -1,0 +1,4 @@
+interface Asdf {
+      int asdf();
+      int asdf();
+}
