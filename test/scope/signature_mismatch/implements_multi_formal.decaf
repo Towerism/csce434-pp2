@@ -1,0 +1,11 @@
+class Rewq {
+}
+
+interface Asdf {
+      int asdf(int a, Rewq b, int c);
+}
+
+class Qwer implements Asdf {
+      int asdf(int a, Rewq b, Rewq[] c) {
+      }
+}

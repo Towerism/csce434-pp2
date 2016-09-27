@@ -64,7 +64,21 @@ void ClassDecl::analyze(Scope_stack& scope_stack) {
       symbol_table.set_super(superClass->symbol_table);
   }
   implements->Apply([&](NamedType* type) { type->analyze(scope_stack, LookingForInterface); });
-  members->Apply([&](Decl* decl) { symbol_table.check_super(decl); });
+  implements->Apply([&](NamedType* type) {
+      auto interface = Program::symbol_table.get_interface(type->getName());
+      if (interface) {
+        auto members = interface->get_members();
+        members->Apply([&](Decl* member) {
+          symbol_table.add_virtual(member);
+          });
+      }
+    });
+  members->Apply([&](Decl* decl) {
+      symbol_table.check_super(decl);
+    });
+  members->Apply([&](Decl* decl) {
+      symbol_table.check_virtual(decl);
+    });
   members->Apply([&](Decl* decl) { decl->analyze(scope_stack, LookingForType); });
 }
 

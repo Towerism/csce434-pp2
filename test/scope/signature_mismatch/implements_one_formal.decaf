@@ -1,0 +1,8 @@
+interface Asdf {
+      int asdf(int a);
+}
+
+class Qwer implements Asdf {
+      int asdf(bool a) {
+      }
+}

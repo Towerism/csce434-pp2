@@ -76,6 +76,8 @@ class InterfaceDecl : public Decl
   const char *GetPrintNameForNode() { return "InterfaceDecl"; }
   void PrintChildren(int indentLevel);
   void analyze(Scope_stack& scope_stack) override;
+
+  List<Decl*>* get_members() { return members; }
 };
 
 class FnDecl : public Decl

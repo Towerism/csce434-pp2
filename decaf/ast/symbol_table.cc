@@ -29,6 +29,15 @@ void Symbol_table::declare(Decl* declaration) {
   }
 }
 
+#include <iostream>
+void Symbol_table::add_virtual(Decl* declaration) {
+  Decl* prev_decl = virtuals.contains(declaration->getName());
+  if (prev_decl)
+    ReportError::DeclConflict(declaration, prev_decl);
+  auto function_declaration = dynamic_cast<FnDecl*>(declaration);
+  virtuals.declare(function_declaration);
+}
+
 void Symbol_table::detect_previous_declaration(Decl* new_declaration) {
   Decl* prev_decl = variables.contains(new_declaration->getName());
   if (!prev_decl) {
@@ -42,20 +51,27 @@ void Symbol_table::detect_previous_declaration(Decl* new_declaration) {
     ReportError::DeclConflict(new_declaration, prev_decl);
 }
 
+void Symbol_table::check_virtual(Decl* declaration) {
+  auto virtual_function = virtuals.contains(declaration->getName());
+  auto function = dynamic_cast<FnDecl*>(declaration);
+  if (virtual_function && !function->matches_signature(virtual_function))
+    ReportError::OverrideMismatch(function);
+}
+
 void Symbol_table::check_super(Decl* declaration) {
   if (!super)
     return;
-  auto* current = super;
+  auto current = super;
   do {
-    auto* function = dynamic_cast<FnDecl*>(declaration);
+    auto function = dynamic_cast<FnDecl*>(declaration);
     if (function) {
-      auto* super_function = current->functions.contains(function->getName());
+      auto super_function = current->functions.contains(function->getName());
       if (super_function && !function->matches_signature(super_function))
         ReportError::OverrideMismatch(function);
     }
-    auto* variable = dynamic_cast<VarDecl*>(declaration);
+    auto variable = dynamic_cast<VarDecl*>(declaration);
     if (variable) {
-      auto* super_variable = current->variables.contains(variable->getName());
+      auto super_variable = current->variables.contains(variable->getName());
       if (super_variable)
         ReportError::DeclConflict(variable, super_variable);
     }
@@ -69,4 +85,8 @@ bool Symbol_table::type_exists(std::string name) {
 
 ClassDecl* Symbol_table::get_class(std::string name) {
   return classes.contains(name);
+}
+
+InterfaceDecl* Symbol_table::get_interface(std::string name) {
+  return interfaces.contains(name);
 }

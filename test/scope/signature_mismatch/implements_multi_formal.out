@@ -1,0 +1,6 @@
+
+*** Error line 9.
+      int asdf(int a, Rewq b, Rewq[] c) {
+          ^^^^
+*** Method 'asdf' must match inherited type signature
+
