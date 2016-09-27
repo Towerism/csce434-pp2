@@ -55,7 +55,7 @@ void ReportError::UntermComment() {
 }
 
 void ReportError::InvalidDirective(int linenum) {
-  yyltype ll = {0, linenum, 0, 0};
+  yyltype ll = {0, linenum, 0, 0, 0, nullptr};
   OutputError(&ll, "Invalid # directive");
 }
 
