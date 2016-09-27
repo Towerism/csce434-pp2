@@ -27,12 +27,8 @@ void VarDecl::PrintChildren(int indentLevel) {
   id->Print(indentLevel+1);
 }
 
-void VarDecl::analyze(Scope_stack& scope_stack) {
-  type->analyze(scope_stack);
-}
-
-void VarDecl::analyze(Scope_stack& scope_stack, reasonT focus) {
-  type->analyze(scope_stack, focus);
+void VarDecl::analyze(reasonT focus) {
+  type->analyze(focus);
 }
 
 ClassDecl::ClassDecl(Identifier *n, NamedType *ex, List<NamedType*> *imp, List<Decl*> *m) : Decl(n) {
@@ -56,14 +52,14 @@ void ClassDecl::build_table() {
   members->Apply([&](Decl* decl) { decl->build_table(); });
 }
 
-void ClassDecl::analyze(Scope_stack& scope_stack) {
+void ClassDecl::analyze(reasonT focus) {
   if (extends) {
-    extends->analyze(scope_stack, LookingForClass);
+    extends->analyze(LookingForClass);
     auto superClass = Program::symbol_table.get_class(extends->getName());
     if (superClass)
       symbol_table.set_super(superClass->symbol_table);
   }
-  implements->Apply([&](NamedType* type) { type->analyze(scope_stack, LookingForInterface); });
+  implements->Apply([&](NamedType* type) { type->analyze(LookingForInterface); });
   implements->Apply([&](NamedType* type) {
       auto interface = Program::symbol_table.get_interface(type->getName());
       if (interface) {
@@ -79,7 +75,7 @@ void ClassDecl::analyze(Scope_stack& scope_stack) {
   members->Apply([&](Decl* decl) {
       symbol_table.check_virtual(decl);
     });
-  members->Apply([&](Decl* decl) { decl->analyze(scope_stack, LookingForType); });
+  members->Apply([&](Decl* decl) { decl->analyze(LookingForType); });
 }
 
 InterfaceDecl::InterfaceDecl(Identifier *n, List<Decl*> *m) : Decl(n) {
@@ -92,7 +88,7 @@ void InterfaceDecl::PrintChildren(int indentLevel) {
   members->PrintAll(indentLevel+1);
 }
 
-void InterfaceDecl::analyze(Scope_stack& scope_stack) {
+void InterfaceDecl::analyze(reasonT focus) {
 }
 
 FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
@@ -119,13 +115,10 @@ void FnDecl::build_table() {
     body->build_table();
 }
 
-void FnDecl::analyze(Scope_stack& scope_stack) {
-  formals->Apply([&](VarDecl* decl) { decl->analyze(scope_stack); });
+void FnDecl::analyze(reasonT focus) {
+  formals->Apply([&](VarDecl* decl) { decl->analyze(focus); });
   if (body)
-    body->analyze(scope_stack);
-}
-
-void FnDecl::analyze(Scope_stack& scope_stack, reasonT focus) {
+    body->analyze(focus);
 }
 
 bool FnDecl::matches_signature(FnDecl* other) {

@@ -4,8 +4,6 @@ set(AST_SRCS
   ast_expr.cc
   ast_stmt.cc
   ast_type.cc
-  scope.cc
-  scope_stack.cc
   symbol_table.cc
   )
 

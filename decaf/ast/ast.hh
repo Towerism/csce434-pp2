@@ -37,7 +37,6 @@
 #include <parse/location.hh>
 #include <util/errors.hh>
 #include "analyzable.hh"
-#include "scope_stack.hh"
 
 class Node : public Analyzable
 {
@@ -60,8 +59,7 @@ class Node : public Analyzable
   void Print(int indentLevel, const char *label = NULL);
   virtual void PrintChildren(int indentLevel)  {}
 
-  virtual void analyze(Scope_stack& scope_stack) override {}
-  virtual void analyze(Scope_stack& scope_stack, reasonT focus) override {}
+  virtual void analyze(reasonT focus) override {}
 };
 
 

@@ -19,7 +19,6 @@
 #include <string.h>
 
 #include <util/errors.hh>
-#include <ast/scope_stack.hh>
 #include <util/utility.hh>
 #include "scanner.hh" // for yylex
 #include "parser.hh"
@@ -27,8 +26,6 @@
   void yyerror(const char *msg); // standard error-handling routine
 
   static Operator* makeOp(yyltype loc, const char* str);
-
-  Scope_stack scopes;
 %}
 
 /* The section before the first %% is the Definitions section of the yacc
@@ -151,10 +148,15 @@
 Program : DeclList {
   Program *program = new Program($1);
   if (ReportError::NumErrors() == 0) {
-    if (getTestType() == SyntaxTest)
+    switch(getTestType()) {
+    case SyntaxTest:
       program->Print(0);
-    else
-      program->analyze(scopes);
+      break;
+    case ScopeTest:
+    default:
+      program->analyze();
+      break;
+    }
   }
  }
 ;

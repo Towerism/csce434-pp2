@@ -43,8 +43,7 @@ class VarDecl : public Decl
   VarDecl(Identifier *name, Type *type);
   const char *GetPrintNameForNode() { return "VarDecl"; }
   void PrintChildren(int indentLevel);
-  void analyze(Scope_stack& scope_stack) override;
-  void analyze(Scope_stack& scope_stack, reasonT focus) override;
+  void analyze(reasonT focus) override;
 
   Type* getType() { return type; }
 };
@@ -63,7 +62,7 @@ class ClassDecl : public Decl
   const char *GetPrintNameForNode() { return "ClassDecl"; }
   void PrintChildren(int indentLevel);
   void build_table() override;
-  void analyze(Scope_stack& scope_stack) override;
+  void analyze(reasonT focus) override;
 };
 
 class InterfaceDecl : public Decl
@@ -75,7 +74,7 @@ class InterfaceDecl : public Decl
   InterfaceDecl(Identifier *name, List<Decl*> *members);
   const char *GetPrintNameForNode() { return "InterfaceDecl"; }
   void PrintChildren(int indentLevel);
-  void analyze(Scope_stack& scope_stack) override;
+  void analyze(reasonT focus) override;
 
   List<Decl*>* get_members() { return members; }
 };
@@ -94,8 +93,7 @@ class FnDecl : public Decl
   const char *GetPrintNameForNode() { return "FnDecl"; }
   void PrintChildren(int indentLevel);
   void build_table() override;
-  void analyze(Scope_stack& scope_stack) override;
-  void analyze(Scope_stack& scope_stack, reasonT focus) override;
+  void analyze(reasonT focus) override;
   bool matches_signature(FnDecl* other);
 };
 

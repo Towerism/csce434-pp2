@@ -24,10 +24,10 @@ void Program::build_table() {
   decls->Apply([&](Decl* decl) { decl->build_table(); });
 }
 
-void Program::analyze(Scope_stack& scope_stack) {
+void Program::analyze(reasonT focus) {
   build_table();
 
-  decls->Apply([&](Decl* decl) { decl->analyze(scope_stack); });
+  decls->Apply([&](Decl* decl) { decl->analyze(focus); });
 }
 
 StmtBlock::StmtBlock(List<VarDecl*> *d, List<Stmt*> *s) {
@@ -47,9 +47,9 @@ void StmtBlock::build_table() {
   stmts->Apply([&](Stmt* stmt) { stmt->build_table(); });
 }
 
-void StmtBlock::analyze(Scope_stack& scope_stack) {
-  decls->Apply([&](VarDecl* decl) { decl->analyze(scope_stack); });
-  stmts->Apply([&](Stmt* stmt) { stmt->analyze(scope_stack); });
+void StmtBlock::analyze(reasonT focus) {
+  decls->Apply([&](VarDecl* decl) { decl->analyze(focus); });
+  stmts->Apply([&](Stmt* stmt) { stmt->analyze(focus); });
 }
 
 ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) {    Assert(t != NULL && b != NULL);
@@ -60,8 +60,8 @@ void ConditionalStmt::build_table() {
   body->build_table();
 }
 
-void ConditionalStmt::analyze(Scope_stack& scope_stack) {
-  body->analyze(scope_stack);
+void ConditionalStmt::analyze(reasonT focus) {
+  body->analyze(focus);
 }
 
 ForStmt::ForStmt(Expr *i, Expr *t, Expr *s, Stmt *b): LoopStmt(t, b) {    Assert(i != NULL && t != NULL && s != NULL && b != NULL);
@@ -91,9 +91,9 @@ void IfStmt::build_table() {
   if (elseBody) elseBody->build_table();
 }
 
-void IfStmt::analyze(Scope_stack& scope_stack) {
-  ConditionalStmt::analyze(scope_stack);
-  if (elseBody) elseBody->analyze(scope_stack);
+void IfStmt::analyze(reasonT focus) {
+  ConditionalStmt::analyze(focus);
+  if (elseBody) elseBody->analyze(focus);
 }
 
 void IfStmt::PrintChildren(int indentLevel) {
@@ -113,8 +113,8 @@ void CaseStmt::PrintChildren(int identLevel) {
   this->body->PrintAll(identLevel+1);
 }
 
-void CaseStmt::analyze(Scope_stack& scope_stack) {
-  body->Apply([&](Stmt* stmt) { stmt->analyze(scope_stack); });
+void CaseStmt::analyze(reasonT focus) {
+  body->Apply([&](Stmt* stmt) { stmt->analyze(focus); });
 }
 
 void CaseStmt::build_table() {
@@ -129,8 +129,8 @@ void DefaultStmt::PrintChildren(int identLevel) {
   this->body->PrintAll(identLevel+1);
 }
 
-void DefaultStmt::analyze(Scope_stack& scope_stack) {
-  body->Apply([&](Stmt* stmt) { stmt->analyze(scope_stack); });
+void DefaultStmt::analyze(reasonT focus) {
+  body->Apply([&](Stmt* stmt) { stmt->analyze(focus); });
 }
 
 void DefaultStmt::build_table() {
@@ -157,10 +157,10 @@ void SwitchStmt::build_table() {
     defaultStmt->build_table();
 }
 
-void SwitchStmt::analyze(Scope_stack& scope_stack) {
-  cases->Apply([&](CaseStmt* caseStmt) { caseStmt->analyze(scope_stack); });
+void SwitchStmt::analyze(reasonT focus) {
+  cases->Apply([&](CaseStmt* caseStmt) { caseStmt->analyze(focus); });
   if (defaultStmt)
-    defaultStmt->analyze(scope_stack);
+    defaultStmt->analyze(focus);
 }
 
 ReturnStmt::ReturnStmt(yyltype loc, Expr *e) : Stmt(loc) {    Assert(e != NULL);

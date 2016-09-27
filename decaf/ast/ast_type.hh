@@ -44,8 +44,7 @@ class NamedType : public Type
 
   const char *GetPrintNameForNode() { return "NamedType"; }
   void PrintChildren(int indentLevel);
-  void analyze(Scope_stack& scope_stack) override;
-  void analyze(Scope_stack& scope_stack, reasonT focus) override;
+  void analyze(reasonT focus = LookingForType) override;
 
   std::string getName() { return id->getName(); }
   bool equal(Type* other) {
@@ -66,8 +65,7 @@ class ArrayType : public Type
 
   const char *GetPrintNameForNode() { return "ArrayType"; }
   void PrintChildren(int indentLevel);
-  void analyze(Scope_stack& scope_stack) override;
-  void analyze(Scope_stack& scope_stack, reasonT focus) override;
+  void analyze(reasonT focus) override;
   bool equal(Type* other) override {
     auto otherArrayType = dynamic_cast<ArrayType*>(other);
     if (!otherArrayType)

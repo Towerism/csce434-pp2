@@ -42,11 +42,7 @@ void NamedType::PrintChildren(int indentLevel) {
   id->Print(indentLevel+1);
 }
 
-void NamedType::analyze(Scope_stack& scope_stack) {
-  analyze(scope_stack, LookingForType);
-}
-
-void NamedType::analyze(Scope_stack& scope_stack, reasonT focus) {
+void NamedType::analyze(reasonT focus) {
   if (!Program::symbol_table.type_exists(id->getName()))
     ReportError::IdentifierNotDeclared(id, focus);
 }
@@ -59,10 +55,6 @@ void ArrayType::PrintChildren(int indentLevel) {
   elemType->Print(indentLevel+1);
 }
 
-void ArrayType::analyze(Scope_stack& scope_stack) {
-  elemType->analyze(scope_stack);
-}
-
-void ArrayType::analyze(Scope_stack& scope_stack, reasonT focus) {
-  elemType->analyze(scope_stack, focus);
+void ArrayType::analyze(reasonT focus) {
+  elemType->analyze(focus);
 }

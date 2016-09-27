@@ -16,7 +16,6 @@
 #include "analyzable.hh"
 #include "ast.hh"
 #include "closeable.hh"
-#include "scope_stack.hh"
 #include "symbol_table.hh"
 
 class Decl;
@@ -33,7 +32,7 @@ public:
   const char *GetPrintNameForNode() { return "Program"; }
   void PrintChildren(int indentLevel);
   void build_table() override;
-  void analyze(Scope_stack& scope_stack) override;
+  void analyze(reasonT focus = LookingForType) override;
 
   static Symbol_table symbol_table;
 };
@@ -56,7 +55,7 @@ public:
   const char *GetPrintNameForNode() { return "StmtBlock"; }
   void PrintChildren(int indentLevel);
   void build_table() override;
-  void analyze(Scope_stack& scope_stack) override;
+  void analyze(reasonT focus) override;
 };
 
 class ConditionalStmt : public Stmt
@@ -68,7 +67,7 @@ protected:
 public:
   ConditionalStmt(Expr *testExpr, Stmt *body);
   virtual void build_table() override;
-  virtual void analyze(Scope_stack& scope_stack) override;
+  virtual void analyze(reasonT focus) override;
 };
 
 class LoopStmt : public ConditionalStmt{
@@ -101,7 +100,7 @@ public:
   const char *GetPrintNameForNode() { return "IfStmt"; }
   void PrintChildren(int indentLevel);
   void build_table() override;
-  void analyze(Scope_stack& scope_stack) override;
+  void analyze(reasonT focus) override;
 };
 
 class BreakStmt : public Stmt{
@@ -119,7 +118,7 @@ public:
   const char *GetPrintNameForNode() { return "CaseStmt";}
   void PrintChildren(int identLevel);
   void build_table() override;
-  void analyze(Scope_stack& scope_stack) override;
+  void analyze(reasonT focus) override;
 };
 
 class DefaultStmt : public Stmt {
@@ -130,7 +129,7 @@ public:
   const char *GetPrintNameForNode() { return "DefaultStmt";}
   void PrintChildren(int identLevel);
   void build_table() override;
-  void analyze(Scope_stack& scope_stack) override;
+  void analyze(reasonT focus) override;
 };
 
 class SwitchStmt : public Stmt {
@@ -143,7 +142,7 @@ public:
   const char *GetPrintNameForNode() { return "SwitchStmt"; }
   void PrintChildren(int identLevel);
   void build_table() override;
-  void analyze(Scope_stack& scope_stack) override;
+  void analyze(reasonT focus) override;
 };
 
 class ReturnStmt : public Stmt{
