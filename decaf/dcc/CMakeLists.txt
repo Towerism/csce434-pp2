@@ -2,4 +2,10 @@ add_executable(dcc
   dcc.cc
   )
 
-target_link_libraries(dcc -lm decaf)
+set(DCC_LIBS
+  ast
+  parse
+  util
+  -lm
+  )
+target_link_libraries(dcc ${DCC_LIBS})

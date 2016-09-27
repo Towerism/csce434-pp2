@@ -11,11 +11,7 @@
 // (types, classes, constants, etc.)
 
 #include <util/list.hh>       	// because we use all these types
-#include <ast/ast.hh>		// in the union, we need their declarations
-#include <ast/ast_type.hh>
-#include <ast/ast_decl.hh>
-#include <ast/ast_expr.hh>
-#include <ast/ast_stmt.hh>
+#include <ast/ast.hh>
 #include "scanner.hh"            // for MaxIdentLen
 
 

@@ -27,71 +27,12 @@
  * nodes and wire them up during parsing. Once that's done, printing is a snap!
 
  */
-
 #ifndef _H_ast
 #define _H_ast
 
-#include <iostream>
-#include <string>
-#include <stdlib.h>   // for NULL
-#include <parse/location.hh>
-#include <util/errors.hh>
-#include "analyzable.hh"
-
-class Node : public Analyzable
-{
- protected:
-  yyltype *location;
-  Node *parent;
-
- public:
-  Node(yyltype loc);
-  Node();
-
-  yyltype *GetLocation()   { return location; }
-  void SetParent(Node *p)  { parent = p; }
-  Node *GetParent()        { return parent; }
-
-  virtual const char *GetPrintNameForNode() = 0;
-
-  // Print() is deliberately _not_ virtual
-  // subclasses should override PrintChildren() instead
-  void Print(int indentLevel, const char *label = NULL);
-  virtual void PrintChildren(int indentLevel)  {}
-
-  virtual void analyze(reasonT focus) override {}
-};
-
-
-class Identifier : public Node
-{
- protected:
-  char *name;
-
- public:
-  Identifier(yyltype loc, const char *name);
-  const char *GetPrintNameForNode()   { return "Identifier"; }
-  void PrintChildren(int indentLevel);
-  std::string getName() const { return std::string(name); }
-
-  friend std::ostream& operator<<(std::ostream& out, Identifier* id) {
-    return out << id->name;
-  }
-};
-
-
-// This node class is designed to represent a portion of the tree that
-// encountered syntax errors during parsing. The partial completed tree
-// is discarded along with the states being popped, and an instance of
-// the Error class can stand in as the placeholder in the parse tree
-// when your parser can continue after an error.
-class Error : public Node
-{
- public:
- Error() : Node() {}
-  const char *GetPrintNameForNode()   { return "Error"; }
-};
-
-
+#include <ast/decl/ast_decl.hh>
+#include <ast/expr/ast_expr.hh>
+#include <ast/stmt/ast_stmt.hh>
+#include <ast/type/ast_type.hh>
 
 #endif

@@ -1,11 +1,5 @@
-/* File: ast.cc
- * ------------
- */
+#include "node.hh"
 
-#include "ast.hh"
-#include "ast_type.hh"
-#include "ast_decl.hh"
-#include <string.h> // strdup
 #include <stdio.h>  // printf
 
 Node::Node(yyltype loc) {
@@ -36,12 +30,4 @@ void Node::Print(int indentLevel, const char *label) {
   printf("%*s%s%s: ", indentLevel*numSpaces, "",
          label? label : "", GetPrintNameForNode());
   PrintChildren(indentLevel);
-}
-
-Identifier::Identifier(yyltype loc, const char *n) : Node(loc) {
-  name = strdup(n);
-}
-
-void Identifier::PrintChildren(int indentLevel) {
-  printf("%s", name);
 }

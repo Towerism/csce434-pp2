@@ -3,7 +3,8 @@
 #include <algorithm>
 
 #include <util/errors.hh>
-#include "ast_decl.hh"
+
+#include "decl/ast_decl.hh"
 
 void Symbol_table::declare(Decl* declaration) {
   detect_previous_declaration(declaration);
