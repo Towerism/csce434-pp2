@@ -25,7 +25,7 @@
 // Managing C headers can be such a mess!
 
 #ifndef YYBISON
-#include "parse.hh"
+#include <decaf/parse/parse.hh>
 #endif
 
 int yyparse();              // Defined in the generated y.tab.c file

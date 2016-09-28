@@ -8,5 +8,7 @@ find_package(FLEX REQUIRED)
 find_package(BISON REQUIRED)
 
 include_directories(decaf)
+include_directories(${CMAKE_BINARY_DIR})
+
 add_subdirectory(decaf)
 add_subdirectory(test)

@@ -9,8 +9,8 @@
 #include <util/list.hh>
 #include <util/utility.hh> // for PrintDebug()
 #include <util/errors.hh>
-#include "scanner.hh"
-#include "parser.hh" // for token codes, yylval
+#include <parse/scanner.hh>
+#include <parse/parser.hh> // for token codes, yylval
 
 #define TAB_SIZE 8
 

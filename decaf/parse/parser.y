@@ -20,8 +20,8 @@
 
 #include <util/errors.hh>
 #include <util/utility.hh>
-#include "scanner.hh" // for yylex
-#include "parser.hh"
+#include <parse/scanner.hh> // for yylex
+#include <parse/parser.hh>
 
   void yyerror(const char *msg); // standard error-handling routine
 
