@@ -21,6 +21,11 @@ void ClassDecl::PrintChildren(int indentLevel) {
 void ClassDecl::build_table() {
   members->Apply([&](Decl* decl) { symbol_table.declare(decl); });
   members->Apply([&](Decl* decl) { decl->build_table(); });
+  add_virtuals();
+  members->Apply([&](Decl* decl) { symbol_table.check_virtual(decl); });
+}
+
+void ClassDecl::add_virtuals() {
   implements->Apply([&](NamedType* type) {
       auto interface = Program::symbol_table.get_interface(type->getName());
       if (interface) {
@@ -30,21 +35,20 @@ void ClassDecl::build_table() {
           });
       }
     });
-  members->Apply([&](Decl* decl) {
-      symbol_table.check_virtual(decl);
-    });
 }
 
 void ClassDecl::analyze(reasonT focus) {
+  extend();
+  members->Apply([&](Decl* decl) { symbol_table.check_super(decl); });
+  implements->Apply([&](NamedType* type) { type->analyze(LookingForInterface); });
+  members->Apply([&](Decl* decl) { decl->analyze(LookingForType); });
+}
+
+void ClassDecl::extend() {
   if (extends) {
     extends->analyze(LookingForClass);
     auto superClass = Program::symbol_table.get_class(extends->getName());
     if (superClass)
       symbol_table.set_super(superClass->symbol_table);
   }
-  implements->Apply([&](NamedType* type) { type->analyze(LookingForInterface); });
-  members->Apply([&](Decl* decl) {
-      symbol_table.check_super(decl);
-    });
-  members->Apply([&](Decl* decl) { decl->analyze(LookingForType); });
 }

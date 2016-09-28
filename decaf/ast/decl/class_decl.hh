@@ -22,6 +22,10 @@ public:
   void PrintChildren(int indentLevel);
   void build_table() override;
   void analyze(reasonT focus) override;
+
+private:
+  void add_virtuals();
+  void extend();
 };
 
 #endif /* CLASS_DECL_H */
