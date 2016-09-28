@@ -39,6 +39,7 @@ compile copy-dcc::
 
 clean:: ##clean build system
 	@echo "-- Cleaning"
+	@$(MAKE) -C $(BUILD_DIR) clean
 clean clean-build::
 	@echo "-- Removing Build Directory"
 	@rm -rf $(BUILD_DIR)
