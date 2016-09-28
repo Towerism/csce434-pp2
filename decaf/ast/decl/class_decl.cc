@@ -21,6 +21,18 @@ void ClassDecl::PrintChildren(int indentLevel) {
 void ClassDecl::build_table() {
   members->Apply([&](Decl* decl) { symbol_table.declare(decl); });
   members->Apply([&](Decl* decl) { decl->build_table(); });
+  implements->Apply([&](NamedType* type) {
+      auto interface = Program::symbol_table.get_interface(type->getName());
+      if (interface) {
+        auto members = interface->get_members();
+        members->Apply([&](Decl* member) {
+            symbol_table.add_virtual(member);
+          });
+      }
+    });
+  members->Apply([&](Decl* decl) {
+      symbol_table.check_virtual(decl);
+    });
 }
 
 void ClassDecl::analyze(reasonT focus) {
@@ -31,20 +43,8 @@ void ClassDecl::analyze(reasonT focus) {
       symbol_table.set_super(superClass->symbol_table);
   }
   implements->Apply([&](NamedType* type) { type->analyze(LookingForInterface); });
-  implements->Apply([&](NamedType* type) {
-      auto interface = Program::symbol_table.get_interface(type->getName());
-      if (interface) {
-        auto members = interface->get_members();
-        members->Apply([&](Decl* member) {
-          symbol_table.add_virtual(member);
-          });
-      }
-    });
   members->Apply([&](Decl* decl) {
       symbol_table.check_super(decl);
-    });
-  members->Apply([&](Decl* decl) {
-      symbol_table.check_virtual(decl);
     });
   members->Apply([&](Decl* decl) { decl->analyze(LookingForType); });
 }
