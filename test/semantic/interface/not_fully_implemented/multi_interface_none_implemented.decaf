@@ -1,0 +1,10 @@
+class Asdf implements Qwer, Rewq {
+}
+
+interface Qwer {
+          int a(bool b);
+}
+
+interface Rewq {
+          string b(bool c);
+}

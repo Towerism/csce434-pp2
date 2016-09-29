@@ -31,7 +31,7 @@ void ClassDecl::add_virtuals() {
       if (interface) {
         auto members = interface->get_members();
         members->Apply([&](Decl* member) {
-            symbol_table.add_virtual(member);
+            symbol_table.add_virtual(type, dynamic_cast<FnDecl*>(member));
           });
       }
     });
@@ -42,6 +42,7 @@ void ClassDecl::analyze(reasonT focus) {
   members->Apply([&](Decl* decl) { symbol_table.check_super(decl); });
   implements->Apply([&](NamedType* type) { type->analyze(LookingForInterface); });
   members->Apply([&](Decl* decl) { decl->analyze(LookingForType); });
+  symbol_table.check_virtuals_implemented(this, implements);
 }
 
 void ClassDecl::extend() {

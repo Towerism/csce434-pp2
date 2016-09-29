@@ -20,6 +20,7 @@ public:
       return false;
     return elemType->equal(otherArrayType->elemType);
   }
+  std::string getName() override { return elemType->getName(); }
 };
 
 #endif /* ARRAY_TYPE_H */

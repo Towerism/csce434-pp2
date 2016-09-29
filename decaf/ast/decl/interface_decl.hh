@@ -1,6 +1,8 @@
 #ifndef INTERFACE_DECL_H
 #define INTERFACE_DECL_H
 
+#include <iostream>
+
 #include <util/list.hh>
 #include <ast/node.hh>
 #include <ast/identifier.hh>

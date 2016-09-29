@@ -1,0 +1,6 @@
+
+*** Error line 1.
+class Asdf implements Qwer {
+                      ^^^^
+*** Class 'Asdf' does not implement entire interface 'Qwer'
+

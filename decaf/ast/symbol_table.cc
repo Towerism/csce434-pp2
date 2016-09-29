@@ -31,12 +31,12 @@ void Symbol_table::declare(Decl* declaration) {
 }
 
 #include <iostream>
-void Symbol_table::add_virtual(Decl* declaration) {
+void Symbol_table::add_virtual(NamedType* interface_type, Decl* declaration) {
   Decl* prev_decl = virtuals.contains(declaration->getName());
   if (prev_decl)
     ReportError::DeclConflict(declaration, prev_decl);
   auto function_declaration = dynamic_cast<FnDecl*>(declaration);
-  virtuals.declare(function_declaration);
+  virtuals.add(interface_type->getName(), function_declaration);
 }
 
 void Symbol_table::detect_previous_declaration(Decl* new_declaration) {
@@ -78,6 +78,42 @@ void Symbol_table::check_super(Decl* declaration) {
     }
     current = current->super;
   } while(current != nullptr);
+}
+
+void Symbol_table::check_virtuals_implemented(ClassDecl* class_decl, List<NamedType*>* interface_types) {
+  interface_types->Apply([&](NamedType* type) {
+      auto interface = Program::symbol_table.get_interface(type->getName());
+      if (!interface) {
+        return;
+      }
+      auto interface_virtuals = virtuals.get_functions(type->getName());
+      bool not_fully_implemented = std::any_of(interface_virtuals->begin(), interface_virtuals->end(), [&](std::pair<std::string, FnDecl*> key_function) {
+          auto function = key_function.second;
+          auto function_implemented = functions.contains(function->getName());
+          if (nullptr == function_implemented)
+            function_implemented = find_inherited_function(function);
+          return nullptr == function_implemented;
+        });
+      if (not_fully_implemented)
+        ReportError::InterfaceNotImplemented(class_decl, type);
+    });
+}
+
+// refactor this
+FnDecl* Symbol_table::find_inherited_function(FnDecl* declaration) {
+  if (!super)
+    return nullptr;
+  auto current = super;
+  do {
+    auto function = dynamic_cast<FnDecl*>(declaration);
+    if (function) {
+      auto super_function = current->functions.contains(function->getName());
+      if (super_function)
+        return super_function;
+    }
+    current = current->super;
+  } while(current != nullptr);
+  return nullptr;
 }
 
 bool Symbol_table::type_exists(std::string name) {

@@ -1,0 +1,12 @@
+
+*** Error line 1.
+class Asdf implements Qwer, Rewq {
+                      ^^^^
+*** Class 'Asdf' does not implement entire interface 'Qwer'
+
+
+*** Error line 1.
+class Asdf implements Qwer, Rewq {
+                            ^^^^
+*** Class 'Asdf' does not implement entire interface 'Rewq'
+

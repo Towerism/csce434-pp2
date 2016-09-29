@@ -1,0 +1,12 @@
+class Asdf {
+      int a(bool b) {}
+}
+
+class Qwer extends Asdf implements Rewq {
+      int b(string c) {}
+}
+
+interface Rewq {
+          int a(bool b);
+          int b(string c);
+}

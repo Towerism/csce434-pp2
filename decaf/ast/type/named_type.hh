@@ -16,7 +16,7 @@ public:
   void PrintChildren(int indentLevel);
   void analyze(reasonT focus = LookingForType) override;
 
-  std::string getName() { return id->getName(); }
+  std::string getName() override { return id->getName(); }
   bool equal(Type* other) {
     auto* otherNamedType = dynamic_cast<NamedType*>(other);
     if (!otherNamedType)

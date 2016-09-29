@@ -19,6 +19,11 @@ public :
   const char *GetPrintNameForNode() { return "Type"; }
   void PrintChildren(int indentLevel);
   virtual bool equal(Type* other) { return strcmp(typeName, other->typeName) == 0; }
+  virtual std::string getName() { return std::string(typeName); }
+
+  friend std::ostream& operator<<(std::ostream& out, Type* type) {
+    return out << type->getName();
+  }
 };
 
 #endif /* TYPE_H */

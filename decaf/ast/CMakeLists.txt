@@ -6,6 +6,7 @@ set(AST_SRCS
   node.cc
   identifier.cc
   symbol_table.cc
+  virtual_table.cc
   )
 
 add_library(ast ${AST_SRCS}

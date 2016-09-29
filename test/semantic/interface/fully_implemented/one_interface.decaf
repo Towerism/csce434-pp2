@@ -1,0 +1,17 @@
+class Asdf implements Qwer {
+          int a(bool b) {
+          }
+          bool b(int c) {
+          }
+          string c(bool d) {
+          }
+          bool d(bool e, bool f) {
+          }
+}
+
+interface Qwer {
+          int a(bool b);
+          bool b(int c);
+          string c(bool d);
+          bool d(bool e, bool f);
+}
