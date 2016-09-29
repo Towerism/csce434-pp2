@@ -2,13 +2,13 @@ set(TEST_SCRIPT "./test.sh")
 set(TEST_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 add_custom_target(run-tests
-  DEPENDS test-syntax test-scope
+  DEPENDS  test-syntax test-semantic
   )
 
-add_custom_target(test-scope
-  COMMAND ${TEST_SCRIPT} $<TARGET_FILE:dcc> scope
+add_custom_target(test-semantic
+  COMMAND ${TEST_SCRIPT} $<TARGET_FILE:dcc> semantic
   WORKING_DIRECTORY ${TEST_DIR}
-  COMMENT "Running scope analysis tests"
+  COMMENT "Running semantic analysis tests"
   )
 
 add_custom_target(test-syntax
