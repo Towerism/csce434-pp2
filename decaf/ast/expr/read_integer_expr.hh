@@ -6,7 +6,7 @@
 class ReadIntegerExpr : public Expr {
 public:
   ReadIntegerExpr(yyltype loc) : Expr(loc) {}
-  const char *GetPrintNameForNode() { return "ReadIntegerExpr"; }
+  const char *GetPrintNameForNode() override { return "ReadIntegerExpr"; }
 };
 
 #endif /* READ_INTEGER_EXPR_H */

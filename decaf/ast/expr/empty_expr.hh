@@ -8,7 +8,7 @@
  * NULL. By using a valid, but no-op, node, we save that trouble */
 class EmptyExpr : public Expr {
 public:
-  const char *GetPrintNameForNode() { return "Empty"; }
+  const char *GetPrintNameForNode() override { return "Empty"; }
 };
 
 #endif /* EMPTY_EXPR_H */

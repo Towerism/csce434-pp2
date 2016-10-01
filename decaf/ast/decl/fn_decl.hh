@@ -22,8 +22,8 @@ protected:
 public:
   FnDecl(Identifier *name, Type *returnType, List<VarDecl*> *formals);
   void SetFunctionBody(Stmt *b);
-  const char *GetPrintNameForNode() { return "FnDecl"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "FnDecl"; }
+  void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
   bool matches_signature(FnDecl* other);

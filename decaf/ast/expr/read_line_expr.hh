@@ -6,7 +6,7 @@
 class ReadLineExpr : public Expr {
 public:
   ReadLineExpr(yyltype loc) : Expr (loc) {}
-  const char *GetPrintNameForNode() { return "ReadLineExpr"; }
+  const char *GetPrintNameForNode() override { return "ReadLineExpr"; }
 };
 
 #endif /* READ_LINE_EXPR_H */

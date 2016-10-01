@@ -10,8 +10,8 @@ protected:
   Expr *expr;
 public:
   ReturnStmt(yyltype loc, Expr *expr);
-  const char *GetPrintNameForNode() { return "ReturnStmt"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "ReturnStmt"; }
+  void PrintChildren(int indentLevel) override;
 };
 
 #endif /* RETURN_STMT_H */

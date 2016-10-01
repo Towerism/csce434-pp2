@@ -8,8 +8,8 @@ protected:
   Expr *base, *subscript;
 public:
   ArrayAccess(yyltype loc, Expr *base, Expr *subscript);
-  const char *GetPrintNameForNode() { return "ArrayAccess"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "ArrayAccess"; }
+  void PrintChildren(int indentLevel) override;
 };
 
 #endif /* ARRAY_ACCESS_H */

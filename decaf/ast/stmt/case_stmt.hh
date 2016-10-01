@@ -11,8 +11,8 @@ protected:
   List<Stmt*>* body;
 public:
   CaseStmt(yyltype loc, IntConstant* label, List<Stmt*>* body);
-  const char *GetPrintNameForNode() { return "CaseStmt";}
-  void PrintChildren(int identLevel);
+  const char *GetPrintNameForNode() override { return "CaseStmt";}
+  void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
 };

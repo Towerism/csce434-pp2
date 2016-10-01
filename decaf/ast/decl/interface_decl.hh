@@ -18,8 +18,8 @@ protected:
 
 public:
   InterfaceDecl(Identifier *name, List<Decl*> *members);
-  const char *GetPrintNameForNode() { return "InterfaceDecl"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "InterfaceDecl"; }
+  void PrintChildren(int indentLevel) override;
   void build_table() override;
 
   List<Decl*>* get_members() { return members; }

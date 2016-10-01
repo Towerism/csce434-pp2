@@ -12,12 +12,12 @@ protected:
 public:
   NamedType(Identifier *i);
 
-  const char *GetPrintNameForNode() { return "NamedType"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "NamedType"; }
+  void PrintChildren(int indentLevel) override;
   void analyze(reasonT focus = LookingForType) override;
 
   std::string getName() override { return id->getName(); }
-  bool equal(Type* other) {
+  bool equal(Type* other) override {
     auto* otherNamedType = dynamic_cast<NamedType*>(other);
     if (!otherNamedType)
       return false;

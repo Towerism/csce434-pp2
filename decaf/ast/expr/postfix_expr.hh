@@ -7,7 +7,7 @@ class PostfixExpr : public CompoundExpr {
 public:
   PostfixExpr(Expr *lhs, Operator *op) : CompoundExpr(lhs, op) {}
 
-  const char *GetPrintNameForNode() { return "PostfixExpr"; }
+  const char *GetPrintNameForNode() override { return "PostfixExpr"; }
 };
 
 #endif /* POSTFIX_EXPR_H */

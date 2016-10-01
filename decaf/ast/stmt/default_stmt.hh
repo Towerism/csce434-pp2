@@ -10,8 +10,8 @@ protected:
   List<Stmt*>* body;
 public:
   DefaultStmt(yyltype loc, List<Stmt*>* body);
-  const char *GetPrintNameForNode() { return "DefaultStmt";}
-  void PrintChildren(int identLevel);
+  const char *GetPrintNameForNode() override { return "DefaultStmt";}
+  void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
 };

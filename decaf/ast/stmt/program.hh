@@ -15,8 +15,8 @@ protected:
   List<Decl*> *decls;
 public:
   Program(List<Decl*> *declList);
-  const char *GetPrintNameForNode() { return "Program"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "Program"; }
+  void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus = LookingForType) override;
 

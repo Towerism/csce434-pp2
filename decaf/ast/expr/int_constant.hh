@@ -8,8 +8,8 @@ protected:
   int value;
 public:
   IntConstant(yyltype loc, int val);
-  const char *GetPrintNameForNode() { return "IntConstant"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "IntConstant"; }
+  void PrintChildren(int indentLevel) override;
 };
 
 #endif /* INT_CONSTANT_H */

@@ -12,7 +12,7 @@ public:
   CompoundExpr(Expr *lhs, Operator *op, Expr *rhs); // for binary
   CompoundExpr(Operator *op, Expr *rhs);             // for unary
   CompoundExpr(Expr *lhs, Operator *op);             // for postfix
-  void PrintChildren(int indentLevel);
+  void PrintChildren(int indentLevel) override;
 };
 
 #endif /* COMPOUND_EXPR_H */

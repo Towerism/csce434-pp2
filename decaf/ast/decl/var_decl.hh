@@ -11,8 +11,8 @@ protected:
 
 public:
   VarDecl(Identifier *name, Type *type);
-  const char *GetPrintNameForNode() { return "VarDecl"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "VarDecl"; }
+  void PrintChildren(int indentLevel) override;
   void analyze(reasonT focus) override;
 
   Type* getType() { return type; }

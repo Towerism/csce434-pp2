@@ -8,8 +8,8 @@ protected:
   Stmt *elseBody;
 public:
   IfStmt(Expr *test, Stmt *thenBody, Stmt *elseBody);
-  const char *GetPrintNameForNode() { return "IfStmt"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "IfStmt"; }
+  void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
 };

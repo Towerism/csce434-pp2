@@ -15,8 +15,8 @@ protected:
   Symbol_table symbol_table;
 public:
   StmtBlock(List<VarDecl*> *variableDeclarations, List<Stmt*> *statements);
-  const char *GetPrintNameForNode() { return "StmtBlock"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "StmtBlock"; }
+  void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
 };

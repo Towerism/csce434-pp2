@@ -18,8 +18,8 @@ protected:
 public:
   ClassDecl(Identifier *name, NamedType *extends,
             List<NamedType*> *implements, List<Decl*> *members);
-  const char *GetPrintNameForNode() { return "ClassDecl"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "ClassDecl"; }
+  void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
 

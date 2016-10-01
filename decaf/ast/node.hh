@@ -25,9 +25,12 @@ public:
   // Print() is deliberately _not_ virtual
   // subclasses should override PrintChildren() instead
   void Print(int indentLevel, const char *label = NULL);
-  virtual void PrintChildren(int indentLevel)  {}
 
-  virtual void analyze(reasonT focus) override {}
+  // pass in the identLevel
+  virtual void PrintChildren(int) {}
+
+  // pass in the reason for analyzing
+  virtual void analyze(reasonT) override {}
 };
 
 #endif /* NODE_H */

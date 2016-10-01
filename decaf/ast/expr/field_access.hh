@@ -15,6 +15,6 @@ protected:
   Identifier *field;
 public:
   FieldAccess(Expr *base, Identifier *field); //ok to pass NULL base
-  const char *GetPrintNameForNode() { return "FieldAccess"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "FieldAccess"; }
+  void PrintChildren(int indentLevel) override;
 };

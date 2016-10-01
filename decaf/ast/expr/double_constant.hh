@@ -8,8 +8,8 @@ protected:
   double value;
 public:
   DoubleConstant(yyltype loc, double val);
-  const char *GetPrintNameForNode() { return "DoubleConstant"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "DoubleConstant"; }
+  void PrintChildren(int indentLevel) override;
 };
 
 #endif /* DOUBLE_CONSTANT_H */

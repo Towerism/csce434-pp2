@@ -5,7 +5,7 @@
 
 class NullConstant: public Expr {
 public:    NullConstant(yyltype loc) : Expr(loc) {}
-  const char *GetPrintNameForNode() { return "NullConstant"; }
+  const char *GetPrintNameForNode() override { return "NullConstant"; }
 };
 
 #endif /* NULL_CONSTANT_H */

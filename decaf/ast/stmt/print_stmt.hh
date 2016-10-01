@@ -11,8 +11,8 @@ protected:
   List<Expr*> *args;
 public:
   PrintStmt(List<Expr*> *arguments);
-  const char *GetPrintNameForNode() { return "PrintStmt"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "PrintStmt"; }
+  void PrintChildren(int indentLevel) override;
 };
 
 #endif /* PRINT_STMT_H */

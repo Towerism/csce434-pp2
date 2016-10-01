@@ -14,8 +14,8 @@ protected:
   DefaultStmt* defaultStmt;
 public:
   SwitchStmt(yyltype loc, Expr *test, List<CaseStmt*>* cases, DefaultStmt* defaultStmt);
-  const char *GetPrintNameForNode() { return "SwitchStmt"; }
-  void PrintChildren(int identLevel);
+  const char *GetPrintNameForNode() override { return "SwitchStmt"; }
+  void PrintChildren(int identLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
 };

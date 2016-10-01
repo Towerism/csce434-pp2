@@ -6,7 +6,7 @@
 class EqualityExpr : public CompoundExpr {
 public:
   EqualityExpr(Expr *lhs, Operator *op, Expr *rhs) : CompoundExpr(lhs,op,rhs) {}
-  const char *GetPrintNameForNode() { return "EqualityExpr"; }
+  const char *GetPrintNameForNode() override { return "EqualityExpr"; }
 };
 
 #endif /* EQUALITY_EXPR_H */

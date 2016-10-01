@@ -16,8 +16,8 @@ public :
   Type(yyltype loc) : Node(loc) {}
   Type(const char *str);
 
-  const char *GetPrintNameForNode() { return "Type"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "Type"; }
+  void PrintChildren(int indentLevel) override;
   virtual bool equal(Type* other) { return strcmp(typeName, other->typeName) == 0; }
   virtual std::string getName() { return std::string(typeName); }
 

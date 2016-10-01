@@ -7,6 +7,6 @@ protected:
   NamedType *cType;
 public:
   NewExpr(yyltype loc, NamedType *clsType);
-  const char *GetPrintNameForNode() { return "NewExpr"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "NewExpr"; }
+  void PrintChildren(int indentLevel) override;
 };

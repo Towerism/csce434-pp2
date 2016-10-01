@@ -11,8 +11,8 @@ protected:
 public:
   ArrayType(yyltype loc, Type *elemType);
 
-  const char *GetPrintNameForNode() { return "ArrayType"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "ArrayType"; }
+  void PrintChildren(int indentLevel) override;
   void analyze(reasonT focus) override;
   bool equal(Type* other) override {
     auto otherArrayType = dynamic_cast<ArrayType*>(other);

@@ -8,8 +8,8 @@ protected:
   char tokenString[4];
 public:
   Operator(yyltype loc, const char *tok);
-  const char *GetPrintNameForNode() { return "Operator"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "Operator"; }
+  void PrintChildren(int indentLevel) override;
 };
 
 #endif /* OPERATOR_H */

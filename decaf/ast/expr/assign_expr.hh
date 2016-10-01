@@ -6,7 +6,7 @@
 class AssignExpr : public CompoundExpr {
 public:
   AssignExpr(Expr *lhs, Operator *op, Expr *rhs) : CompoundExpr(lhs,op,rhs) {}
-  const char *GetPrintNameForNode() { return "AssignExpr"; }
+  const char *GetPrintNameForNode() override { return "AssignExpr"; }
 };
 
 #endif /* ASSIGN_EXPR_H */

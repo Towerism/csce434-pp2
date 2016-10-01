@@ -8,8 +8,8 @@ protected:
   bool value;
 public:
   BoolConstant(yyltype loc, bool val);
-  const char *GetPrintNameForNode() { return "BoolConstant"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "BoolConstant"; }
+  void PrintChildren(int indentLevel) override;
 };
 
 #endif /* BOOL_CONSTANT_H */
