@@ -1,4 +1,4 @@
 int asdf() {
-    for (0; 0; a) {
+    for (0; true; a) {
     }
 }

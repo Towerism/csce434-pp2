@@ -2,7 +2,7 @@ class Asdf {}
 
 int asdf() {
     Asdf fdsa;
-    if (0);
+    if (true);
     else {
          fdsa;
     }
