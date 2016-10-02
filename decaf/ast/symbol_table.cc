@@ -142,6 +142,7 @@ Decl* Symbol_table::check_declared(Identifier* identifier) {
     current = current->parent;
   } while(current != nullptr);
   ReportError::IdentifierNotDeclared(identifier, LookingForVariable);
-  variables.declare(new VarDecl(identifier, Type::errorType));
-  return nullptr;
+  auto error_decl = new VarDecl(identifier, Type::errorType);
+  variables.declare(error_decl);
+  return error_decl;
 }

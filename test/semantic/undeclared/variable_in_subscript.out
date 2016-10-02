@@ -1,0 +1,6 @@
+
+*** Error line 3.
+    a[b];
+      ^
+*** No declaration found for variable 'b'
+

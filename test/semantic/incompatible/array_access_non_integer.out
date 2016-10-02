@@ -1,0 +1,6 @@
+
+*** Error line 3.
+    a[a];
+      ^
+*** Array subscript must be an integer
+

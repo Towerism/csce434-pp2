@@ -19,4 +19,7 @@ void ArrayAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
   auto array_type = dynamic_cast<ArrayType*>(base_type);
   if (!array_type && base_type != Type::errorType)
     ReportError::BracketsOnNonArray(base);
+  auto subscript_type = subscript->evaluate_type(symbol_table);
+  if (!subscript_type->equal(Type::intType))
+    ReportError::SubscriptNotInteger(subscript);
 }
