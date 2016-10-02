@@ -1,0 +1,6 @@
+
+*** Error line 3.
+    NewArray(true, a);
+             ^^^^
+*** Size for NewArray must be an integer
+

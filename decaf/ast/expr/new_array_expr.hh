@@ -10,4 +10,5 @@ public:
   NewArrayExpr(yyltype loc, Expr *sizeExpr, Type *elemType);
   const char *GetPrintNameForNode() override { return "NewArrayExpr"; }
   void PrintChildren(int indentLevel) override;
+  void analyze(Symbol_table* symbol_table, reasonT focus) override;
 };

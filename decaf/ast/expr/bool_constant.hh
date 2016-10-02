@@ -10,6 +10,7 @@ public:
   BoolConstant(yyltype loc, bool val);
   const char *GetPrintNameForNode() override { return "BoolConstant"; }
   void PrintChildren(int indentLevel) override;
+  Type* evaluate_type(Symbol_table* symbol_table) override { return Type::boolType; }
 };
 
 #endif /* BOOL_CONSTANT_H */
