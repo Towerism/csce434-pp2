@@ -10,7 +10,14 @@ IfStmt::IfStmt(Expr *t, Stmt *tb, Stmt *eb): ConditionalStmt(t, tb) {
 
 void IfStmt::build_table() {
   ConditionalStmt::build_table();
-  if (elseBody) elseBody->build_table();
+  if (elseBody)
+    elseBody->build_table();
+}
+
+void IfStmt::set_parent(Symbol_table& other) {
+  ConditionalStmt::set_parent(other);
+  if (elseBody)
+    elseBody->set_parent(other);
 }
 
 void IfStmt::PrintChildren(int indentLevel) {

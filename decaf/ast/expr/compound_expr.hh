@@ -13,6 +13,7 @@ public:
   CompoundExpr(Operator *op, Expr *rhs);             // for unary
   CompoundExpr(Expr *lhs, Operator *op);             // for postfix
   void PrintChildren(int indentLevel) override;
+  void analyze(Symbol_table* symbol_table, reasonT focus) override;
 };
 
 #endif /* COMPOUND_EXPR_H */

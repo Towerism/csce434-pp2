@@ -23,6 +23,7 @@ public:
   void build_table() override;
   void analyze(reasonT focus) override;
   void set_parent(Symbol_table& other) override { symbol_table.set_parent(other); }
+  Type* get_type() override { return new NamedType(id); }
 
 private:
   void add_virtuals();

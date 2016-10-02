@@ -1,0 +1,9 @@
+class Asdf {
+      int total;
+}
+
+class Qwer extends Asdf {
+      int asdf() {
+          total = 0;
+      }
+}

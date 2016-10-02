@@ -24,6 +24,7 @@ public:
   void set_parent(Symbol_table& other) override { symbol_table.set_parent(other); }
 
   List<Decl*>* get_members() { return members; }
+  Type* get_type() override { return new NamedType(id); }
 };
 
 #endif /* INTERFACE_DECL_H */

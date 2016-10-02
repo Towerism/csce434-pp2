@@ -29,6 +29,7 @@ public:
   void analyze(reasonT focus) override;
   bool matches_signature(FnDecl* other);
   void set_parent(Symbol_table& other) override;
+  Type* get_type() override { return returnType; }
 };
 
 #endif /* FN_DECL_H */

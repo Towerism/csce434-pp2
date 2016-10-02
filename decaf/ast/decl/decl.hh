@@ -19,6 +19,7 @@ public:
     return out << decl->getName();
   }
   virtual void set_parent(Symbol_table& other) override {}
+  virtual Type* get_type() = 0;
 };
 
 #endif /* DECL_H */

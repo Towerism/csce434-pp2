@@ -3,6 +3,7 @@
 #include <util/utility.hh>
 
 #include <ast/symbol_table.hh>
+#include <ast/decl/decl.hh>
 
 FieldAccess::FieldAccess(Expr *b, Identifier *f)  : LValue(b? Join(b->GetLocation(), f->GetLocation()) : *f->GetLocation()) {
   Assert(f != NULL); // b can be be NULL (just means no explicit base)
@@ -18,4 +19,9 @@ void FieldAccess::PrintChildren(int indentLevel) {
 
 void FieldAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
   symbol_table->check_declared(field);
+}
+
+Type* FieldAccess::evaluate_type(Symbol_table* symbol_table) {
+  auto symbol = symbol_table->check_declared(field);
+  return symbol->get_type();
 }

@@ -16,6 +16,7 @@ public:
   void analyze(reasonT focus) override;
 
   Type* getType() { return type; }
+  Type* get_type() override { return type; }
 };
 
 #endif /* VAR_DECL_H */

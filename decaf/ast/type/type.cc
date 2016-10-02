@@ -26,3 +26,11 @@ Type::Type(const char *n) {
 void Type::PrintChildren(int indentLevel) {
   printf("%s", typeName);
 }
+
+bool Type::equal(Type* other) {
+  if (!typeName || !other->typeName)
+    return false;
+  return strcmp(typeName, other->typeName) == 0
+    || other == Type::errorType
+    || this == Type::errorType;
+}

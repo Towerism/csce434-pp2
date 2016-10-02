@@ -30,7 +30,7 @@ public:
   void set_super(Symbol_table& super_table) { super = &super_table; }
   void check_virtuals_implemented(ClassDecl* class_decl, List<NamedType*>* interface_types);
   void set_parent(Symbol_table& parent_table) { parent = &parent_table; }
-  void check_declared(Identifier* identifier);
+  Decl* check_declared(Identifier* identifier);
 
   ClassDecl* get_class(std::string name);
   InterfaceDecl* get_interface(std::string name);
@@ -46,7 +46,8 @@ private:
   Symbol_table* parent = nullptr;
 
   void detect_previous_declaration(Decl* new_declaration);
-  FnDecl* find_inherited_function(FnDecl* declaration);
+  FnDecl* find_inherited_function(std::string name);
+  VarDecl* find_inherited_variable(std::string name);
 };
 
 #endif // SYMBOL_TABLE_H

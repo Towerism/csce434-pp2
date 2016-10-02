@@ -60,24 +60,18 @@ void Symbol_table::check_virtual(Decl* declaration) {
 }
 
 void Symbol_table::check_super(Decl* declaration) {
-  if (!super)
-    return;
-  auto current = super;
-  do {
-    auto function = dynamic_cast<FnDecl*>(declaration);
-    if (function) {
-      auto super_function = current->functions.contains(function->getName());
-      if (super_function && !function->matches_signature(super_function))
-        ReportError::OverrideMismatch(function);
-    }
-    auto variable = dynamic_cast<VarDecl*>(declaration);
-    if (variable) {
-      auto super_variable = current->variables.contains(variable->getName());
-      if (super_variable)
-        ReportError::DeclConflict(variable, super_variable);
-    }
-    current = current->super;
-  } while(current != nullptr);
+  auto function = dynamic_cast<FnDecl*>(declaration);
+  if (function) {
+    auto super_function = find_inherited_function(function->getName());
+    if (super_function && !function->matches_signature(super_function))
+      ReportError::OverrideMismatch(function);
+  }
+  auto variable = dynamic_cast<VarDecl*>(declaration);
+  if (variable) {
+    auto super_variable = find_inherited_variable(variable->getName());
+    if (super_variable)
+      ReportError::DeclConflict(declaration, super_variable);
+  }
 }
 
 void Symbol_table::check_virtuals_implemented(ClassDecl* class_decl, List<NamedType*>* interface_types) {
@@ -91,7 +85,7 @@ void Symbol_table::check_virtuals_implemented(ClassDecl* class_decl, List<NamedT
           auto function = key_function.second;
           auto function_implemented = functions.contains(function->getName());
           if (nullptr == function_implemented)
-            function_implemented = find_inherited_function(function);
+            function_implemented = find_inherited_function(function->getName());
           return nullptr == function_implemented;
         });
       if (not_fully_implemented)
@@ -99,18 +93,27 @@ void Symbol_table::check_virtuals_implemented(ClassDecl* class_decl, List<NamedT
     });
 }
 
-// refactor this
-FnDecl* Symbol_table::find_inherited_function(FnDecl* declaration) {
+FnDecl* Symbol_table::find_inherited_function(std::string name) {
   if (!super)
     return nullptr;
   auto current = super;
   do {
-    auto function = dynamic_cast<FnDecl*>(declaration);
-    if (function) {
-      auto super_function = current->functions.contains(function->getName());
+      auto super_function = current->functions.contains(name);
       if (super_function)
         return super_function;
-    }
+    current = current->super;
+  } while(current != nullptr);
+  return nullptr;
+}
+
+VarDecl* Symbol_table::find_inherited_variable(std::string name) {
+  if (!super)
+    return nullptr;
+  auto current = super;
+  do {
+    auto super_variable = current->variables.contains(name);
+    if (super_variable)
+      return super_variable;
     current = current->super;
   } while(current != nullptr);
   return nullptr;
@@ -128,12 +131,17 @@ InterfaceDecl* Symbol_table::get_interface(std::string name) {
   return interfaces.contains(name);
 }
 
-void Symbol_table::check_declared(Identifier* identifier) {
+Decl* Symbol_table::check_declared(Identifier* identifier) {
   auto current = this;
   do {
-    if (current->variables.contains(identifier->getName()))
-      return;
+    auto variable = current->variables.contains(identifier->getName());
+    if (!variable)
+      variable = current->find_inherited_variable(identifier->getName());
+    if (variable)
+      return variable;
     current = current->parent;
   } while(current != nullptr);
   ReportError::IdentifierNotDeclared(identifier, LookingForVariable);
+  variables.declare(new VarDecl(identifier, Type::errorType));
+  return nullptr;
 }

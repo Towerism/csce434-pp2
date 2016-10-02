@@ -13,12 +13,13 @@ public :
   static Type *intType, *doubleType, *boolType, *voidType,
     *nullType, *stringType, *errorType;
 
+  Type() {}
   Type(yyltype loc) : Node(loc) {}
   Type(const char *str);
 
   const char *GetPrintNameForNode() override { return "Type"; }
   void PrintChildren(int indentLevel) override;
-  virtual bool equal(Type* other) { return strcmp(typeName, other->typeName) == 0; }
+  virtual bool equal(Type* other);
   virtual std::string getName() { return std::string(typeName); }
 
   friend std::ostream& operator<<(std::ostream& out, Type* type) {

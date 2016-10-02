@@ -1,0 +1,9 @@
+class Asdf {}
+
+int asdf() {
+    Asdf fdsa;
+    if (0);
+    else {
+         fdsa;
+    }
+}

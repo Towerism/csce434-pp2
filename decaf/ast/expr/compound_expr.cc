@@ -2,6 +2,8 @@
 
 #include <util/utility.hh>
 
+#include <ast/symbol_table.hh>
+
 CompoundExpr::CompoundExpr(Expr *l, Operator *o, Expr *r)  : Expr(Join(l->GetLocation(), r->GetLocation())) {
   Assert(l != NULL && o != NULL && r != NULL);
   (op=o)->SetParent(this);
@@ -27,4 +29,11 @@ void CompoundExpr::PrintChildren(int indentLevel) {
   if (left) left->Print(indentLevel+1);
   op->Print(indentLevel+1);
   if (right) right->Print(indentLevel+1);
+}
+
+void CompoundExpr::analyze(Symbol_table* symbol_table, reasonT focus) {
+  if (left)
+    left->analyze(symbol_table, focus);
+  if (right)
+    right->analyze(symbol_table, focus);
 }
