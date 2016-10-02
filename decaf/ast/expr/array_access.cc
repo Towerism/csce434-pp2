@@ -1,6 +1,7 @@
 #include "array_access.hh"
 
 #include <ast/symbol_table.hh>
+#include <ast/type/array_type.hh>
 
 ArrayAccess::ArrayAccess(yyltype loc, Expr *b, Expr *s) : LValue(loc) {
   (base=b)->SetParent(this);
@@ -14,4 +15,8 @@ void ArrayAccess::PrintChildren(int indentLevel) {
 
 void ArrayAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
   base->analyze(symbol_table, focus);
+  auto base_type = base->evaluate_type(symbol_table);
+  auto array_type = dynamic_cast<ArrayType*>(base_type);
+  if (!array_type && base_type != Type::errorType)
+    ReportError::BracketsOnNonArray(base);
 }

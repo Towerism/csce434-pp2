@@ -1,0 +1,6 @@
+
+*** Error line 3.
+    a[1];
+    ^
+*** [] can only be applied to arrays
+
