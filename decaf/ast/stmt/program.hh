@@ -19,6 +19,7 @@ public:
   void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus = LookingForType) override;
+  void set_parent(Symbol_table& other) override {}
 
   static Symbol_table symbol_table;
 };

@@ -1,6 +1,6 @@
 #include "named_type.hh"
 
-#include <ast/stmt/ast_stmt.hh>
+#include <ast/stmt/program.hh>
 #include <util/utility.hh>
 
 NamedType::NamedType(Identifier *i) : Type(*i->GetLocation()) {

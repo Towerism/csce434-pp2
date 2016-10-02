@@ -11,5 +11,8 @@ void InterfaceDecl::PrintChildren(int indentLevel) {
 }
 
 void InterfaceDecl::build_table() {
-  members->Apply([&](Decl* decl) { symbol_table.declare(decl); });
+  members->Apply([&](Decl* decl) {
+      symbol_table.declare(decl);
+      decl->set_parent(symbol_table);
+    });
 }

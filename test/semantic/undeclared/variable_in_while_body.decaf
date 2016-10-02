@@ -1,0 +1,5 @@
+int asdf () {
+    while (0) {
+          a;
+    }
+}

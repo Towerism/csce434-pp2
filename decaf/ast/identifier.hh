@@ -12,8 +12,8 @@ protected:
 
 public:
   Identifier(yyltype loc, const char *name);
-  const char *GetPrintNameForNode()   { return "Identifier"; }
-  void PrintChildren(int indentLevel);
+  const char *GetPrintNameForNode() override { return "Identifier"; }
+  void PrintChildren(int indentLevel) override;
   std::string getName() const { return std::string(name); }
 
   friend std::ostream& operator<<(std::ostream& out, Identifier* id) {
@@ -22,4 +22,3 @@ public:
 };
 
 #endif /* IDENTIFIER_H */
-#include <parse/location.hh>

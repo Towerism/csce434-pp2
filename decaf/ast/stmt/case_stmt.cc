@@ -11,10 +11,14 @@ void CaseStmt::PrintChildren(int identLevel) {
   this->body->PrintAll(identLevel+1);
 }
 
-void CaseStmt::analyze(reasonT focus) {
-  body->Apply([&](Stmt* stmt) { stmt->analyze(focus); });
+void CaseStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
+  body->Apply([&](Stmt* stmt) { stmt->analyze(symbol_table, focus); });
 }
 
 void CaseStmt::build_table() {
   body->Apply([&](Stmt* stmt) { stmt->build_table(); });
+}
+
+void CaseStmt::set_parent(Symbol_table& other) {
+  body->Apply([&](Stmt* stmt) { stmt->set_parent(other); });
 }

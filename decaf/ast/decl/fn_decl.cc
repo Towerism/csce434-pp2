@@ -18,10 +18,17 @@ void FnDecl::PrintChildren(int indentLevel) {
   if (body) body->Print(indentLevel+1, "(body) ");
 }
 
+void FnDecl::set_parent(Symbol_table& other) {
+  symbol_table.set_parent(other);
+  formals_table.set_parent(other);
+}
+
 void FnDecl::build_table() {
-  formals->Apply([&](VarDecl* decl) { symbol_table.declare(decl); });
-  if (body)
+  formals->Apply([&](VarDecl* decl) { formals_table.declare(decl); });
+  if (body) {
     body->build_table();
+    body->set_parent(formals_table);
+  }
 }
 
 void FnDecl::analyze(reasonT focus) {

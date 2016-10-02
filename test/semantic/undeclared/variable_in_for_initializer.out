@@ -1,0 +1,6 @@
+
+*** Error line 2.
+    for (a;false;0) {
+         ^
+*** No declaration found for variable 'a'
+

@@ -20,8 +20,15 @@ void SwitchStmt::build_table() {
     defaultStmt->build_table();
 }
 
-void SwitchStmt::analyze(reasonT focus) {
-  cases->Apply([&](CaseStmt* caseStmt) { caseStmt->analyze(focus); });
+void SwitchStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
+  cases->Apply([&](CaseStmt* caseStmt) { caseStmt->analyze(symbol_table, focus); });
+  test->analyze(symbol_table, focus);
   if (defaultStmt)
     defaultStmt->analyze(focus);
+}
+
+void SwitchStmt::set_parent(Symbol_table& other) {
+  cases->Apply([&](CaseStmt* caseStmt) { caseStmt->set_parent(other); });
+  if (defaultStmt)
+    defaultStmt->set_parent(other);
 }

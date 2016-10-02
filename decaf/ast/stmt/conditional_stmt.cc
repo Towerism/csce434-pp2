@@ -9,6 +9,7 @@ void ConditionalStmt::build_table() {
   body->build_table();
 }
 
-void ConditionalStmt::analyze(reasonT focus) {
-  body->analyze(focus);
+void ConditionalStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
+  body->analyze(symbol_table, focus);
+  test->analyze(symbol_table, focus);
 }

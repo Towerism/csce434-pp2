@@ -1,0 +1,7 @@
+int asdf () {
+    switch (0) {
+           case 0:
+                a;
+                break;
+    }
+}

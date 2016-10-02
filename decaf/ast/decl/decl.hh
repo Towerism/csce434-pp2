@@ -18,6 +18,7 @@ public:
   friend std::ostream& operator<<(std::ostream& out, Decl* decl) {
     return out << decl->getName();
   }
+  virtual void set_parent(Symbol_table& other) override {}
 };
 
 #endif /* DECL_H */

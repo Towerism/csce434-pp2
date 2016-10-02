@@ -18,6 +18,7 @@ protected:
   Type *returnType;
   Stmt *body;
   Symbol_table symbol_table;
+  Symbol_table formals_table;
 
 public:
   FnDecl(Identifier *name, Type *returnType, List<VarDecl*> *formals);
@@ -27,6 +28,7 @@ public:
   void build_table() override;
   void analyze(reasonT focus) override;
   bool matches_signature(FnDecl* other);
+  void set_parent(Symbol_table& other) override;
 };
 
 #endif /* FN_DECL_H */

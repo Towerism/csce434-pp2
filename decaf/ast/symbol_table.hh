@@ -7,9 +7,11 @@
 #include "declaration_table.hh"
 #include "virtual_table.hh"
 
+#include <ast/identifier.hh>
 #include <ast/type/named_type.hh>
 
 #include <util/list.hh>
+#include <util/utility.hh>
 
 class Decl;
 class ClassDecl;
@@ -27,6 +29,8 @@ public:
   void check_super(Decl* declaration);
   void set_super(Symbol_table& super_table) { super = &super_table; }
   void check_virtuals_implemented(ClassDecl* class_decl, List<NamedType*>* interface_types);
+  void set_parent(Symbol_table& parent_table) { parent = &parent_table; }
+  void check_declared(Identifier* identifier);
 
   ClassDecl* get_class(std::string name);
   InterfaceDecl* get_interface(std::string name);
@@ -39,6 +43,7 @@ private:
   Virtual_table virtuals;
 
   Symbol_table* super = nullptr;
+  Symbol_table* parent = nullptr;
 
   void detect_previous_declaration(Decl* new_declaration);
   FnDecl* find_inherited_function(FnDecl* declaration);

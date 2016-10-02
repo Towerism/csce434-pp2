@@ -22,7 +22,10 @@ void ClassDecl::build_table() {
   members->Apply([&](Decl* decl) { symbol_table.declare(decl); });
   members->Apply([&](Decl* decl) { decl->build_table(); });
   add_virtuals();
-  members->Apply([&](Decl* decl) { symbol_table.check_virtual(decl); });
+  members->Apply([&](Decl* decl) {
+      symbol_table.check_virtual(decl);
+      decl->set_parent(symbol_table);
+    });
 }
 
 void ClassDecl::add_virtuals() {

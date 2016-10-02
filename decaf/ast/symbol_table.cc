@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include <util/errors.hh>
+#include <util/utility.hh>
 
 #include "decl/ast_decl.hh"
 
@@ -30,7 +31,6 @@ void Symbol_table::declare(Decl* declaration) {
   }
 }
 
-#include <iostream>
 void Symbol_table::add_virtual(NamedType* interface_type, Decl* declaration) {
   Decl* prev_decl = virtuals.contains(declaration->getName());
   if (prev_decl)
@@ -126,4 +126,14 @@ ClassDecl* Symbol_table::get_class(std::string name) {
 
 InterfaceDecl* Symbol_table::get_interface(std::string name) {
   return interfaces.contains(name);
+}
+
+void Symbol_table::check_declared(Identifier* identifier) {
+  auto current = this;
+  do {
+    if (current->variables.contains(identifier->getName()))
+      return;
+    current = current->parent;
+  } while(current != nullptr);
+  ReportError::IdentifierNotDeclared(identifier, LookingForVariable);
 }

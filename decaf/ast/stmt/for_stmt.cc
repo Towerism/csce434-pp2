@@ -12,3 +12,9 @@ void ForStmt::PrintChildren(int indentLevel) {
   step->Print(indentLevel+1, "(step) ");
   body->Print(indentLevel+1, "(body) ");
 }
+
+void ForStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
+  ConditionalStmt::analyze(symbol_table, focus);
+  init->analyze(symbol_table, focus);
+  step->analyze(symbol_table, focus);
+}

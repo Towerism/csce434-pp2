@@ -17,4 +17,5 @@ public:
   FieldAccess(Expr *base, Identifier *field); //ok to pass NULL base
   const char *GetPrintNameForNode() override { return "FieldAccess"; }
   void PrintChildren(int indentLevel) override;
+  void analyze(Symbol_table* symbol_table, reasonT focus) override;
 };

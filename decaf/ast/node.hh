@@ -30,7 +30,9 @@ public:
   virtual void PrintChildren(int) {}
 
   // pass in the reason for analyzing
-  virtual void analyze(reasonT) override {}
+  virtual void analyze(reasonT focus) override {}
+
+  virtual void analyze(Symbol_table* symbol_table, reasonT focus) override { analyze(focus); }
 };
 
 #endif /* NODE_H */

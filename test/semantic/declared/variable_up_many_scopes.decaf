@@ -1,0 +1,14 @@
+int asdf() {
+    int a;
+    {
+      for (a; a; a) {
+          a;
+          if (a) {
+             a;
+             {
+              a;
+             }
+          }
+      }
+    }
+}

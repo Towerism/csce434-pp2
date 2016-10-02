@@ -14,7 +14,10 @@ void Program::PrintChildren(int indentLevel) {
 
 void Program::build_table() {
   decls->Apply([&](Decl* decl) { Program::symbol_table.declare(decl); });
-  decls->Apply([&](Decl* decl) { decl->build_table(); });
+  decls->Apply([&](Decl* decl) {
+      decl->build_table();
+      decl->set_parent(Program::symbol_table);
+    });
 }
 
 void Program::analyze(reasonT focus) {

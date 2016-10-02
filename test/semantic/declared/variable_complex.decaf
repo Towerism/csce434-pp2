@@ -1,0 +1,58 @@
+int a;
+
+int asdf() {
+    int b;
+    for (a; b; a) {
+        switch(a) {
+                  case 0:
+                       a;
+                       {
+                        int c;
+                        c;
+                        b;
+                        {
+                          int d;
+                          a;
+                          b;
+                          c;
+                          d;
+                        }
+                       }
+                       break;
+                  default:
+                    a;
+                    {
+                      int c;
+                      a;
+                      b;
+                      c;
+                    }
+
+        }
+    }
+}
+
+class Asdf {
+      int b;
+      bool fdsa(int c) {
+           int d;
+           a;
+           b;
+           c;
+           d;
+           while(d) {
+                    a;
+                    b;
+                    c;
+                    d;
+                    if (d) {
+                       int e;
+                       a;
+                       b;
+                       c;
+                       d;
+                       e;
+                    }
+           }
+      }
+}

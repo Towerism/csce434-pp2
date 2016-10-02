@@ -14,6 +14,7 @@ public:
   void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
+  void set_parent(Symbol_table& other) override;
 };
 
 #endif /* DEFAULT_STMT_H */

@@ -1,0 +1,6 @@
+
+*** Error line 2.
+    for (0; 0; a) {
+               ^
+*** No declaration found for variable 'a'
+

@@ -21,6 +21,7 @@ public:
   const char *GetPrintNameForNode() override { return "InterfaceDecl"; }
   void PrintChildren(int indentLevel) override;
   void build_table() override;
+  void set_parent(Symbol_table& other) override { symbol_table.set_parent(other); }
 
   List<Decl*>* get_members() { return members; }
 };

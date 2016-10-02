@@ -1,0 +1,4 @@
+int asdf() {
+    for (a;false;0) {
+    }
+}

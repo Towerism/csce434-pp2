@@ -1,0 +1,6 @@
+class Asdf {
+      int a;
+      bool hi() {
+           a;
+      }
+}
