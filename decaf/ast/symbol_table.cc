@@ -213,3 +213,10 @@ Symbol_table* Symbol_table::get_table_for_functions(Type* type) {
     return interface_decl->get_table();
   return nullptr;
 }
+
+Symbol_table* Symbol_table::get_table_for_variables(Type* type) {
+  auto class_decl = Program::symbol_table.classes.contains(type->getName());
+  if (class_decl)
+    return class_decl->get_table();
+  return nullptr;
+}

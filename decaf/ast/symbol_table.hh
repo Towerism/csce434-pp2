@@ -41,6 +41,7 @@ public:
   Type* find_this_type();
   bool class_extends_type(Type* subclass, Type* extends);
   Symbol_table* get_table_for_functions(Type* type);
+  Symbol_table* get_table_for_variables(Type* type);
 
 private:
   Declaration_table<ClassDecl> classes;
