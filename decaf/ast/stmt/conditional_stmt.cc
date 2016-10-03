@@ -13,6 +13,6 @@ void ConditionalStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
   body->analyze(symbol_table, focus);
   test->analyze(symbol_table, focus);
   auto type = test->evaluate_type(symbol_table);
-  if (!type->equal(Type::boolType))
+  if (!type->coerce(Type::boolType, symbol_table))
     ReportError::TestNotBoolean(test);
 }

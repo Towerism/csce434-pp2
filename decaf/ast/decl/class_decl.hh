@@ -24,6 +24,8 @@ public:
   void analyze(reasonT focus) override;
   void set_parent(Symbol_table& other) override { symbol_table.set_parent(other); }
   Type* get_type() override { return new NamedType(id); }
+  Type* get_extends() { return extends; }
+  List<NamedType*>* get_implements() { return implements; }
 
 private:
   void add_virtuals();

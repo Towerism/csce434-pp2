@@ -81,6 +81,8 @@ void Symbol_table::check_virtuals_implemented(ClassDecl* class_decl, List<NamedT
         return;
       }
       auto interface_virtuals = virtuals.get_functions(type->getName());
+      if (!interface_virtuals)
+        return;
       bool not_fully_implemented = std::any_of(interface_virtuals->begin(), interface_virtuals->end(), [&](std::pair<std::string, FnDecl*> key_function) {
           auto function = key_function.second;
           auto function_implemented = functions.contains(function->getName());
@@ -145,4 +147,45 @@ Decl* Symbol_table::check_declared(Identifier* identifier) {
   auto error_decl = new VarDecl(identifier, Type::errorType);
   variables.declare(error_decl);
   return error_decl;
+}
+
+Type* Symbol_table::find_return_type() {
+  auto current = this;
+  do {
+    if (current->return_type)
+      return current->return_type;
+    current = current->parent;
+  } while(current != nullptr);
+  return nullptr;
+}
+
+Type* Symbol_table::find_this_type() {
+  auto current = this;
+  do {
+    if (current->this_type)
+      return current->this_type;
+    current = current->parent;
+  } while(current != nullptr);
+  return nullptr;
+}
+
+bool Symbol_table::class_extends_type(Type* class_identifier, Type* extends) {
+  Type* current_extends = nullptr;
+  List<NamedType*>* current_implements;
+  std::string class_name = class_identifier->getName();
+  do {
+    auto class_decl = Program::symbol_table.get_class(class_name);
+    if (!class_decl)
+      return false;
+    current_extends = class_decl->get_extends();
+    current_implements = class_decl->get_implements();
+    if (( current_extends && current_extends->equal(extends))
+        || std::find_if(current_implements->begin(), current_implements->end(),
+                        [&](NamedType* implements) {
+                          return implements->equal(extends);
+                        }) != current_implements->end())
+      return true;
+    class_name = current_extends->getName();
+  } while(current_extends != nullptr);
+  return false;
 }

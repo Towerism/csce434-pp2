@@ -1,0 +1,10 @@
+interface Asdf {
+}
+
+class Qwer implements Asdf {
+}
+
+Asdf asdf() {
+     Qwer a;
+     return a;
+}

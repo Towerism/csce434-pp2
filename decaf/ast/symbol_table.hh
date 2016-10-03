@@ -34,6 +34,11 @@ public:
 
   ClassDecl* get_class(std::string name);
   InterfaceDecl* get_interface(std::string name);
+  void set_return_type(Type* type) { return_type = type; }
+  void set_this_type(Type* type) { this_type = type; }
+  Type* find_return_type();
+  Type* find_this_type();
+  bool class_extends_type(Type* subclass, Type* extends);
 
 private:
   Declaration_table<ClassDecl> classes;
@@ -41,6 +46,8 @@ private:
   Declaration_table<VarDecl> variables;
   Declaration_table<FnDecl> functions;
   Virtual_table virtuals;
+  Type* return_type = nullptr;
+  Type* this_type = nullptr;
 
   Symbol_table* super = nullptr;
   Symbol_table* parent = nullptr;

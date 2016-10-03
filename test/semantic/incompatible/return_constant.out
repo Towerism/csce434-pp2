@@ -1,0 +1,6 @@
+
+*** Error line 2.
+    return 5;
+    ^^^^^^
+*** Incompatible return: int given, void expected
+

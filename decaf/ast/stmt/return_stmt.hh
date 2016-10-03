@@ -12,6 +12,7 @@ public:
   ReturnStmt(yyltype loc, Expr *expr);
   const char *GetPrintNameForNode() override { return "ReturnStmt"; }
   void PrintChildren(int indentLevel) override;
+  void analyze(Symbol_table* symbol_table, reasonT focus) override;
 };
 
 #endif /* RETURN_STMT_H */

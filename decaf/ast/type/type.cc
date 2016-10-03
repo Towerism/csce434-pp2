@@ -10,27 +10,28 @@
  * creates lots of copies.
  */
 
-Type *Type::intType    = new Type("int");
+Type *Type::intType = new Type("int");
 Type *Type::doubleType = new Type("double");
-Type *Type::voidType   = new Type("void");
-Type *Type::boolType   = new Type("bool");
-Type *Type::nullType   = new Type("null");
+Type *Type::voidType = new Type("void");
+Type *Type::boolType = new Type("bool");
+Type *Type::nullType = new Type("null");
 Type *Type::stringType = new Type("string");
-Type *Type::errorType  = new Type("error");
+Type *Type::errorType = new Type("error");
 
 Type::Type(const char *n) {
   Assert(n);
   typeName = strdup(n);
 }
 
-void Type::PrintChildren(int indentLevel) {
-  printf("%s", typeName);
-}
+void Type::PrintChildren(int indentLevel) { printf("%s", typeName); }
 
-bool Type::equal(Type* other) {
-  if (!typeName || !other->typeName)
-    return false;
-  return strcmp(typeName, other->typeName) == 0
-    || other == Type::errorType
-    || this == Type::errorType;
+bool Type::equal(Type *other) {
+if (other == Type::errorType
+      || this == Type::errorType
+      || other == Type::nullType
+      || this == Type::nullType)
+  return true;
+if (!typeName || !other->typeName)
+  return false;
+return strcmp(typeName, other->typeName) == 0;
 }

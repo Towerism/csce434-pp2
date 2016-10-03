@@ -6,7 +6,9 @@
 class This : public Expr {
 public:
   This(yyltype loc) : Expr(loc) {}
-  const char *GetPrintNameForNode() { return "This"; }
+  const char *GetPrintNameForNode() override { return "This"; }
+  void analyze(Symbol_table* symbol_table, reasonT focus) override;
+  Type* evaluate_type(Symbol_table* symbol_table) override;
 };
 
 #endif /* THIS_H */

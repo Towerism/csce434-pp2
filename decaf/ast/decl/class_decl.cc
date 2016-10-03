@@ -1,6 +1,7 @@
 #include "class_decl.hh"
 
 #include <ast/decl/ast_decl.hh>
+#include <ast/type/named_type.hh>
 
 ClassDecl::ClassDecl(Identifier *n, NamedType *ex, List<NamedType*> *imp, List<Decl*> *m) : Decl(n) {
   // extends can be NULL, impl & mem may be empty lists but cannot be NULL
@@ -9,6 +10,7 @@ ClassDecl::ClassDecl(Identifier *n, NamedType *ex, List<NamedType*> *imp, List<D
   if (extends) extends->SetParent(this);
   (implements=imp)->SetParentAll(this);
   (members=m)->SetParentAll(this);
+  symbol_table.set_this_type(new NamedType(id));
 }
 
 void ClassDecl::PrintChildren(int indentLevel) {

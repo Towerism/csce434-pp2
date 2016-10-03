@@ -16,3 +16,8 @@ void NamedType::analyze(reasonT focus) {
   if (!Program::symbol_table.type_exists(id->getName()))
     ReportError::IdentifierNotDeclared(id, focus);
 }
+
+bool NamedType::coerce(Type* type, Symbol_table* symbol_table) {
+  bool exact_match = equal(type);
+  return exact_match || symbol_table->class_extends_type(this, type);
+}

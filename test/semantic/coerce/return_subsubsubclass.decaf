@@ -1,0 +1,16 @@
+class Rewq {
+}
+
+class Fdsa extends Rewq {
+}
+
+class Asdf extends Fdsa {
+}
+
+class Qwer extends Asdf {
+}
+
+Rewq asdf() {
+     Qwer a;
+     return a;
+}

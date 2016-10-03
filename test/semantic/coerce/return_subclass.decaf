@@ -1,0 +1,10 @@
+class Asdf {
+}
+
+class Qwer extends Asdf {
+}
+
+Asdf asdf() {
+     Qwer a;
+     return a;
+}

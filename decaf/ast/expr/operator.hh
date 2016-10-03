@@ -10,6 +10,9 @@ public:
   Operator(yyltype loc, const char *tok);
   const char *GetPrintNameForNode() override { return "Operator"; }
   void PrintChildren(int indentLevel) override;
+  friend std::ostream& operator<<(std::ostream& out, Operator* op) {
+    return out << std::string(op->tokenString);
+  }
 };
 
 #endif /* OPERATOR_H */

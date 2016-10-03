@@ -15,6 +15,11 @@ public:
   void PrintChildren(int indentLevel) override;
   void analyze(reasonT focus) override;
   bool equal(Type* other) override {
+    if (other == Type::errorType
+        || this == Type::errorType
+        || other == Type::nullType
+        || this == Type::nullType)
+      return true;
     auto otherArrayType = dynamic_cast<ArrayType*>(other);
     if (!otherArrayType)
       return false;

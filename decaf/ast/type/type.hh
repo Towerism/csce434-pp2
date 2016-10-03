@@ -20,6 +20,7 @@ public :
   const char *GetPrintNameForNode() override { return "Type"; }
   void PrintChildren(int indentLevel) override;
   virtual bool equal(Type* other);
+  virtual bool coerce(Type* other, Symbol_table* symbol_table) { return equal(other); }
   virtual std::string getName() { return std::string(typeName); }
 
   friend std::ostream& operator<<(std::ostream& out, Type* type) {

@@ -1,0 +1,3 @@
+void asdf() {
+    return 5;
+}

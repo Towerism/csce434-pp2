@@ -5,6 +5,8 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
   (returnType=r)->SetParent(this);
   (formals=d)->SetParentAll(this);
   body = NULL;
+  symbol_table.set_return_type(returnType);
+  formals_table.set_parent(symbol_table);
 }
 
 void FnDecl::SetFunctionBody(Stmt *b) {
@@ -20,7 +22,6 @@ void FnDecl::PrintChildren(int indentLevel) {
 
 void FnDecl::set_parent(Symbol_table& other) {
   symbol_table.set_parent(other);
-  formals_table.set_parent(other);
 }
 
 void FnDecl::build_table() {
