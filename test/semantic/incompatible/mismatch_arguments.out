@@ -1,0 +1,12 @@
+
+*** Error line 7.
+    asdf(b, a);
+         ^
+*** Incompatible argument 0: bool given, int expected
+
+
+*** Error line 7.
+    asdf(b, a);
+            ^
+*** Incompatible argument 1: int given, bool expected
+

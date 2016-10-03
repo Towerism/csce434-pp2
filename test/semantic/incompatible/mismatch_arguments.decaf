@@ -1,0 +1,8 @@
+int asdf(int a, bool b) {
+}
+
+int qwer() {
+    bool b;
+    int a;
+    asdf(b, a);
+}

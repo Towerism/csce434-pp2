@@ -1,0 +1,13 @@
+class Asdf {
+}
+
+class Qwer extends Asdf {
+}
+
+int asdf(Asdf a) {
+}
+
+int qwer() {
+    Qwer a;
+    asdf(a);
+}

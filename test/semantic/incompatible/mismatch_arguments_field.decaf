@@ -1,0 +1,10 @@
+class Asdf {
+      int asdf(int a, int b, int c) {}
+}
+int fdsa() {
+    int a;
+    int b;
+    Asdf c;
+    Asdf d;
+    d.asdf(a, b, c);
+}

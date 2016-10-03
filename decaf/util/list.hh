@@ -41,6 +41,7 @@ template<class Element> class List {
  public:
   // Create a new empty list
   List() {}
+  List(size_t size) : elems(size) {}
 
   // Returns count of elements currently in list
   int NumElements() const

@@ -121,6 +121,19 @@ VarDecl* Symbol_table::find_inherited_variable(std::string name) {
   return nullptr;
 }
 
+VarDecl* Symbol_table::find_parent_variable(std::string name) {
+  if (!parent)
+    return nullptr;
+  auto current = parent;
+  do {
+    auto parent_variable = current->variables.contains(name);
+    if (parent_variable)
+      return parent_variable;
+    current = current->parent;
+  } while(current != nullptr);
+  return nullptr;
+}
+
 bool Symbol_table::type_exists(std::string name) {
   return classes.contains(name) || interfaces.contains(name);
 }
@@ -137,6 +150,8 @@ VarDecl* Symbol_table::check_variable_declared(Identifier* identifier, std::func
   auto current = this;
   do {
     auto variable = current->variables.contains(identifier->getName());
+    if (!variable)
+      variable = current->find_parent_variable(identifier->getName());
     if (!variable)
       variable = current->find_inherited_variable(identifier->getName());
     if (variable)
@@ -163,16 +178,40 @@ FnDecl* Symbol_table::check_function_declared(Identifier* identifier, std::funct
   return nullptr;
 }
 
-void Symbol_table::check_function_args_length(Identifier* identifier,
+bool Symbol_table::check_function_args_length(Identifier* identifier,
                                               List<Expr*>* actuals,
                                               std::function<void(int, int)> error_action) {
   auto function = check_function_declared(identifier);
   auto formals = function->get_formals();
   auto given = actuals->NumElements();
   auto expected = formals->NumElements();
-  if (given != expected)
+  if (given != expected) {
     error_action(expected, given);
+    return false;
+  }
+  return true;
 }
+
+bool Symbol_table::check_function_args(Identifier* identifier, List<Expr*>* args,
+                                       List<Type*>* arg_types,
+                                       std::function<void(Expr*, int, Type*, Type*)> error_action) {
+  bool good = true;
+  auto function = check_function_declared(identifier);
+  auto formals = function->get_formals();
+  int i = 0;
+  formals->Apply([&](VarDecl* decl) {
+      auto arg = args->Nth(i);
+      auto expected_type = decl->getType();
+      auto given_type = arg_types->Nth(i);
+      if (!given_type->coerce(expected_type, this)) {
+        error_action(arg, i, given_type, expected_type);
+        good = false;
+      }
+      ++i;
+    });
+  return good;
+}
+
 
 Type* Symbol_table::find_return_type() {
   auto current = this;
@@ -210,7 +249,8 @@ bool Symbol_table::class_extends_type(Type* class_identifier, Type* extends) {
                           return implements->equal(extends);
                         }) != current_implements->end())
       return true;
-    class_name = current_extends->getName();
+    if (current_extends)
+      class_name = current_extends->getName();
   } while(current_extends != nullptr);
   return false;
 }

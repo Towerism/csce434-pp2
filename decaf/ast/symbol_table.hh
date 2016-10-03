@@ -36,10 +36,14 @@ public:
                                 std::function<void()> error_action = []() {});
   FnDecl* check_function_declared(Identifier* identifier,
                                 std::function<void()> error_action = []() {});
-
   // call back called with num args expected, and num given
-  void check_function_args_length(Identifier*, List<Expr*>* args,
+  bool check_function_args_length(Identifier* identifier, List<Expr*>* args,
                                   std::function<void(int, int)> = [](int,int) {});
+  // call back called with arg, arg index, type given, type expected
+  bool check_function_args(Identifier* identifier, List<Expr*>* args,
+                           List<Type*>* arg_types,
+                           std::function<void(Expr*, int, Type*, Type*)>
+                           = [](Expr*,int,Type*,Type*) {});
 
   ClassDecl* get_class(std::string name);
   InterfaceDecl* get_interface(std::string name);
@@ -66,6 +70,7 @@ private:
   void detect_previous_declaration(Decl* new_declaration);
   FnDecl* find_inherited_function(std::string name);
   VarDecl* find_inherited_variable(std::string name);
+  VarDecl* find_parent_variable(std::string name);
 };
 
 #endif // SYMBOL_TABLE_H
