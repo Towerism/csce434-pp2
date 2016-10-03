@@ -20,10 +20,14 @@ void Call::PrintChildren(int indentLevel) {
 
 void Call::analyze(Symbol_table* symbol_table, reasonT focus) {
   if (base == nullptr)
-    symbol_table->check_function_declared(field);
+    symbol_table->check_function_declared(field, [&]() {
+        ReportError::IdentifierNotDeclared(field, LookingForFunction);
+      });
   else {
     auto base_type = base->evaluate_type(symbol_table);
     auto base_table = symbol_table->get_table_for_functions(base_type);
-    base_table->check_function_declared(field);
+    base_table->check_function_declared(field, [&]() {
+        ReportError::FieldNotFoundInBase(field, base_type);
+      });
   }
 }

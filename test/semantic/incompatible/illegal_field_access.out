@@ -1,0 +1,6 @@
+
+*** Error line 7.
+    b.a;
+      ^
+*** Asdf field 'a' only accessible within class scope
+

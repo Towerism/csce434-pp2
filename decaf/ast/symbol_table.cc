@@ -133,7 +133,7 @@ InterfaceDecl* Symbol_table::get_interface(std::string name) {
   return interfaces.contains(name);
 }
 
-Decl* Symbol_table::check_variable_declared(Identifier* identifier) {
+Decl* Symbol_table::check_variable_declared(Identifier* identifier, std::function<void()> error_action) {
   auto current = this;
   do {
     auto variable = current->variables.contains(identifier->getName());
@@ -143,13 +143,13 @@ Decl* Symbol_table::check_variable_declared(Identifier* identifier) {
       return variable;
     current = current->parent;
   } while(current != nullptr);
-  ReportError::IdentifierNotDeclared(identifier, LookingForVariable);
+  error_action();
   auto error_decl = new VarDecl(identifier, Type::errorType);
   variables.declare(error_decl);
   return error_decl;
 }
 
-Decl* Symbol_table::check_function_declared(Identifier* identifier) {
+Decl* Symbol_table::check_function_declared(Identifier* identifier, std::function<void()> error_action) {
   auto current = this;
   do {
     auto function = current->functions.contains(identifier->getName());
@@ -159,7 +159,7 @@ Decl* Symbol_table::check_function_declared(Identifier* identifier) {
       return function;
     current = current->parent;
   } while(current != nullptr);
-  ReportError::IdentifierNotDeclared(identifier, LookingForFunction);
+  error_action();
   return nullptr;
 }
 

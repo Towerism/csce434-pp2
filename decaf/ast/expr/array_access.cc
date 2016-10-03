@@ -15,6 +15,7 @@ void ArrayAccess::PrintChildren(int indentLevel) {
 
 void ArrayAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
   base->analyze(symbol_table, focus);
+  subscript->analyze(symbol_table, focus);
   auto base_type = base->evaluate_type(symbol_table);
   auto array_type = dynamic_cast<ArrayType*>(base_type);
   if (!array_type && base_type != Type::errorType)

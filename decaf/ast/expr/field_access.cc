@@ -19,11 +19,18 @@ void FieldAccess::PrintChildren(int indentLevel) {
 
 void FieldAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
   if (base == nullptr)
-    symbol_table->check_variable_declared(field);
+    symbol_table->check_variable_declared(field, [&]() {
+        ReportError::IdentifierNotDeclared(field, LookingForVariable);
+      });
   else {
     auto base_type = base->evaluate_type(symbol_table);
     auto base_table = symbol_table->get_table_for_variables(base_type);
-    base_table->check_variable_declared(field);
+    base_table->check_variable_declared(field, [&]() {
+        ReportError::FieldNotFoundInBase(field, base_type);
+      });
+    symbol_table->check_variable_declared(field, [&]() {
+        ReportError::InaccessibleField(field, base_type);
+      });
   }
 }
 

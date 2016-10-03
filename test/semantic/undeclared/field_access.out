@@ -2,5 +2,5 @@
 *** Error line 3.
            this.a;
                 ^
-*** No declaration found for variable 'a'
+*** Asdf has no such field 'a'
 

@@ -13,7 +13,7 @@ public:
   LogicalExpr(Operator *op, Expr *rhs) : CompoundExpr(op,rhs) {}
   const char *GetPrintNameForNode() override { return "LogicalExpr"; }
   Type* evaluate_type(Symbol_table* symbol_table) override { return Type::boolType; }
-  void analyze(Symbol_table* symbol_table, reasonT focus) override; 
+  void analyze(Symbol_table* symbol_table, reasonT focus) override;
 };
 
 #endif /* LOGICAL_EXPR_H */

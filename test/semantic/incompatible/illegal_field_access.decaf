@@ -1,0 +1,8 @@
+class Asdf {
+      int a;
+}
+
+int asdf() {
+    Asdf b;
+    b.a;
+}

@@ -7,6 +7,8 @@
 #include "declaration_table.hh"
 #include "virtual_table.hh"
 
+#include <functional>
+
 #include <ast/identifier.hh>
 #include <ast/type/named_type.hh>
 
@@ -30,8 +32,10 @@ public:
   void set_super(Symbol_table& super_table) { super = &super_table; }
   void check_virtuals_implemented(ClassDecl* class_decl, List<NamedType*>* interface_types);
   void set_parent(Symbol_table& parent_table) { parent = &parent_table; }
-  Decl* check_variable_declared(Identifier* identifier);
-  Decl* check_function_declared(Identifier* identifier);
+  Decl* check_variable_declared(Identifier* identifier,
+                                std::function<void()> error_action = []() {});
+  Decl* check_function_declared(Identifier* identifier,
+                                std::function<void()> error_action = []() {});
 
   ClassDecl* get_class(std::string name);
   InterfaceDecl* get_interface(std::string name);

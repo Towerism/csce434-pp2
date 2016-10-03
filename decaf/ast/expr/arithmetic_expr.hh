@@ -9,6 +9,7 @@ public:
   ArithmeticExpr(Operator *op, Expr *rhs) : CompoundExpr(op,rhs) {}
   const char *GetPrintNameForNode() override { return "ArithmeticExpr"; }
   void analyze(Symbol_table* symbol_table, reasonT focus) override {
+    CompoundExpr::analyze(symbol_table, focus);
     auto left_type = left->evaluate_type(symbol_table);
     auto right_type = right->evaluate_type(symbol_table);
     if ((!left_type->equal(Type::intType) && !left_type->equal(Type::doubleType))
