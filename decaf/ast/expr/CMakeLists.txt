@@ -12,6 +12,7 @@ set(EXPR_SRCS
   new_expr.cc
   new_array_expr.cc
   this.cc
+  assign_expr.cc
   )
 
 add_library(expr OBJECT ${EXPR_SRCS})

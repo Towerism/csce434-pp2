@@ -1,0 +1,6 @@
+
+*** Error line 7.
+       a = b;
+         ^
+*** Incompatible operands: Asdf = Qwer
+

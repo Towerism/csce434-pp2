@@ -1,0 +1,8 @@
+class Qwer {}
+class Asdf extends Qwer {}
+
+void asdf() {
+     Asdf a;
+     Qwer b;
+     a = b;
+}
