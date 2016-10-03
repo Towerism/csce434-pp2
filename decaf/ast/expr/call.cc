@@ -4,6 +4,7 @@
 
 #include <util/utility.hh>
 #include <ast/symbol_table.hh>
+#include <ast/decl/fn_decl.hh>
 
 Call::Call(yyltype loc, Expr *b, Identifier *f, List<Expr*> *a) : Expr(loc)  {
   Assert(f != NULL && a != NULL); // b can be be NULL (just means no explicit base)
@@ -63,4 +64,18 @@ void Call::analyze(Symbol_table* symbol_table, reasonT focus) {
                             ReportError::ArgMismatch(arg, index, expected, given);
                           });
   }
+}
+
+Type* Call::evaluate_type(Symbol_table* symbol_table) {
+  FnDecl* function;
+  if (base == nullptr) {
+    function = symbol_table->check_function_declared(field);
+  } else {
+    auto base_type = base->evaluate_type(symbol_table);
+    auto base_table = symbol_table->get_table_for_functions(base_type);
+    function = base_table->check_function_declared(field);
+  }
+  if (!function)
+    return Type::errorType;
+  return function->get_type();
 }

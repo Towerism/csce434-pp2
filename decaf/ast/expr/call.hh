@@ -1,3 +1,6 @@
+#ifndef CALL_H
+#define CALL_H
+
 #include "expr.hh"
 
 #include <ast/identifier.hh>
@@ -19,4 +22,7 @@ public:
   const char *GetPrintNameForNode() override { return "Call"; }
   void PrintChildren(int indentLevel) override;
   void analyze(Symbol_table* symbol_table, reasonT focus) override;
+  Type* evaluate_type(Symbol_table* symbol_table) override;
 };
+
+#endif /* CALL_H */

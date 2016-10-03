@@ -1,0 +1,9 @@
+class Fdsa{}
+interface Qwer {}
+class Asdf implements Qwer {}
+
+Fdsa asdf() {}
+
+Qwer qwer() {
+     return asdf();
+}

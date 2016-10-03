@@ -1,0 +1,6 @@
+
+*** Error line 8.
+     return asdf();
+     ^^^^^^
+*** Incompatible return: Fdsa given, Qwer expected
+
