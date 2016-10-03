@@ -3,7 +3,7 @@
 #include <util/utility.hh>
 
 #include <ast/symbol_table.hh>
-#include <ast/decl/decl.hh>
+#include <ast/decl/var_decl.hh>
 
 FieldAccess::FieldAccess(Expr *b, Identifier *f)  : LValue(b? Join(b->GetLocation(), f->GetLocation()) : *f->GetLocation()) {
   Assert(f != NULL); // b can be be NULL (just means no explicit base)

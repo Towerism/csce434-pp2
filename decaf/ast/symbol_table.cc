@@ -133,7 +133,7 @@ InterfaceDecl* Symbol_table::get_interface(std::string name) {
   return interfaces.contains(name);
 }
 
-Decl* Symbol_table::check_variable_declared(Identifier* identifier, std::function<void()> error_action) {
+VarDecl* Symbol_table::check_variable_declared(Identifier* identifier, std::function<void()> error_action) {
   auto current = this;
   do {
     auto variable = current->variables.contains(identifier->getName());
@@ -149,7 +149,7 @@ Decl* Symbol_table::check_variable_declared(Identifier* identifier, std::functio
   return error_decl;
 }
 
-Decl* Symbol_table::check_function_declared(Identifier* identifier, std::function<void()> error_action) {
+FnDecl* Symbol_table::check_function_declared(Identifier* identifier, std::function<void()> error_action) {
   auto current = this;
   do {
     auto function = current->functions.contains(identifier->getName());
@@ -161,6 +161,17 @@ Decl* Symbol_table::check_function_declared(Identifier* identifier, std::functio
   } while(current != nullptr);
   error_action();
   return nullptr;
+}
+
+void Symbol_table::check_function_args_length(Identifier* identifier,
+                                              List<Expr*>* actuals,
+                                              std::function<void(int, int)> error_action) {
+  auto function = check_function_declared(identifier);
+  auto formals = function->get_formals();
+  auto given = actuals->NumElements();
+  auto expected = formals->NumElements();
+  if (given != expected)
+    error_action(expected, given);
 }
 
 Type* Symbol_table::find_return_type() {

@@ -19,15 +19,22 @@ void Call::PrintChildren(int indentLevel) {
 }
 
 void Call::analyze(Symbol_table* symbol_table, reasonT focus) {
-  if (base == nullptr)
+  if (base == nullptr) {
     symbol_table->check_function_declared(field, [&]() {
         ReportError::IdentifierNotDeclared(field, LookingForFunction);
       });
+    symbol_table->check_function_args_length(field, actuals, [&](int expected, int given) {
+        ReportError::NumArgsMismatch(field, expected, given);
+      });
+  }
   else {
     auto base_type = base->evaluate_type(symbol_table);
     auto base_table = symbol_table->get_table_for_functions(base_type);
     base_table->check_function_declared(field, [&]() {
         ReportError::FieldNotFoundInBase(field, base_type);
+      });
+    base_table->check_function_args_length(field, actuals, [&](int expected, int given) {
+        ReportError::NumArgsMismatch(field, expected, given);
       });
   }
 }

@@ -1,0 +1,6 @@
+
+*** Error line 11.
+    f.asdf(a, b, c, d, e);
+      ^^^^
+*** Function 'asdf' expects 3 arguments but 5 given
+

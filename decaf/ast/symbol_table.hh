@@ -32,10 +32,14 @@ public:
   void set_super(Symbol_table& super_table) { super = &super_table; }
   void check_virtuals_implemented(ClassDecl* class_decl, List<NamedType*>* interface_types);
   void set_parent(Symbol_table& parent_table) { parent = &parent_table; }
-  Decl* check_variable_declared(Identifier* identifier,
+  VarDecl* check_variable_declared(Identifier* identifier,
                                 std::function<void()> error_action = []() {});
-  Decl* check_function_declared(Identifier* identifier,
+  FnDecl* check_function_declared(Identifier* identifier,
                                 std::function<void()> error_action = []() {});
+
+  // call back called with num args expected, and num given
+  void check_function_args_length(Identifier*, List<Expr*>* args,
+                                  std::function<void(int, int)> = [](int,int) {});
 
   ClassDecl* get_class(std::string name);
   InterfaceDecl* get_interface(std::string name);

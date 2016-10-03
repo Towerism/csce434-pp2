@@ -30,6 +30,7 @@ public:
   bool matches_signature(FnDecl* other);
   void set_parent(Symbol_table& other) override;
   Type* get_type() override { return returnType; }
+  List<VarDecl*>* get_formals() { return formals; }
 };
 
 #endif /* FN_DECL_H */

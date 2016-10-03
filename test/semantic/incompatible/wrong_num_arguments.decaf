@@ -1,0 +1,9 @@
+int asdf(int a, int b, int c) {}
+int fdsa() {
+    int a;
+    int b;
+    int c;
+    int d;
+    int e;
+    asdf(a, b, c, d, e);
+}
