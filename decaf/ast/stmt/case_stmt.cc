@@ -4,6 +4,7 @@ CaseStmt::CaseStmt(yyltype loc, IntConstant* label, List<Stmt*>* body)
   : Stmt(loc), label(label), body(body) {
   this->label->SetParent(this);
   this->body->SetParentAll(this);
+  is_break_node = true;
 }
 
 void CaseStmt::PrintChildren(int identLevel) {

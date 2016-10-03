@@ -31,3 +31,13 @@ void Node::Print(int indentLevel, const char *label) {
          label? label : "", GetPrintNameForNode());
   PrintChildren(indentLevel);
 }
+
+Node* Node::find_loop_node() {
+  auto current = this;
+  do {
+    if (current->is_break_node)
+      return current;
+    current = current->parent;
+  } while(current != nullptr);
+  return nullptr;
+}

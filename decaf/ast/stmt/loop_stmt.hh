@@ -8,7 +8,9 @@
 class LoopStmt : public ConditionalStmt{
 public:
   LoopStmt(Expr *testExpr, Stmt *body)
-    : ConditionalStmt(testExpr, body) {}
+    : ConditionalStmt(testExpr, body) {
+    is_break_node = true;
+  }
 };
 
 

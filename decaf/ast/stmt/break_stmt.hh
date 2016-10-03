@@ -7,6 +7,10 @@ class BreakStmt : public Stmt{
 public:
   BreakStmt(yyltype loc) : Stmt(loc) {}
   const char *GetPrintNameForNode() override { return "BreakStmt"; }
+  void analyze(Symbol_table* symbol_table, reasonT focus) override {
+    if (!find_loop_node())
+      ReportError::BreakOutsideLoop(this);
+  }
 };
 
 #endif /* BREAK_STMT_H */

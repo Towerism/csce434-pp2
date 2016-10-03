@@ -3,6 +3,7 @@
 DefaultStmt::DefaultStmt(yyltype loc, List<Stmt *> *body)
     : Stmt(loc), body(body) {
   this->body->SetParentAll(this);
+  is_break_node = true;
 }
 
 void DefaultStmt::PrintChildren(int identLevel) {

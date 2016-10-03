@@ -1,0 +1,5 @@
+int asdf() {
+    double a;
+    int b;
+    a + b;
+}

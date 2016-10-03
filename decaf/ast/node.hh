@@ -11,6 +11,7 @@ class Node : public Analyzable
 protected:
   yyltype *location;
   Node *parent;
+  bool is_break_node = false;
 
 public:
   Node(yyltype loc);
@@ -33,6 +34,8 @@ public:
   virtual void analyze(reasonT focus) override {}
 
   virtual void analyze(Symbol_table* symbol_table, reasonT focus) override { analyze(focus); }
+
+  Node* find_loop_node();
 };
 
 #endif /* NODE_H */
