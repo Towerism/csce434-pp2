@@ -25,6 +25,7 @@ public:
 
   List<Decl*>* get_members() { return members; }
   Type* get_type() override { return new NamedType(id); }
+  Symbol_table* get_table() { return &symbol_table; }
 };
 
 #endif /* INTERFACE_DECL_H */

@@ -1,0 +1,13 @@
+interface Asdf {
+          int asdf();
+}
+
+class Qwer implements Asdf {
+      int asdf() {
+      }
+}
+
+int fdsa() {
+    Qwer a;
+    a.asdf();
+}

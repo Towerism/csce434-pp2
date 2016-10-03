@@ -30,7 +30,8 @@ public:
   void set_super(Symbol_table& super_table) { super = &super_table; }
   void check_virtuals_implemented(ClassDecl* class_decl, List<NamedType*>* interface_types);
   void set_parent(Symbol_table& parent_table) { parent = &parent_table; }
-  Decl* check_declared(Identifier* identifier);
+  Decl* check_variable_declared(Identifier* identifier);
+  Decl* check_function_declared(Identifier* identifier);
 
   ClassDecl* get_class(std::string name);
   InterfaceDecl* get_interface(std::string name);
@@ -39,6 +40,7 @@ public:
   Type* find_return_type();
   Type* find_this_type();
   bool class_extends_type(Type* subclass, Type* extends);
+  Symbol_table* get_table_for_functions(Type* type);
 
 private:
   Declaration_table<ClassDecl> classes;

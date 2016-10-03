@@ -18,4 +18,5 @@ public:
   Call(yyltype loc, Expr *base, Identifier *field, List<Expr*> *args);
   const char *GetPrintNameForNode() override { return "Call"; }
   void PrintChildren(int indentLevel) override;
+  void analyze(Symbol_table* symbol_table, reasonT focus) override;
 };

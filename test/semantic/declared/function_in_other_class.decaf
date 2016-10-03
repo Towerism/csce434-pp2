@@ -1,0 +1,8 @@
+class Asdf {
+      int qwer();
+}
+
+int asdf() {
+    Asdf a;
+    a.qwer();
+}

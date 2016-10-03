@@ -18,10 +18,10 @@ void FieldAccess::PrintChildren(int indentLevel) {
 }
 
 void FieldAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
-  symbol_table->check_declared(field);
+  symbol_table->check_variable_declared(field);
 }
 
 Type* FieldAccess::evaluate_type(Symbol_table* symbol_table) {
-  auto symbol = symbol_table->check_declared(field);
+  auto symbol = symbol_table->check_variable_declared(field);
   return symbol->get_type();
 }

@@ -26,6 +26,7 @@ public:
   Type* get_type() override { return new NamedType(id); }
   Type* get_extends() { return extends; }
   List<NamedType*>* get_implements() { return implements; }
+  Symbol_table* get_table() { return &symbol_table; }
 
 private:
   void add_virtuals();

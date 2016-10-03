@@ -1,0 +1,6 @@
+
+*** Error line 2.
+    fdsa();
+    ^^^^
+*** No declaration found for function 'fdsa'
+

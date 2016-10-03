@@ -133,7 +133,7 @@ InterfaceDecl* Symbol_table::get_interface(std::string name) {
   return interfaces.contains(name);
 }
 
-Decl* Symbol_table::check_declared(Identifier* identifier) {
+Decl* Symbol_table::check_variable_declared(Identifier* identifier) {
   auto current = this;
   do {
     auto variable = current->variables.contains(identifier->getName());
@@ -147,6 +147,20 @@ Decl* Symbol_table::check_declared(Identifier* identifier) {
   auto error_decl = new VarDecl(identifier, Type::errorType);
   variables.declare(error_decl);
   return error_decl;
+}
+
+Decl* Symbol_table::check_function_declared(Identifier* identifier) {
+  auto current = this;
+  do {
+    auto function = current->functions.contains(identifier->getName());
+    if (!function)
+      function = current->find_inherited_function(identifier->getName());
+    if (function)
+      return function;
+    current = current->parent;
+  } while(current != nullptr);
+  ReportError::IdentifierNotDeclared(identifier, LookingForFunction);
+  return nullptr;
 }
 
 Type* Symbol_table::find_return_type() {
@@ -188,4 +202,14 @@ bool Symbol_table::class_extends_type(Type* class_identifier, Type* extends) {
     class_name = current_extends->getName();
   } while(current_extends != nullptr);
   return false;
+}
+
+Symbol_table* Symbol_table::get_table_for_functions(Type* type) {
+  auto class_decl = Program::symbol_table.classes.contains(type->getName());
+  if (class_decl)
+    return class_decl->get_table();
+  auto interface_decl = Program::symbol_table.interfaces.contains(type->getName());
+  if (interface_decl)
+    return interface_decl->get_table();
+  return nullptr;
 }
