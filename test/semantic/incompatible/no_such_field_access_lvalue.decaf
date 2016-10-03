@@ -1,0 +1,4 @@
+int asdf() {
+    int[] pens;
+    pens.color = 5;
+}

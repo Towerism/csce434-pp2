@@ -24,3 +24,8 @@ void ArrayAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
   if (!subscript_type->coerce(Type::intType, symbol_table))
     ReportError::SubscriptNotInteger(subscript);
 }
+
+Type* ArrayAccess::evaluate_type(Symbol_table* symbol_table) {
+  auto array_type = base->evaluate_type(symbol_table);
+  return array_type->get_elem_type();
+}

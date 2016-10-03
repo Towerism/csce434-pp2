@@ -1,0 +1,4 @@
+void asdf() {
+    int[] a;
+    a.length();
+}

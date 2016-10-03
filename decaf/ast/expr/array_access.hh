@@ -11,6 +11,7 @@ public:
   const char *GetPrintNameForNode() override { return "ArrayAccess"; }
   void PrintChildren(int indentLevel) override;
   void analyze(Symbol_table* symbol_table, reasonT focus) override;
+  Type* evaluate_type(Symbol_table* symbol_table) override;
 };
 
 #endif /* ARRAY_ACCESS_H */

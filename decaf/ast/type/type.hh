@@ -22,6 +22,7 @@ public :
   virtual bool equal(Type* other);
   virtual bool coerce(Type* other, Symbol_table* symbol_table) { return equal(other); }
   virtual std::string getName() { return std::string(typeName); }
+  virtual Type* get_elem_type() { return this; }
 
   friend std::ostream& operator<<(std::ostream& out, Type* type) {
     return out << type->getName();

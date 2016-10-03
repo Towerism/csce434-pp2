@@ -18,6 +18,7 @@ public:
   bool coerce(Type* other, Symbol_table* symbol_table) override;
 
   std::string getName() override { return id->getName(); }
+  Type* get_elem_type() override { return this; }
   bool equal(Type* other) override {
     if (other == Type::errorType
         || this == Type::errorType

@@ -1,0 +1,6 @@
+
+*** Error line 3.
+    pens.color = 5;
+         ^^^^^
+*** int[] has no such field 'color'
+

@@ -14,6 +14,7 @@ public:
   const char *GetPrintNameForNode() override { return "ArrayType"; }
   void PrintChildren(int indentLevel) override;
   void analyze(reasonT focus) override;
+  Type* get_elem_type() override { return elemType; }
   bool equal(Type* other) override {
     if (other == Type::errorType
         || this == Type::errorType
@@ -25,7 +26,7 @@ public:
       return false;
     return elemType->equal(otherArrayType->elemType);
   }
-  std::string getName() override { return elemType->getName(); }
+  std::string getName() override { return elemType->getName() + "[]"; }
 };
 
 #endif /* ARRAY_TYPE_H */
