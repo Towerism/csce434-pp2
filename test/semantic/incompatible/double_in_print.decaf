@@ -1,0 +1,4 @@
+int asdf() {
+    double a;
+    Print(a);
+}

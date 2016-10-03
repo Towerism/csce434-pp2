@@ -1,0 +1,6 @@
+
+*** Error line 3.
+    Print(a);
+          ^
+*** Incompatible argument 1: double given, int/bool/string expected
+

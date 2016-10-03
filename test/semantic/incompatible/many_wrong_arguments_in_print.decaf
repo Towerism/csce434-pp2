@@ -1,0 +1,8 @@
+class Asdf {}
+
+int asdf() {
+    Asdf a;
+    Asdf b;
+    double c;
+    Print(a, b, c);
+}

@@ -1,0 +1,18 @@
+
+*** Error line 7.
+    Print(a, b, c);
+          ^
+*** Incompatible argument 1: Asdf given, int/bool/string expected
+
+
+*** Error line 7.
+    Print(a, b, c);
+             ^
+*** Incompatible argument 2: Asdf given, int/bool/string expected
+
+
+*** Error line 7.
+    Print(a, b, c);
+                ^
+*** Incompatible argument 3: double given, int/bool/string expected
+
