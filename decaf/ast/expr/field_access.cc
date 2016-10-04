@@ -29,9 +29,11 @@ void FieldAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
       ReportError::FieldNotFoundInBase(field, base_type);
       return;
     }
-    base_table->check_variable_declared(field, [&]() {
+    auto variable = base_table->check_variable_declared(field, [&]() {
         ReportError::FieldNotFoundInBase(field, base_type);
       });
+    if (variable->getType() == Type::errorType)
+      return;
     symbol_table->check_variable_declared(field, [&]() {
         ReportError::InaccessibleField(field, base_type);
       });

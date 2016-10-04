@@ -37,3 +37,10 @@ void CompoundExpr::analyze(Symbol_table* symbol_table, reasonT focus) {
   if (right)
     right->analyze(symbol_table, focus);
 }
+
+bool CompoundExpr::left_is_compatible_with_right(Symbol_table* symbol_table) {
+  auto left_type = left->evaluate_type(symbol_table);
+  auto right_type = right->evaluate_type(symbol_table);
+  return (left_type->equal(Type::intType) || left_type->equal(Type::doubleType))
+    && left_type->equal(right_type);
+}

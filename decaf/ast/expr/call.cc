@@ -29,6 +29,7 @@ void Call::analyze(Symbol_table* symbol_table, reasonT focus) {
   if (base == nullptr) {
     symbol_table->check_function_declared(field, [&]() {
         ReportError::IdentifierNotDeclared(field, LookingForFunction);
+        return;
       });
     auto good_length =
       symbol_table->check_function_args_length(field, actuals, [&](int expected, int given) {

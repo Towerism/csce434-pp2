@@ -8,6 +8,8 @@ class CompoundExpr : public Expr {
 protected:
   Operator *op;
   Expr *left, *right; // left will be NULL if unary
+
+  bool left_is_compatible_with_right(Symbol_table* symbol_table);
 public:
   CompoundExpr(Expr *lhs, Operator *op, Expr *rhs); // for binary
   CompoundExpr(Operator *op, Expr *rhs);             // for unary

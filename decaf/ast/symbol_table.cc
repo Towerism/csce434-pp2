@@ -182,6 +182,8 @@ bool Symbol_table::check_function_args_length(Identifier* identifier,
                                               List<Expr*>* actuals,
                                               std::function<void(int, int)> error_action) {
   auto function = check_function_declared(identifier);
+  if (!function)
+    return false;
   auto formals = function->get_formals();
   auto given = actuals->NumElements();
   auto expected = formals->NumElements();
