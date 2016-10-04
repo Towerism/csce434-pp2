@@ -204,7 +204,7 @@ bool Symbol_table::check_function_args(Identifier* identifier, List<Expr*>* args
       auto expected_type = decl->getType();
       auto given_type = arg_types->Nth(i);
       if (!given_type->coerce(expected_type, this)) {
-        error_action(arg, i, given_type, expected_type);
+        error_action(arg, i+1, given_type, expected_type);
         good = false;
       }
       ++i;

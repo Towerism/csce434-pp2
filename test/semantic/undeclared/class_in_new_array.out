@@ -1,0 +1,6 @@
+
+*** Error line 2.
+    NewArray(5, Asdf);
+                ^^^^
+*** No declaration found for type 'Asdf'
+

@@ -1,0 +1,3 @@
+int asdf() {
+    NewArray(5, Asdf);
+}

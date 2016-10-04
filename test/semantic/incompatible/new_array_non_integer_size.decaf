@@ -1,4 +1,4 @@
 int asdf() {
     int[] a;
-    NewArray(true, a);
+    NewArray(2, a);
 }

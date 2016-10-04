@@ -1,0 +1,6 @@
+
+*** Error line 2.
+    New(Asdf);
+        ^^^^
+*** No declaration found for class 'Asdf'
+

@@ -2,11 +2,11 @@
 *** Error line 7.
     asdf(b, a);
          ^
-*** Incompatible argument 0: bool given, int expected
+*** Incompatible argument 1: bool given, int expected
 
 
 *** Error line 7.
     asdf(b, a);
             ^
-*** Incompatible argument 1: int given, bool expected
+*** Incompatible argument 2: int given, bool expected
 

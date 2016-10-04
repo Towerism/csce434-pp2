@@ -15,6 +15,7 @@ public:
   void PrintChildren(int indentLevel) override;
   void analyze(reasonT focus) override;
   Type* get_elem_type() override { return elemType; }
+  void verify(reasonT focus) override;
   bool equal(Type* other) override {
     if (other == Type::errorType
         || this == Type::errorType

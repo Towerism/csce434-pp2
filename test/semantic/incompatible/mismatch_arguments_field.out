@@ -2,5 +2,5 @@
 *** Error line 9.
     d.asdf(a, b, c);
                  ^
-*** Incompatible argument 2: Asdf given, int expected
+*** Incompatible argument 3: Asdf given, int expected
 

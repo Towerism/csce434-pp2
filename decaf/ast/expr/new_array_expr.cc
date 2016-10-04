@@ -4,6 +4,7 @@
 
 #include <ast/symbol_table.hh>
 #include <ast/type/array_type.hh>
+#include <ast/stmt/program.hh>
 
 NewArrayExpr::NewArrayExpr(yyltype loc, Expr *sz, Type *et) : Expr(loc) {
   Assert(sz != NULL && et != NULL);
@@ -20,6 +21,7 @@ void NewArrayExpr::analyze(Symbol_table *symbol_table, reasonT focus) {
   auto size_type = size->evaluate_type(symbol_table);
   if (!size_type->coerce(Type::intType, symbol_table))
     ReportError::NewArraySizeNotInteger(size);
+  elemType->verify(LookingForType);
 }
 
 Type *NewArrayExpr::evaluate_type(Symbol_table *symbol_table) {

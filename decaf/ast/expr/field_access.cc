@@ -41,4 +41,15 @@ void FieldAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
 Type* FieldAccess::evaluate_type(Symbol_table* symbol_table) {
   auto symbol = symbol_table->check_variable_declared(field);
   return symbol->get_type();
+  VarDecl* variable;
+  if (base == nullptr) {
+    variable = symbol_table->check_variable_declared(field);
+  } else {
+    auto base_type = base->evaluate_type(symbol_table);
+    auto base_table = symbol_table->get_table_for_functions(base_type);
+    variable = base_table->check_variable_declared(field);
+  }
+  if (!variable)
+    return Type::errorType;
+  return variable->get_type();
 }

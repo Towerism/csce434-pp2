@@ -1,6 +1,6 @@
 
 *** Error line 3.
-    NewArray(true, a);
-             ^^^^
-*** Size for NewArray must be an integer
+    NewArray(2, a);
+                ^
+*** No declaration found for type 'a'
 

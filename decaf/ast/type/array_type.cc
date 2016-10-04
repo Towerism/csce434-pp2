@@ -13,3 +13,7 @@ void ArrayType::PrintChildren(int indentLevel) {
 void ArrayType::analyze(reasonT focus) {
   elemType->analyze(focus);
 }
+
+void ArrayType::verify(reasonT focus) {
+  elemType->verify(focus);
+}

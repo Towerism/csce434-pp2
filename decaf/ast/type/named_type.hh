@@ -19,6 +19,8 @@ public:
 
   std::string getName() override { return id->getName(); }
   Type* get_elem_type() override { return this; }
+  Identifier* get_identifier() { return id; }
+  void verify(reasonT focus) override;
   bool equal(Type* other) override {
     if (other == Type::errorType
         || this == Type::errorType

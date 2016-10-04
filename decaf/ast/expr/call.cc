@@ -50,8 +50,14 @@ void Call::analyze(Symbol_table* symbol_table, reasonT focus) {
     if (array_type && field->getName() == "length" && actuals->NumElements() == 0)
       return;
     auto base_table = symbol_table->get_table_for_functions(base_type);
-    if (!base_table) {
+    if (array_type || base_type->equal(Type::intType)
+        || base_type->equal(Type::stringType)
+        || base_type->equal(Type::doubleType)
+        || base_type->equal(Type::boolType)) {
       ReportError::FieldNotFoundInBase(field, base_type);
+      return;
+    }
+    if (!base_table) {
       return;
     }
     base_table->check_function_declared(field, [&]() {
