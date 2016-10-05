@@ -18,11 +18,11 @@ void FieldAccess::PrintChildren(int indentLevel) {
 }
 
 void FieldAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
-  if (base == nullptr)
+  if (base == nullptr) {
     symbol_table->check_variable_declared(field, [&]() {
         ReportError::IdentifierNotDeclared(field, LookingForVariable);
       });
-  else {
+  } else {
     auto base_type = base->evaluate_type(symbol_table);
     auto base_table = symbol_table->get_table_for_variables(base_type);
     if (!base_table) {
@@ -41,17 +41,21 @@ void FieldAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
 }
 
 Type* FieldAccess::evaluate_type(Symbol_table* symbol_table) {
-  auto symbol = symbol_table->check_variable_declared(field);
-  return symbol->get_type();
-  VarDecl* variable;
-  if (base == nullptr) {
-    variable = symbol_table->check_variable_declared(field);
+  VarDecl* variable = nullptr;
+  if (!base) {
+    variable = symbol_table->check_variable_declared(field, [&]() {
+        ReportError::IdentifierNotDeclared(field, LookingForVariable);
+      });
   } else {
     auto base_type = base->evaluate_type(symbol_table);
     auto base_table = symbol_table->get_table_for_functions(base_type);
-    variable = base_table->check_variable_declared(field);
+    if (base_table)
+      variable = base_table->check_variable_declared(field), [&]() {
+        ReportError::IdentifierNotDeclared(field, LookingForVariable);
+      };
   }
-  if (!variable)
+  if (!variable) {
     return Type::errorType;
+  }
   return variable->get_type();
 }

@@ -68,8 +68,9 @@ void Call::analyze(Symbol_table* symbol_table, reasonT focus) {
       base_table->check_function_args_length(field, actuals, [&](int expected, int given) {
         ReportError::NumArgsMismatch(field, expected, given);
       });
-    if (!good_length)
+    if (!good_length) {
       return;
+    }
     base_table->
       check_function_args(field,
                           actuals,
