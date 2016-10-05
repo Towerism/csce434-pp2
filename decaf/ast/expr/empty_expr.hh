@@ -9,6 +9,7 @@
 class EmptyExpr : public Expr {
 public:
   const char *GetPrintNameForNode() override { return "Empty"; }
+  yyltype* get_location_or_default(yyltype* loc) override { return loc; }
 };
 
 #endif /* EMPTY_EXPR_H */

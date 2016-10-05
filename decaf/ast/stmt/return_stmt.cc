@@ -19,3 +19,7 @@ void ReturnStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
   if (!return_type->coerce(expected_return_type, symbol_table))
     ReportError::ReturnMismatch(this, return_type, expected_return_type);
 }
+
+yyltype* ReturnStmt::get_expr_location() {
+  return expr->get_location_or_default(location);
+}

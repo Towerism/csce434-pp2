@@ -11,6 +11,7 @@ public:
   Expr() : Stmt() {}
   virtual void analyze(Symbol_table* symbol_table, reasonT focus) override {}
   virtual Type* evaluate_type(Symbol_table* symbol_table) { return Type::errorType; };
+  virtual yyltype* get_location_or_default(yyltype* loc) { return location; }
 };
 
 #endif /* EXPR_H */

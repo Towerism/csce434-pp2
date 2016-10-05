@@ -145,7 +145,7 @@ void ReportError::ArgMismatch(Expr *arg, int argIndex, Type *given, Type *expect
 void ReportError::ReturnMismatch(ReturnStmt *rStmt, Type *given, Type *expected) {
   stringstream s;
   s << "Incompatible return: " << given << " given, " << expected << " expected";
-  OutputError(rStmt->GetLocation(), s.str());
+  OutputError(rStmt->get_expr_location(), s.str());
 }
 
 void ReportError::FieldNotFoundInBase(Identifier *field, Type *base) {

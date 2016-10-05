@@ -1,0 +1,6 @@
+
+*** Error line 3.
+    a != 10 && 5;
+            ^^
+*** Incompatible operands: bool && int
+

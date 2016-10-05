@@ -13,6 +13,7 @@ public:
   const char *GetPrintNameForNode() override { return "ReturnStmt"; }
   void PrintChildren(int indentLevel) override;
   void analyze(Symbol_table* symbol_table, reasonT focus) override;
+  yyltype* get_expr_location();
 };
 
 #endif /* RETURN_STMT_H */

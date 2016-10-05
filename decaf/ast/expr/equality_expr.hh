@@ -14,6 +14,7 @@ public:
     if (!left_type->equal(right_type))
       ReportError::IncompatibleOperands(op, left_type, right_type);
   }
+  Type* evaluate_type(Symbol_table* symbol_table) override { return Type::boolType; }
 };
 
 #endif /* EQUALITY_EXPR_H */
