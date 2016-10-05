@@ -15,6 +15,9 @@ void PrintStmt::PrintChildren(int indentLevel) {
 void PrintStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
   int i = 1;
   args->Apply([&](Expr* arg) {
+      arg->analyze(symbol_table, focus);
+    });
+  args->Apply([&](Expr* arg) {
       auto arg_type = arg->evaluate_type(symbol_table);
       if (!arg_type->equal(Type::intType)
           && !arg_type->equal(Type::boolType)
