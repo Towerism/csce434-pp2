@@ -82,13 +82,14 @@ void Call::analyze(Symbol_table* symbol_table, reasonT focus) {
 }
 
 Type* Call::evaluate_type(Symbol_table* symbol_table) {
-  FnDecl* function;
-  if (base == nullptr) {
+  FnDecl* function = nullptr;
+  if (!base) {
     function = symbol_table->check_function_declared(field);
   } else {
     auto base_type = base->evaluate_type(symbol_table);
     auto base_table = symbol_table->get_table_for_functions(base_type);
-    function = base_table->check_function_declared(field);
+    if (base_table)
+      function = base_table->check_function_declared(field);
   }
   if (!function)
     return Type::errorType;
