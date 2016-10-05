@@ -18,26 +18,51 @@ void FieldAccess::PrintChildren(int indentLevel) {
 }
 
 void FieldAccess::analyze(Symbol_table* symbol_table, reasonT focus) {
-  if (base == nullptr) {
-    symbol_table->check_variable_declared(field, [&]() {
-        ReportError::IdentifierNotDeclared(field, LookingForVariable);
-      });
-  } else {
-    auto base_type = base->evaluate_type(symbol_table);
-    auto base_table = symbol_table->get_table_for_variables(base_type);
-    if (!base_table) {
-      ReportError::FieldNotFoundInBase(field, base_type);
-      return;
-    }
-    auto variable = base_table->check_variable_declared(field, [&]() {
-        ReportError::FieldNotFoundInBase(field, base_type);
-      });
-    if (variable->getType() == Type::errorType)
-      return;
-    symbol_table->check_variable_declared(field, [&]() {
-        ReportError::InaccessibleField(field, base_type);
-      });
+  accessing_table = symbol_table;
+  if (base)
+    access_on_base();
+  else
+    access_on_scope();
+}
+
+void FieldAccess::access_on_base() {
+  base_type = base->evaluate_type(accessing_table);
+  base_table = accessing_table->get_table_for_variables(base_type);
+  check_field_on_base_accessibility();
+}
+
+void FieldAccess::access_on_scope() {
+  accessing_table->check_variable_declared(field, [&]() {
+      ReportError::IdentifierNotDeclared(field, LookingForVariable);
+    });
+}
+
+void FieldAccess::check_field_on_base_accessibility() {
+  if (!base_table_exists())
+    return;
+  if (field_is_not_in_base())
+    check_if_field_is_inaccessible();
+}
+
+bool FieldAccess::base_table_exists() {
+  if (!base_table) {
+    ReportError::FieldNotFoundInBase(field, base_type);
+    return false;
   }
+  return true;
+}
+
+bool FieldAccess::field_is_not_in_base() {
+  auto variable = base_table->check_variable_declared(field, [&]() {
+      ReportError::FieldNotFoundInBase(field, base_type);
+    });
+  return variable->getType() != Type::errorType;
+}
+
+void FieldAccess::check_if_field_is_inaccessible() {
+  accessing_table->check_variable_declared(field, [&]() {
+      ReportError::InaccessibleField(field, base_type);
+    });
 }
 
 Type* FieldAccess::evaluate_type(Symbol_table* symbol_table) {
@@ -54,8 +79,7 @@ Type* FieldAccess::evaluate_type(Symbol_table* symbol_table) {
         ReportError::IdentifierNotDeclared(field, LookingForVariable);
       };
   }
-  if (!variable) {
+  if (!variable)
     return Type::errorType;
-  }
   return variable->get_type();
 }

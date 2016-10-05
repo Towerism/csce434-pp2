@@ -12,6 +12,7 @@ Call::Call(yyltype loc, Expr *b, Identifier *f, List<Expr*> *a) : Expr(loc)  {
   if (base) base->SetParent(this);
   (field=f)->SetParent(this);
   (actuals=a)->SetParentAll(this);
+  arg_types = List<Type*>(actuals->NumElements());
 }
 
 void Call::PrintChildren(int indentLevel) {
@@ -21,64 +22,78 @@ void Call::PrintChildren(int indentLevel) {
 }
 
 void Call::analyze(Symbol_table* symbol_table, reasonT focus) {
-  List<Type*> arg_types(actuals->NumElements());
+  calling_table = symbol_table;
+  initialize_arg_types();
+  if (base)
+    call_on_base();
+  else
+    call_on_scope();
+}
+
+void Call::initialize_arg_types() {
   std::transform(actuals->begin(), actuals->end(),
                  arg_types.begin(), [&](Expr* arg) {
-                   return arg->evaluate_type(symbol_table);
+                   return arg->evaluate_type(calling_table);
                  });
-  if (base == nullptr) {
-    symbol_table->check_function_declared(field, [&]() {
-        ReportError::IdentifierNotDeclared(field, LookingForFunction);
-        return;
-      });
-    auto good_length =
-      symbol_table->check_function_args_length(field, actuals, [&](int expected, int given) {
-          ReportError::NumArgsMismatch(field, expected, given);
-        });
-    if (!good_length)
+}
+
+void Call::call_on_base() {
+    base_type = base->evaluate_type(calling_table);
+    if (call_is_to_primitive_or_array_length())
       return;
-    symbol_table->
-      check_function_args(field,
-                          actuals,
-                          &arg_types,
-                          [&](Expr* arg, int index, Type* expected, Type* given) {
-                            ReportError::ArgMismatch(arg, index, expected, given);
-                          });
+    check_args_length_and_types();
+}
+
+bool Call::call_is_to_primitive_or_array_length() {
+  auto array_type = dynamic_cast<ArrayType*>(base_type);
+  if (array_type && field->getName() == "length" && actuals->NumElements() == 0)
+    return true;
+  if (array_type || base_type->is_primitive()) {
+    ReportError::FieldNotFoundInBase(field, base_type);
+    return true;
   }
-  else {
-    auto base_type = base->evaluate_type(symbol_table);
-    auto array_type = dynamic_cast<ArrayType*>(base_type);
-    if (array_type && field->getName() == "length" && actuals->NumElements() == 0)
-      return;
-    auto base_table = symbol_table->get_table_for_functions(base_type);
-    if (array_type || base_type->equal(Type::intType)
-        || base_type->equal(Type::stringType)
-        || base_type->equal(Type::doubleType)
-        || base_type->equal(Type::boolType)) {
+  return false;
+}
+
+void Call::check_args_length_and_types() {
+  base_table = calling_table->get_table_for_functions(base_type);
+  if (!base_table) {
+    return;
+  }
+  base_table->check_function_declared(field, [&]() {
       ReportError::FieldNotFoundInBase(field, base_type);
-      return;
-    }
-    if (!base_table) {
-      return;
-    }
-    base_table->check_function_declared(field, [&]() {
-        ReportError::FieldNotFoundInBase(field, base_type);
-      });
-    auto good_length =
-      base_table->check_function_args_length(field, actuals, [&](int expected, int given) {
-        ReportError::NumArgsMismatch(field, expected, given);
-      });
-    if (!good_length) {
-      return;
-    }
-    base_table->
-      check_function_args(field,
-                          actuals,
-                          &arg_types,
-                          [&](Expr* arg, int index, Type* expected, Type* given) {
-                            ReportError::ArgMismatch(arg, index, expected, given);
-                          });
+    });
+  if (!args_length_is_good(base_table)) {
+    return;
   }
+  check_args_types(base_table);
+}
+
+bool Call::args_length_is_good(Symbol_table* table_for_function) {
+  return table_for_function->
+    check_function_args_length(field, actuals,
+                               [&](int expected, int given) {
+                                 ReportError::NumArgsMismatch(field, expected, given);
+                               });
+}
+
+void Call::check_args_types(Symbol_table* table_for_function) {
+  table_for_function->
+    check_function_args(field,
+                        actuals,
+                        &arg_types,
+                        [&](Expr* arg, int index, Type* expected, Type* given) {
+                          ReportError::ArgMismatch(arg, index, expected, given);
+                        });
+}
+
+void Call::call_on_scope() {
+  calling_table->check_function_declared(field, [&]() {
+      ReportError::IdentifierNotDeclared(field, LookingForFunction);
+      return;
+    });
+  if (args_length_is_good(calling_table))
+    check_args_types(calling_table);
 }
 
 Type* Call::evaluate_type(Symbol_table* symbol_table) {

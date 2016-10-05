@@ -3,6 +3,7 @@
 
 #include <ast/node.hh>
 #include <string.h>
+#include <vector>
 
 class Type : public Node
 {
@@ -12,6 +13,7 @@ protected:
 public :
   static Type *intType, *doubleType, *boolType, *voidType,
     *nullType, *stringType, *errorType;
+  static std::vector<Type*> primitives;
 
   Type() {}
   Type(yyltype loc) : Node(loc) {}
@@ -24,6 +26,7 @@ public :
   virtual std::string getName() { return std::string(typeName); }
   virtual Type* get_elem_type() { return this; }
   virtual void verify(reasonT focus) {}
+  bool is_primitive();
 
   friend std::ostream& operator<<(std::ostream& out, Type* type) {
     return out << type->getName();

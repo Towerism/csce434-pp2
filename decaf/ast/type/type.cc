@@ -18,6 +18,10 @@ Type *Type::nullType = new Type("null");
 Type *Type::stringType = new Type("string");
 Type *Type::errorType = new Type("error");
 
+std::vector<Type*> Type::primitives = {
+  intType, doubleType, boolType, stringType
+};
+
 Type::Type(const char *n) {
   Assert(n);
   typeName = strdup(n);
@@ -34,4 +38,12 @@ if (other == Type::errorType
 if (!typeName || !other->typeName)
   return false;
 return strcmp(typeName, other->typeName) == 0;
+}
+
+bool Type::is_primitive() {
+  for (auto primitive : primitives) {
+    if (this == primitive)
+      return true;
+  }
+  return false;
 }

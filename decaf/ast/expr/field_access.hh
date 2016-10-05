@@ -19,4 +19,15 @@ public:
   void PrintChildren(int indentLevel) override;
   void analyze(Symbol_table* symbol_table, reasonT focus) override;
   Type* evaluate_type(Symbol_table* symbol_table) override;
+private:
+  Type* base_type;
+  Symbol_table* accessing_table = nullptr;
+  Symbol_table* base_table = nullptr;
+
+  void access_on_base();
+  void access_on_scope();
+  void check_field_on_base_accessibility();
+  bool base_table_exists();
+  bool field_is_not_in_base();
+  void check_if_field_is_inaccessible();
 };
