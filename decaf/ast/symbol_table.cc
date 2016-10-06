@@ -9,26 +9,10 @@
 
 void Symbol_table::declare(Decl* declaration) {
   detect_previous_declaration(declaration);
-  auto class_declaration = dynamic_cast<ClassDecl*>(declaration);
-  if (class_declaration != nullptr) {
-    classes.declare(class_declaration);
-    return;
-  }
-  auto interface_declaration = dynamic_cast<InterfaceDecl*>(declaration);
-  if (interface_declaration != nullptr) {
-    interfaces.declare(interface_declaration);
-    return;
-  }
-  auto variable_declaration = dynamic_cast<VarDecl*>(declaration);
-  if (variable_declaration != nullptr) {
-    variables.declare(variable_declaration);
-    return;
-  }
-  auto function_declaration = dynamic_cast<FnDecl*>(declaration);
-  if (function_declaration != nullptr) {
-    functions.declare(function_declaration);
-    return;
-  }
+  classes.maybe_declare(declaration);
+  interfaces.maybe_declare(declaration);
+  variables.maybe_declare(declaration);
+  functions.maybe_declare(declaration);
 }
 
 void Symbol_table::add_virtual(NamedType* interface_type, Decl* declaration) {

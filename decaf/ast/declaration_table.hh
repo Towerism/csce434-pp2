@@ -4,12 +4,20 @@
 #include <string>
 #include <unordered_map>
 
+class Decl;
+
 template <typename decl_t>
 class Declaration_table {
 public:
   void declare(decl_t* declaration) {
     std::string name = declaration->getName();
     declarations[name] = declaration;
+  }
+
+  void maybe_declare(Decl* declaration) {
+    decl_t* decl = dynamic_cast<decl_t*>(declaration);
+    if (decl)
+      declare(decl);
   }
 
   decl_t* contains(std::string name) {
