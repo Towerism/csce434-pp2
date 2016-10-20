@@ -10,6 +10,11 @@ To test
 $ make test
 ```
 
+## State of the Software
+This project was written as an intermediary step for a Compiler Design project.
+At the moment, only semantic analysis has been completed. Code generation is
+being worked on in a private repo, as at the time of writing the course is still
+in progress. At some point the work on code generation will be merged in.
 ## CMake build system
 I decided I didn't like all the files being in the top-level project directory, nor
 did I like the ast files being scrunched up into a few separate files. I
