@@ -15,6 +15,8 @@ all:: compile
 test:: ##compile and run test suite
 test run-tests:: compile
 	@$(MAKE) run-tests -C $(BUILD_DIR)
+test-codegen:: compile
+	@$(MAKE) test-codegen -C $(BUILD_DIR)
 test-semantic:: compile
 	@$(MAKE) test-semantic -C $(BUILD_DIR)
 test-syntax:: compile

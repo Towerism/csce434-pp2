@@ -27,3 +27,8 @@ void StmtBlock::analyze(reasonT focus) {
   decls->Apply([&](VarDecl* decl) { decl->analyze(focus); });
   stmts->Apply([&](Stmt* stmt) { stmt->analyze(&symbol_table, focus); });
 }
+
+void StmtBlock::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
+  decls->Apply([&](Decl* decl) { decl->emit(codegen, frame_allocator, &this->symbol_table); });
+  stmts->Apply([&](Stmt* stmt) { stmt->emit(codegen, frame_allocator, &this->symbol_table); });
+}

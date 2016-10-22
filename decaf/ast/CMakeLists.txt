@@ -15,3 +15,8 @@ add_library(ast ${AST_SRCS}
   $<TARGET_OBJECTS:stmt>
   $<TARGET_OBJECTS:type>
   )
+
+set(AST_LIBS
+  codegen
+  )
+target_link_libraries(ast ${AST_LIBS})

@@ -1,4 +1,6 @@
 add_subdirectory(ast)
 add_subdirectory(parse)
+add_subdirectory(arch)
+add_subdirectory(codegen)
 add_subdirectory(util)
 add_subdirectory(dcc)

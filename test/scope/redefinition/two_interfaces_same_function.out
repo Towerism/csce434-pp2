@@ -1,6 +1,0 @@
-
-*** Error line 9.
-          int a(bool c);
-              ^
-*** Declaration of 'a' here conflicts with declaration on line 5
-

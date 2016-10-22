@@ -5,6 +5,7 @@ add_executable(dcc
 set(DCC_LIBS
   ast
   parse
+  codegen
   util
   -lm
   )

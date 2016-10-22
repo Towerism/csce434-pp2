@@ -28,6 +28,8 @@ public:
   void build_table() override;
   void analyze(reasonT focus) override;
   bool matches_signature(FnDecl* other);
+
+  void emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) override;
   void set_parent(Symbol_table& other) override;
   Type* get_type() override { return returnType; }
   List<VarDecl*>* get_formals() { return formals; }

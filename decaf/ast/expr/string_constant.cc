@@ -2,6 +2,7 @@
 
 #include <cstring>
 
+#include <codegen/codegen.hh>
 #include <util/utility.hh>
 
 StringConstant::StringConstant(yyltype loc, const char *val) : Expr(loc) {
@@ -11,4 +12,8 @@ StringConstant::StringConstant(yyltype loc, const char *val) : Expr(loc) {
 
 void StringConstant::PrintChildren(int indentLevel) {
   printf("%s",value);
+}
+
+void StringConstant::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
+  frame_location = codegen->GenLoadConstant(value, frame_allocator);
 }

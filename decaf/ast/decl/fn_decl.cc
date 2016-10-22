@@ -1,5 +1,8 @@
 #include "fn_decl.hh"
 
+#include <codegen/codegen.hh>
+#include <codegen/frame_allocator.hh>
+
 FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
   Assert(n != NULL && r!= NULL && d != NULL);
   (returnType=r)->SetParent(this);
@@ -36,8 +39,7 @@ void FnDecl::analyze(reasonT focus) {
   formals->Apply([&](VarDecl* decl) { decl->analyze(focus); });
   if (body)
     body->analyze(focus);
-}
-
+} 
 bool FnDecl::matches_signature(FnDecl* other) {
   if (formals->NumElements() != other->formals->NumElements())
     return false;
@@ -46,4 +48,13 @@ bool FnDecl::matches_signature(FnDecl* other) {
                     [](VarDecl* a, VarDecl* b) {
                       return a->getType()->equal(b->getType());
                     });
+}
+
+void FnDecl::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
+  codegen->GenLabel(id->getName().c_str());
+  auto function = codegen->GenBeginFunc();
+  auto body_allocator = new Frame_allocator(fpRelative, Frame_growth::Downwards);
+  body->emit(codegen, body_allocator, &this->symbol_table);
+  function->SetFrameSize(body_allocator->size());
+  codegen->GenEndFunc();
 }

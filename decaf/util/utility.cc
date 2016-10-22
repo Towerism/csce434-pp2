@@ -78,8 +78,11 @@ void ParseCommandLine(int argc, char *argv[])
   if (strcmp(argv[1], "-d") != 0) { // first arg is not -d
     if (strcmp(argv[1], "-s") == 0) // syntax test
       testType = SyntaxTest;
-    else if (strcmp(argv[1], "-c") == 0) // scope test
-      testType = ScopeTest;
+    else if (strcmp(argv[1], "-c") == 0) // semantic test
+      testType = SemanticTest;
+
+    else if (strcmp(argv[1], "-o") == 0) // codegen test
+      testType = CodegenTest;
     else {
       printf("Usage: [ -s | -c | [-d <debug-key-1> <debug-key-2> ... ]\n");
       exit(2);

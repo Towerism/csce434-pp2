@@ -152,9 +152,12 @@ Program : DeclList {
     case SyntaxTest:
       program->Print(0);
       break;
-    case ScopeTest:
+    case SemanticTest:
+      program->analyze(); // we disable semantic checking for the compiler while developing codegen
+      break;
+    case CodegenTest:
     default:
-      program->analyze();
+      program->emit();
       break;
     }
   }

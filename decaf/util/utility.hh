@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef enum { ScopeTest = 0, SyntaxTest } testT;
+typedef enum { CodegenTest = 0, SemanticTest, SyntaxTest } testT;
 
 /* Function: Failure()
  * Usage: Failure("Out of memory!");

@@ -7,10 +7,24 @@ TEST_NUM=$(wc -w <<< "$SAMPLEIN")
 PASSED_NUM=0
 FAILED=
 ARGS=
+CWD=$(pwd)
 
 if [ "$DIRECTORY" = "syntax" ]; then
-   ARGS="-s"
+    ARGS="-s"
+elif [ "$DIRECTORY" = "semantic" ]; then
+    ARGS="-c"
+elif [ "$DIRECTORY" = "codegen" ]; then
+    ARGS="-o"
+
 fi
+
+function run() {
+    if [ "$DIRECTORY" = "codegen" ]; then
+        $(cd .. && ./run $CWD/$SAMPLE &> $CWD/out)
+    else
+        $($EXECUTABLE $ARGS < $SAMPLE &> out) # suppress shell output
+    fi
+}
 
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
@@ -31,7 +45,7 @@ for SAMPLE in $SAMPLEIN; do
 
     rm -f out
 
-    $($EXECUTABLE $ARGS < $SAMPLE &> out) # suppress shell output
+    run
 
     cmp --silent out $EXPECTEDOUT
 

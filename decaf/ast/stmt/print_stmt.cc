@@ -1,5 +1,6 @@
 #include "print_stmt.hh"
 
+#include <codegen/codegen.hh>
 #include <util/utility.hh>
 
 PrintStmt::PrintStmt(List<Expr*> *a) {
@@ -25,4 +26,13 @@ void PrintStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
         ReportError::PrintArgMismatch(arg, i, arg_type);
       ++i;
     });
+}
+
+void PrintStmt::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
+  Expr* arg = *(args->begin());
+  Type* arg_type = arg->evaluate_type(symbol_table);
+  arg->emit(codegen, frame_allocator, symbol_table);
+  Location* arg_location = arg->get_frame_location();
+
+  codegen->GenBuiltInCall(PrintString, frame_allocator, arg_location);
 }

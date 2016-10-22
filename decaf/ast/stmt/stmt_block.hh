@@ -19,6 +19,7 @@ public:
   void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
+  void emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) override;
   void set_parent(Symbol_table& other) override;
 };
 
