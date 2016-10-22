@@ -38,3 +38,5 @@ parse.output
 # Build directory
 /build
 /dcc
+/tmp.asm
+/tmp.errors
