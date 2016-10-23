@@ -13,6 +13,8 @@ public:
   friend std::ostream& operator<<(std::ostream& out, Operator* op) {
     return out << std::string(op->tokenString);
   }
+
+  const char* get_token_string() { return tokenString; }
 };
 
 #endif /* OPERATOR_H */

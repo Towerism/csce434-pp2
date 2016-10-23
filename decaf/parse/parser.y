@@ -153,10 +153,11 @@ Program : DeclList {
       program->Print(0);
       break;
     case SemanticTest:
-      program->analyze(); // we disable semantic checking for the compiler while developing codegen
+      program->analyze();
       break;
     case CodegenTest:
     default:
+      program->analyze();
       program->emit();
       break;
     }
