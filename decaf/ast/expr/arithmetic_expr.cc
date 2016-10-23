@@ -23,8 +23,7 @@ Type* ArithmeticExpr::evaluate_type(Symbol_table* symbol_table) {
 }
 
 void ArithmeticExpr::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
-  left->emit(codegen, frame_allocator, symbol_table);
-  right->emit(codegen, frame_allocator, symbol_table);
+  CompoundExpr::emit(codegen, frame_allocator, symbol_table);
   Location* left_location = left->get_frame_location();
   Location* right_location = right->get_frame_location();
   frame_location = codegen->GenBinaryOp(op->get_token_string(), left_location, right_location, frame_allocator);

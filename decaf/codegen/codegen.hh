@@ -96,6 +96,19 @@ public:
   // Location object for the new temporary where the result
   // was stored.
   Location *GenBinaryOp(const char *opName, Location *op1, Location *op2, Frame_allocator* frame_allocator);
+  Location *GenBinaryOp(BinaryOp::OpCode op, Location *op1, Location *op2, Frame_allocator* frame_allocator);
+
+  // Generates Tac instructions to perform a negation of src
+  // returning the location of the result
+  Location *GenNot(Location* src, Frame_allocator* frame_allocator);
+
+  // Generates Tac instructions to perform a complex binary ops
+  // made up of two or more Tac-native binary ops
+  // identified by string name, such as "+" or "==".  Returns a
+  // Location object for the new temporary where the result
+  // was stored.
+  Location *GenComplexBinaryOp(const char *opName, Location *op1, Location *op2, Frame_allocator* frame_allocator);
+
 
   // Generates the Tac instruction for pushing a single
   // parameter. Used to set up for ACall and LCall instructions.

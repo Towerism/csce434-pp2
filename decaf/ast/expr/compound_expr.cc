@@ -3,6 +3,7 @@
 #include <util/utility.hh>
 
 #include <ast/symbol_table.hh>
+#include <codegen/codegen.hh>
 
 CompoundExpr::CompoundExpr(Expr *l, Operator *o, Expr *r)  : Expr(Join(l->GetLocation(), r->GetLocation())) {
   Assert(l != NULL && o != NULL && r != NULL);
@@ -48,4 +49,9 @@ bool CompoundExpr::left_is_compatible_with_right(Symbol_table* symbol_table) {
   right_type = right->evaluate_type(symbol_table);
   return (left_type->equal(Type::intType) || left_type->equal(Type::doubleType))
     && left_type->equal(right_type);
+}
+
+void CompoundExpr::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
+  left->emit(codegen, frame_allocator, symbol_table);
+  right->emit(codegen, frame_allocator, symbol_table);
 }

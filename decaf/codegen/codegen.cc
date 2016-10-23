@@ -88,7 +88,32 @@ Location *CodeGenerator::GenBinaryOp(const char *opName, Location *op1,
   code.push_back(new BinaryOp(BinaryOp::OpCodeForName(opName), result, op1, op2));
   return result;
 }
+Location *CodeGenerator::GenBinaryOp(BinaryOp::OpCode op, Location *op1,
+                                     Location *op2, Frame_allocator* frame_allocator)
+{
+  Location *result = GenTempVar(frame_allocator);
+  code.push_back(new BinaryOp(op, result, op1, op2));
+  return result;
+}
 
+Location *CodeGenerator::GenNot(Location *src, Frame_allocator* frame_allocator) {
+  Location * result = GenTempVar(frame_allocator);
+  code.push_back(new Not(result, src));
+  return result;
+}
+
+// Assumes != for right now
+Location *CodeGenerator::GenComplexBinaryOp(const char *opName, Location *op1,
+                                     Location *op2, Frame_allocator* frame_allocator)
+{
+
+  Location *equal = GenBinaryOp("==", op1, op2, frame_allocator);
+  if (strcmp(opName, "==") == 0)
+    return equal;
+  Location *result = GenNot(equal, frame_allocator);
+
+  return result;
+}
 
 void CodeGenerator::GenLabel(const char *label)
 {

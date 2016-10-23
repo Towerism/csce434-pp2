@@ -81,6 +81,7 @@ class Assign;
 class Load;
 class Store;
 class BinaryOp;
+class Not;
 class Label;
 class Goto;
 class IfZ;
@@ -145,7 +146,7 @@ public:
 class BinaryOp: public Instruction {
 
 public:
-  typedef enum {Add, Sub, Mul, Div, Mod, Eq, Less, And, Or, NumOps} OpCode;
+  typedef enum {Add, Sub, Mul, Div, Mod, Eq, Less, And, Nor, Or, NumOps} OpCode;
   static const char * const opName[NumOps];
   static OpCode OpCodeForName(const char *name);
 
@@ -154,6 +155,14 @@ protected:
   Location *dst, *op1, *op2;
 public:
   BinaryOp(OpCode c, Location *dst, Location *op1, Location *op2);
+  void EmitSpecific(Mips *mips);
+};
+
+class Not: public Instruction {
+
+  Location *dst, *src;
+public:
+  Not(Location *dst, Location *src);
   void EmitSpecific(Mips *mips);
 };
 

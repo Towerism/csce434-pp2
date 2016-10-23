@@ -39,6 +39,7 @@ void PrintStmt::emit_print_arg(Expr* arg, CodeGenerator* codegen, Frame_allocato
 
   arg->emit(codegen, frame_allocator, symbol_table);
   Location* arg_location = arg->get_frame_location();
+  Assert(arg_location);
   BuiltIn built_in = built_in_from_type(arg_type);
 
   codegen->GenBuiltInCall(built_in, frame_allocator, arg_location);

@@ -203,6 +203,14 @@ void Mips::EmitBinaryOp(BinaryOp::OpCode code, Location *dst,
   SpillRegister(dst, rd);
 }
 
+void Mips::EmitNot(Location* dst, Location* src)
+{
+  FillRegister(src, rs);
+  Emit("%s %s, %s\t# bitwise not", "not", regs[rd].name, regs[rs].name);
+  Emit("%s %s, 1\t# bitmask 0x1", "and", regs[rd].name, regs[rd].name);
+  SpillRegister(dst, rd);
+}
+
 
 /* Method: EmitLabel
  * -----------------
@@ -433,6 +441,7 @@ Mips::Mips() {
   mipsName[BinaryOp::Eq] = "seq";
   mipsName[BinaryOp::Less] = "slt";
   mipsName[BinaryOp::And] = "and";
+  mipsName[BinaryOp::Nor] = "nor";
   mipsName[BinaryOp::Or] = "or";
   regs[zero] = (RegContents){false, NULL, "$zero", false};
   regs[at] = (RegContents){false, NULL, "$at", false};

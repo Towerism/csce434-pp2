@@ -65,6 +65,7 @@ public:
 
   void EmitBinaryOp(BinaryOp::OpCode code, Location *dst,
                     Location *op1, Location *op2);
+  void EmitNot(Location *dst, Location *src);
 
   void EmitLabel(const char *label);
   void EmitGoto(const char *label);
