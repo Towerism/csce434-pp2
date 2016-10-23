@@ -11,6 +11,7 @@ public:
   const char *GetPrintNameForNode() override { return "BoolConstant"; }
   void PrintChildren(int indentLevel) override;
   Type* evaluate_type(Symbol_table* symbol_table) override { return Type::boolType; }
+  void emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) override;
 };
 
 #endif /* BOOL_CONSTANT_H */

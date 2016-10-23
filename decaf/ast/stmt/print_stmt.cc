@@ -29,10 +29,27 @@ void PrintStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
 }
 
 void PrintStmt::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
-  Expr* arg = *(args->begin());
+  args->Apply([&](Expr* arg) {
+      emit_print_arg(arg, codegen, frame_allocator, symbol_table);
+    });
+}
+
+void PrintStmt::emit_print_arg(Expr* arg, CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
   Type* arg_type = arg->evaluate_type(symbol_table);
+
   arg->emit(codegen, frame_allocator, symbol_table);
   Location* arg_location = arg->get_frame_location();
+  BuiltIn built_in = built_in_from_type(arg_type);
 
-  codegen->GenBuiltInCall(PrintString, frame_allocator, arg_location);
+  codegen->GenBuiltInCall(built_in, frame_allocator, arg_location);
+}
+
+BuiltIn PrintStmt::built_in_from_type(Type* type) {
+  if (type->equal(Type::stringType))
+    return PrintString;
+  else if (type->equal(Type::intType))
+    return PrintInt;
+  else if (type->equal(Type::boolType))
+    return PrintBool;
+  return PrintString;
 }

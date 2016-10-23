@@ -1,0 +1,3 @@
+int main() {
+    Print(2, true, "hi", 3, false, "bye");
+}
