@@ -1,0 +1,15 @@
+int main() {
+    if (false) {
+       Print("This better not print!");
+    } else if (false) {
+       Print("This better not print!");
+    } else if (false) {
+       Print("This better not print!");
+    } else if (true) {
+       Print("This should print true");
+    } else if (false) {
+       Print("This better not print!");
+    } else {
+       Print("This better not print!");
+    }
+}

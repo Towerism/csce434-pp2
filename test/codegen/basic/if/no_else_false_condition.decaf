@@ -1,0 +1,6 @@
+int main() {
+    if (false) {
+       Print("This better not print!");
+    }
+    Print("This should print true");
+}

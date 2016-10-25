@@ -1,0 +1,7 @@
+int main() {
+    if (true) {
+       Print("This should print true");
+    } else {
+      Print("This better not print!");
+    }
+}
