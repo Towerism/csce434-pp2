@@ -86,9 +86,8 @@ void CodeGenerator::GenStore(Location *dst,Location *src, int offset)
 Location *CodeGenerator::GenBinaryOp(const char *opName, Location *op1,
                                      Location *op2, Frame_allocator* frame_allocator)
 {
-  Location *result = GenTempVar(frame_allocator);
-  code.push_back(new BinaryOp(BinaryOp::OpCodeForName(opName), result, op1, op2));
-  return result;
+  auto op_code = BinaryOp::OpCodeForName(opName);
+  return GenBinaryOp(op_code, op1, op2, frame_allocator);
 }
 Location *CodeGenerator::GenBinaryOp(BinaryOp::OpCode op, Location *op1,
                                      Location *op2, Frame_allocator* frame_allocator)
