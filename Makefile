@@ -1,7 +1,8 @@
 MAKE := make -s
 BUILD_DIR := build
 GENERATOR := Unix Makefiles
-CMAKE_FLAGS :=
+CXX ?= $(which g++)
+CMAKE_FLAGS := "-DCMAKE_CXX_COMPILER='$(CXX)'"
 
 .PHONY:: all test cmake-test-flags run-tests \
          coverage cmake-coverage-flags build-coveralls \
