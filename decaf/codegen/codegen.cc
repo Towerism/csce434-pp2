@@ -9,7 +9,9 @@
 
 #include <string.h>
 
+#include "complex_op_factory.hh"
 #include "frame_allocator.hh"
+
 #include <arch/mips/mips.hh>
 #include <arch/tac.hh>
 
@@ -102,17 +104,11 @@ Location *CodeGenerator::GenNot(Location *src, Frame_allocator* frame_allocator)
   return result;
 }
 
-// Assumes != for right now
 Location *CodeGenerator::GenComplexBinaryOp(const char *opName, Location *op1,
                                      Location *op2, Frame_allocator* frame_allocator)
 {
-
-  Location *equal = GenBinaryOp("==", op1, op2, frame_allocator);
-  if (strcmp(opName, "==") == 0)
-    return equal;
-  Location *result = GenNot(equal, frame_allocator);
-
-  return result;
+  Complex_op_factory complex_op_factory(this, frame_allocator);
+  return complex_op_factory.make_complex_op(opName, op1, op2);
 }
 
 void CodeGenerator::GenLabel(const char *label)
