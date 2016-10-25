@@ -11,6 +11,7 @@
 
 #include "complex_op_factory.hh"
 #include "frame_allocator.hh"
+#include "linker.hh"
 
 #include <arch/mips/mips.hh>
 #include <arch/tac.hh>
@@ -112,6 +113,7 @@ Location *CodeGenerator::GenComplexBinaryOp(const char *opName, Location *op1,
 
 void CodeGenerator::GenLabel(const char *label)
 {
+  Linker::check_label_for_main_linkage(label);
   code.push_back(new Label(label));
 }
 

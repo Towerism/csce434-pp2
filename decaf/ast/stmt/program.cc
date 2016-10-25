@@ -3,6 +3,8 @@
 #include <codegen/codegen.hh>
 #include <codegen/frame_allocator.hh>
 
+#include <codegen/linker.hh>
+
 Symbol_table Program::symbol_table;
 
 Program::Program(List<Decl*> *d) {
@@ -36,5 +38,6 @@ void Program::emit() {
   decls->Apply([&](Decl* decl) {
       decl->emit(codegen, frame_allocator, &symbol_table);
     });
-  codegen->DoFinalCodeGen();
+  if (Linker::link())
+    codegen->DoFinalCodeGen();
 }

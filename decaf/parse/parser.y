@@ -22,6 +22,7 @@
 #include <util/utility.hh>
 #include <parse/scanner.hh> // for yylex
 #include <parse/parser.hh>
+#include <codegen/linker.hh>
 
   void yyerror(const char *msg); // standard error-handling routine
 
