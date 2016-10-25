@@ -1,5 +1,7 @@
 #include "logical_expr.hh"
 
+#include <codegen/codegen.hh>
+
 void LogicalExpr::analyze(Symbol_table* symbol_table, reasonT focus) {
   CompoundExpr::analyze(symbol_table, focus);
   Type* left_type;
@@ -14,4 +16,11 @@ void LogicalExpr::analyze(Symbol_table* symbol_table, reasonT focus) {
     if (!right_type->equal(Type::boolType))
       ReportError::IncompatibleOperand(op, right_type);
   }
+}
+
+void LogicalExpr::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
+  CompoundExpr::emit(codegen, frame_allocator, symbol_table);
+  Location* left_location = left->get_frame_location();
+  Location* right_location = right->get_frame_location();
+  frame_location = codegen->GenBinaryOp(op->get_token_string(), left_location, right_location, frame_allocator);
 }
