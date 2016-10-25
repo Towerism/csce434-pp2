@@ -1,6 +1,7 @@
 class CodeGenerator;
-class Location;
 class Frame_allocator;
+
+#include <arch/tac.hh>
 
 class Complex_op_factory {
 public:
@@ -11,14 +12,21 @@ public:
 
 private:
   CodeGenerator* codegen;
-  char* opName;
+  const char* opName;
   Location* op1;
   Location* op2;
   Frame_allocator* frame_allocator;
 
   Location* native_op;
-  bool op_is_atleast_semi_native(const char* opName);
+  BinaryOp::OpCode native_op_code;
 
-  Location* process_semi_native_op(const char* opName, Location* op1, Location* op2);
-  Location* process_quasi_native_op(const char* opName, Location* op1, Location* op2);
+  void set_ops(const char* opName, Location* op1, Location* op2);
+  bool op_is_atleast_semi_native();
+
+  Location* process_semi_native_op();
+  void set_native_op();
+  void set_native_op_code();
+  bool native_op_should_be_negated();
+  Location* negate_native_op();
+  Location* process_quasi_native_op();
 };
