@@ -86,7 +86,7 @@ Type* FieldAccess::evaluate_type(Symbol_table* symbol_table) {
 
 void FieldAccess::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
   if (!base) {
-    auto variable = symbol_table->get_variable(field->getName());
+    auto variable = symbol_table->check_variable_declared(field);
     auto location = variable->get_frame_location();
     frame_location = location;
   }

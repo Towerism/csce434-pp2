@@ -7,6 +7,7 @@ IfStmt::IfStmt(Expr *t, Stmt *tb, Stmt *eb): ConditionalStmt(t, tb) {
   Assert(t != NULL && tb != NULL); // else can be NULL
   elseBody = eb;
   if (elseBody) elseBody->SetParent(this);
+  exit_stmt_after_body = true;
 }
 
 void IfStmt::build_table() {
@@ -32,34 +33,17 @@ void IfStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
   if (elseBody) elseBody->analyze(symbol_table, focus);
 }
 
-void IfStmt::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
-  generate_labels(codegen);
-  test->emit(codegen, frame_allocator, symbol_table);
-  generate_test_jump(codegen, frame_allocator, symbol_table);
-  generate_body(codegen, frame_allocator, symbol_table);
-  generate_else(codegen, frame_allocator, symbol_table);
-  codegen->GenLabel(after_stmt_label);
-}
-
-void IfStmt::generate_labels(CodeGenerator* codegen) {
-  after_stmt_label = codegen->NewLabel();
+void IfStmt::generate_extra_labels(CodeGenerator* codegen) {
   else_body_label = codegen->NewLabel();
-  false_label = after_stmt_label;
   if (elseBody)
     false_label = else_body_label;
 }
 
-void IfStmt::generate_test_jump(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
-  test_location = test->get_frame_location();
-  codegen->GenIfZ(test_location, false_label);
-}
-
-void IfStmt::generate_body(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
-  body->emit(codegen, frame_allocator, symbol_table);
+void IfStmt::generate_after_body(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
   codegen->GenGoto(after_stmt_label);
 }
 
-void IfStmt::generate_else(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
+void IfStmt::generate_before_stmt_end(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
   if (elseBody) {
     codegen->GenLabel(else_body_label);
     elseBody->emit(codegen, frame_allocator, symbol_table);

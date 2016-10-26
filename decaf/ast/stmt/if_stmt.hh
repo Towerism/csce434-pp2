@@ -6,6 +6,10 @@
 class IfStmt : public ConditionalStmt{
 protected:
   Stmt *elseBody;
+
+  void generate_extra_labels(CodeGenerator* codegen) override;
+  void generate_before_stmt_end(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) override;
+  void generate_after_body(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) override;
 public:
   IfStmt(Expr *test, Stmt *thenBody, Stmt *elseBody);
   const char *GetPrintNameForNode() override { return "IfStmt"; }
@@ -13,12 +17,8 @@ public:
   void build_table() override;
   void analyze(Symbol_table* symbol_table, reasonT focus) override;
   void set_parent(Symbol_table& other) override;
-  void emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) override;
 private:
-  char* after_stmt_label;
   char* else_body_label;
-  char* false_label;
-  Location* test_location;
 
   void generate_labels(CodeGenerator* codegen);
   void generate_test_jump(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table);
