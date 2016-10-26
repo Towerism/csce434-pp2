@@ -47,6 +47,7 @@ public:
 
   ClassDecl* get_class(std::string name);
   InterfaceDecl* get_interface(std::string name);
+  VarDecl* get_variable(std::string name);
   void set_return_type(Type* type) { return_type = type; }
   void set_this_type(Type* type) { this_type = type; }
   Type* find_return_type();

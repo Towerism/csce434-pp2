@@ -14,6 +14,7 @@ public:
   const char *GetPrintNameForNode() override { return "VarDecl"; }
   void PrintChildren(int indentLevel) override;
   void analyze(reasonT focus) override;
+  void emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) override;
 
   Type* getType() { return type; }
   Type* get_type() override { return type; }

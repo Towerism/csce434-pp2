@@ -5,11 +5,13 @@
 #include <ast/emittable.hh>
 #include <ast/node.hh>
 #include <ast/identifier.hh>
+#include <arch/tac.hh>
 
 class Decl : public Node, public Closeable, public Emittable
 {
 protected:
   Identifier *id;
+  Location* frame_location;
 
 public:
   Decl(Identifier *name);
@@ -23,6 +25,7 @@ public:
   }
   virtual void set_parent(Symbol_table& other) override {}
   virtual Type* get_type() = 0;
+  Location* get_frame_location() { return frame_location; }
 };
 
 #endif /* DECL_H */

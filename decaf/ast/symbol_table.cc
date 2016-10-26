@@ -130,6 +130,10 @@ InterfaceDecl* Symbol_table::get_interface(std::string name) {
   return interfaces.contains(name);
 }
 
+VarDecl* Symbol_table::get_variable(std::string name) {
+  return variables.contains(name);
+}
+
 VarDecl* Symbol_table::check_variable_declared(Identifier* identifier, std::function<void()> error_action) {
   auto current = this;
   do {
