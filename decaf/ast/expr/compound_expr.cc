@@ -52,6 +52,8 @@ bool CompoundExpr::left_is_compatible_with_right(Symbol_table* symbol_table) {
 }
 
 void CompoundExpr::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
-  left->emit(codegen, frame_allocator, symbol_table);
-  right->emit(codegen, frame_allocator, symbol_table);
+  if (left)
+    left->emit(codegen, frame_allocator, symbol_table);
+  if (right)
+    right->emit(codegen, frame_allocator, symbol_table);
 }
