@@ -110,3 +110,13 @@ Type* Call::evaluate_type(Symbol_table* symbol_table) {
     return Type::errorType;
   return function->get_type();
 }
+
+void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
+                Symbol_table *symbol_table) {
+  if (!base) {
+    auto function = symbol_table->check_function_declared(field);
+    auto label = function->getName();
+    auto hasReturn = function->hasReturn();
+    codegen->GenLCall(label.c_str(), hasReturn, frame_allocator);
+  }
+}

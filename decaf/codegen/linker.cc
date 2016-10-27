@@ -7,9 +7,12 @@
 bool Linker::is_main_defined = false;
 const char* Linker::main_label = "main";
 
-void Linker::check_label_for_main_linkage(const char* label) {
-  if (strcmp(label, main_label) == 0)
+bool Linker::check_label_for_main_linkage(const char* label) {
+  if (strcmp(label, main_label) == 0) {
     is_main_defined = true;
+    return true;
+  }
+  return false;
 }
 
 bool Linker::link() {

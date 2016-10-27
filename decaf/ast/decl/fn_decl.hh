@@ -22,6 +22,7 @@ protected:
 
 public:
   FnDecl(Identifier *name, Type *returnType, List<VarDecl*> *formals);
+  bool hasReturn() { return returnType->equal(Type::voidType); }
   void SetFunctionBody(Stmt *b);
   const char *GetPrintNameForNode() override { return "FnDecl"; }
   void PrintChildren(int indentLevel) override;

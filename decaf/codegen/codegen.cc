@@ -11,6 +11,7 @@
 
 #include "complex_op_factory.hh"
 #include "frame_allocator.hh"
+#include "label_transformer.hh"
 #include "linker.hh"
 
 #include <arch/mips/mips.hh>
@@ -111,9 +112,18 @@ Location *CodeGenerator::GenComplexBinaryOp(const char *opName, Location *op1,
   return complex_op_factory.make_complex_op(opName, op1, op2);
 }
 
+#include <iostream>
+void CodeGenerator::GenFnLabel(const char *label) {
+  std::string transformed_label;
+  if (Linker::check_label_for_main_linkage(label))
+    transformed_label = std::string(label);
+  else
+    transformed_label = Label_transformer::get_for_function(label);
+  GenLabel(transformed_label.c_str());
+}
+
 void CodeGenerator::GenLabel(const char *label)
 {
-  Linker::check_label_for_main_linkage(label);
   code.push_back(new Label(label));
 }
 
@@ -160,7 +170,8 @@ void CodeGenerator::GenPopParams(int numBytesOfParams)
 Location *CodeGenerator::GenLCall(const char *label, bool fnHasReturnValue, Frame_allocator* frame_allocator)
 {
   Location *result = fnHasReturnValue ? GenTempVar(frame_allocator) : NULL;
-  code.push_back(new LCall(label, result));
+  auto transformed_label = Label_transformer::get_for_function(label).c_str();
+  code.push_back(new LCall(transformed_label, result));
   return result;
 }
 

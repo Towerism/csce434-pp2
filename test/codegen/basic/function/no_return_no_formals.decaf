@@ -1,0 +1,7 @@
+int main() {
+    asdf();
+}
+
+void asdf() {
+     Print("This should print once");
+}

@@ -1,6 +1,7 @@
 class Linker {
 public:
-  static void check_label_for_main_linkage(const char* label);
+  // returns whether the label would be used for main linkage
+  static bool check_label_for_main_linkage(const char* label);
 
   // returns whether link was successful
   static bool link();

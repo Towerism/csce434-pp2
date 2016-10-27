@@ -39,7 +39,8 @@ void FnDecl::analyze(reasonT focus) {
   formals->Apply([&](VarDecl* decl) { decl->analyze(focus); });
   if (body)
     body->analyze(focus);
-} 
+}
+
 bool FnDecl::matches_signature(FnDecl* other) {
   if (formals->NumElements() != other->formals->NumElements())
     return false;
@@ -51,7 +52,7 @@ bool FnDecl::matches_signature(FnDecl* other) {
 }
 
 void FnDecl::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
-  codegen->GenLabel(id->getName().c_str());
+  codegen->GenFnLabel(id->getName().c_str());
   auto function = codegen->GenBeginFunc();
   auto body_allocator = new Frame_allocator(fpRelative, Frame_growth::Downwards);
   body->emit(codegen, body_allocator, &this->symbol_table);

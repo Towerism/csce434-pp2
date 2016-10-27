@@ -155,6 +155,7 @@ public:
   void GenIfZ(Location *test, const char *label);
   void GenGoto(const char *label);
   void GenReturn(Location *val = NULL);
+  void GenFnLabel(const char *label);
   void GenLabel(const char *label);
 
 
