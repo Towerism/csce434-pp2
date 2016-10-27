@@ -22,6 +22,7 @@ protected:
 
   virtual void generate_before_stmt_end(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {}
   virtual void generate_extra_labels(CodeGenerator* codegen) {}
+  virtual void generate_before_begin_label(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {}
   virtual void generate_after_body(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {}
 public:
   ConditionalStmt(Expr *testExpr, Stmt *body);

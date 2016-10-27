@@ -20,6 +20,7 @@ void ConditionalStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
 }
 
 void ConditionalStmt::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
+  generate_before_begin_label(codegen, frame_allocator, symbol_table);
   generate_labels(codegen);
   generate_test_jump(codegen, frame_allocator, symbol_table);
   generate_body(codegen, frame_allocator, symbol_table);
