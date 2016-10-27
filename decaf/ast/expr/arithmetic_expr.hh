@@ -5,12 +5,14 @@
 
 class ArithmeticExpr : public CompoundExpr {
 public:
-  ArithmeticExpr(Expr *lhs, Operator *op, Expr *rhs) : CompoundExpr(lhs,op,rhs) {}
-  ArithmeticExpr(Operator *op, Expr *rhs) : CompoundExpr(op,rhs) {}
+  ArithmeticExpr(Expr *lhs, Operator *op, Expr *rhs)
+      : CompoundExpr(lhs, op, rhs) {}
+  ArithmeticExpr(Operator *op, Expr *rhs) : CompoundExpr(op, rhs) {}
   const char *GetPrintNameForNode() override { return "ArithmeticExpr"; }
-  void analyze(Symbol_table* symbol_table, reasonT focus) override;
-  Type* evaluate_type(Symbol_table*) override;
-  void emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) override;
+  void analyze(Symbol_table *symbol_table, reasonT focus) override;
+  Type *evaluate_type(Symbol_table *) override;
+  void emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
+            Symbol_table *symbol_table) override;
 };
 
 #endif /* ARITHMETIC_EXPR_H */

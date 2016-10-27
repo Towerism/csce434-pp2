@@ -1,0 +1,7 @@
+int main() {
+    Print(asdf());
+}
+
+int asdf() {
+    return 5;
+}

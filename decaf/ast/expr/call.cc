@@ -117,6 +117,11 @@ void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
     auto function = symbol_table->check_function_declared(field);
     auto label = function->getName();
     auto hasReturn = function->hasReturn();
-    codegen->GenLCall(label.c_str(), hasReturn, frame_allocator);
+    actuals->Apply([&](Expr* arg) {
+        arg->emit(codegen, frame_allocator, symbol_table);
+        auto arg_location = arg->get_frame_location();
+        codegen->GenPushParam(arg_location);
+      });
+    frame_location = codegen->GenLCall(label.c_str(), hasReturn, frame_allocator);
   }
 }

@@ -27,6 +27,17 @@ void FnDecl::set_parent(Symbol_table& other) {
   symbol_table.set_parent(other);
 }
 
+bool FnDecl::return_now(CodeGenerator *codegen,
+                        Frame_allocator *frame_allocator,
+                        Symbol_table *symbol_table,
+                        Expr *expr) {
+  expr->emit(codegen, frame_allocator, symbol_table);
+  auto location = expr->get_frame_location();
+  codegen->GenReturn(location);
+
+  return true;
+}
+
 void FnDecl::build_table() {
   formals->Apply([&](VarDecl* decl) { formals_table.declare(decl); });
   if (body) {
@@ -55,6 +66,10 @@ void FnDecl::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symb
   codegen->GenFnLabel(id->getName().c_str());
   auto function = codegen->GenBeginFunc();
   auto body_allocator = new Frame_allocator(fpRelative, Frame_growth::Downwards);
+  auto formals_allocator = new Frame_allocator(fpRelative, Frame_growth::Upwards);
+  formals->Apply([&](VarDecl* variable) {
+      variable->emit(codegen, formals_allocator, symbol_table);
+    });
   body->emit(codegen, body_allocator, &this->symbol_table);
   function->SetFrameSize(body_allocator->size());
   codegen->GenEndFunc();

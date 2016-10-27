@@ -6,20 +6,30 @@
 
 ReturnStmt::ReturnStmt(yyltype loc, Expr *e) : Stmt(loc) {
   Assert(e != NULL);
-  (expr=e)->SetParent(this);
+  (expr = e)->SetParent(this);
 }
 
 void ReturnStmt::PrintChildren(int indentLevel) {
-  expr->Print(indentLevel+1);
+  expr->Print(indentLevel + 1);
 }
 
-void ReturnStmt::analyze(Symbol_table* symbol_table, reasonT focus) {
+void ReturnStmt::analyze(Symbol_table *symbol_table, reasonT focus) {
   auto expected_return_type = symbol_table->find_return_type();
   auto return_type = expr->evaluate_type(symbol_table);
   if (!return_type->coerce(expected_return_type, symbol_table))
     ReportError::ReturnMismatch(this, return_type, expected_return_type);
 }
 
-yyltype* ReturnStmt::get_expr_location() {
+yyltype *ReturnStmt::get_expr_location() {
   return expr->get_location_or_default(location);
+}
+
+void ReturnStmt::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
+                      Symbol_table *symbol_table) {
+  Node* current = this;
+  do {
+    if (current->return_now(codegen, frame_allocator, symbol_table, expr))
+      return;
+    current = current->get_parent();
+  } while (current != nullptr);
 }

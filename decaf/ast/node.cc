@@ -1,6 +1,12 @@
 #include "node.hh"
 
-#include <stdio.h>  // printf
+#include <stdio.h> // printf
+
+#include <ast/expr/expr.hh>
+#include <codegen/codegen.hh>
+#include <codegen/frame_allocator.hh>
+
+#include "symbol_table.hh"
 
 Node::Node(yyltype loc) {
   location = new yyltype(loc);
@@ -27,17 +33,17 @@ void Node::Print(int indentLevel, const char *label) {
     printf("%*d", numSpaces, GetLocation()->first_line);
   else
     printf("%*s", numSpaces, "");
-  printf("%*s%s%s: ", indentLevel*numSpaces, "",
-         label? label : "", GetPrintNameForNode());
+  printf("%*s%s%s: ", indentLevel * numSpaces, "", label ? label : "",
+         GetPrintNameForNode());
   PrintChildren(indentLevel);
 }
 
-Node* Node::find_loop_node() {
+Node *Node::find_loop_node() {
   auto current = this;
   do {
     if (current->is_break_node)
       return current;
     current = current->parent;
-  } while(current != nullptr);
+  } while (current != nullptr);
   return nullptr;
 }
