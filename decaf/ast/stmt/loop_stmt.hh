@@ -11,6 +11,8 @@ public:
     : ConditionalStmt(testExpr, body) {
     is_break_node = true;
   }
+
+  bool break_now(CodeGenerator *codegen, Frame_allocator *frame_allocator, Symbol_table *symbol_table) override;
 };
 
 

@@ -10,6 +10,8 @@ set(STMT_SRCS
   switch_stmt.cc
   return_stmt.cc
   print_stmt.cc
+  break_stmt.cc
+  loop_stmt.cc
   )
 
 add_library(stmt OBJECT ${STMT_SRCS})

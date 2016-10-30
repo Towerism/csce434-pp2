@@ -40,6 +40,12 @@ public:
     return false;
   }
 
+  virtual bool break_now(CodeGenerator *codegen = nullptr,
+                         Frame_allocator *frame_allocator = nullptr,
+                         Symbol_table *symbol_table = nullptr) {
+    return false;
+  }
+
   // pass in the reason for analyzing
   virtual void analyze(reasonT focus) override {}
 
@@ -49,7 +55,7 @@ public:
 
   Node *find_loop_node();
 
-  Node* get_parent() { return parent; }
+  Node *get_parent() { return parent; }
 };
 
 #endif /* NODE_H */

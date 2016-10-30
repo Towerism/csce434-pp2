@@ -1,0 +1,10 @@
+int main() {
+    int i;
+    i = 0;
+    while (i < 10) {
+         Print("This should print only once");
+         i = i + 1; 
+         if (i > 0)
+             break;
+    }
+}
