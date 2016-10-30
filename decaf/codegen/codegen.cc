@@ -221,6 +221,13 @@ void CodeGenerator::GenVTable(const char *className, List<const char *> *methodL
   code.push_back(new VTable(className, methodLabels));
 }
 
+void CodeGenerator::GenRuntimeError(Runtime_error error, Frame_allocator *frame_allocator) {
+  // we only have one runtime error right now so need to check error enum yet
+  auto error_string = GenLoadConstant("Decaf runtime error: Array size is <= 0", frame_allocator);
+  GenBuiltInCall(PrintString, frame_allocator, error_string);
+  GenBuiltInCall(Halt, frame_allocator);
+}
+
 
 void CodeGenerator::DoFinalCodeGen()
 {

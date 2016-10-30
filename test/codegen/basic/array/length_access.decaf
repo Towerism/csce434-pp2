@@ -1,0 +1,5 @@
+int main() {
+    int[] a;
+    a = NewArray(5, int);
+    Print(a.length());
+}

@@ -1,0 +1,4 @@
+int main() {
+    int[] a;
+    a = NewArray(0, int);
+}

@@ -36,6 +36,7 @@ private:
   void initialize_arg_types();
   void call_on_base();
   bool call_is_to_primitive_or_array_length();
+  bool call_is_to_array();
   void check_function_declared_in_calling_table();
   bool args_length_is_good(Symbol_table *table_for_function);
   void check_args_types(Symbol_table *table_for_function);

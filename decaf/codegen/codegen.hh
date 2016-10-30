@@ -19,16 +19,25 @@
 
 #include <arch/tac.hh>
 
-
-
 // These codes are used to identify the built-in functions
-typedef enum { Alloc, ReadLine, ReadInteger, StringEqual,
-               PrintInt, PrintString, PrintBool, Halt, NumBuiltIns } BuiltIn;
+typedef enum {
+  Alloc,
+  ReadLine,
+  ReadInteger,
+  StringEqual,
+  PrintInt,
+  PrintString,
+  PrintBool,
+  Halt,
+  NumBuiltIns
+} BuiltIn;
+
+enum class Runtime_error { Array_size };
 
 class Frame_allocator;
 class CodeGenerator {
 private:
-  std::list<Instruction*> code;
+  std::list<Instruction *> code;
 
 public:
   // Here are some class constants to remind you of the offsets
@@ -41,12 +50,11 @@ public:
   // are shifted up by 4.)  First global is at offset 0 from global
   // pointer, all subsequent at +4, +8, etc.
   // Conveniently, all vars are 4 bytes in size for code generation
-  static const int OffsetToFirstLocal = -8,
-    OffsetToFirstParam = 4,
-    OffsetToFirstGlobal = 0;
+  static const int OffsetToFirstLocal = -8, OffsetToFirstParam = 4,
+                   OffsetToFirstGlobal = 0;
   static const int VarSize = 4;
 
-  static Location* ThisPtr;
+  static Location *ThisPtr;
 
   CodeGenerator();
 
@@ -56,7 +64,7 @@ public:
 
   // Creates and returns a Location for a new uniquely named
   // temp variable. Does not generate any Tac instructions
-  Location *GenTempVar(Frame_allocator* frame_allocator);
+  Location *GenTempVar(Frame_allocator *frame_allocator);
 
   // Generates Tac instructions to load a constant value. Creates
   // a new temp var to hold the result. The constant
@@ -67,10 +75,9 @@ public:
   // The LoadLabel method loads a label into a temporary.
   // Each of the methods returns a Location for the temp var
   // where the constant was loaded.
-  Location *GenLoadConstant(int value, Frame_allocator* frame_allocator);
-  Location *GenLoadConstant(const char *str, Frame_allocator* frame_allocator);
-  Location *GenLoadLabel(const char *label, Frame_allocator* frame_allocator);
-
+  Location *GenLoadConstant(int value, Frame_allocator *frame_allocator);
+  Location *GenLoadConstant(const char *str, Frame_allocator *frame_allocator);
+  Location *GenLoadLabel(const char *label, Frame_allocator *frame_allocator);
 
   // Generates Tac instructions to copy value from one location to another
   void GenAssign(Location *dst, Location *src);
@@ -89,33 +96,35 @@ public:
   // temporary variable where the result was stored. The optional
   // offset argument can be used to offset the addr by a positive or
   // negative number of bytes. If not given, 0 is assumed.
-  Location *GenLoad(Location *addr, Frame_allocator* frame_allocator, int offset = 0);
+  Location *GenLoad(Location *addr, Frame_allocator *frame_allocator,
+                    int offset = 0);
 
   // Generates Tac instructions to perform one of the binary ops
   // identified by string name, such as "+" or "==".  Returns a
   // Location object for the new temporary where the result
   // was stored.
-  Location *GenBinaryOp(const char *opName, Location *op1, Location *op2, Frame_allocator* frame_allocator);
-  Location *GenBinaryOp(BinaryOp::OpCode op, Location *op1, Location *op2, Frame_allocator* frame_allocator);
+  Location *GenBinaryOp(const char *opName, Location *op1, Location *op2,
+                        Frame_allocator *frame_allocator);
+  Location *GenBinaryOp(BinaryOp::OpCode op, Location *op1, Location *op2,
+                        Frame_allocator *frame_allocator);
 
   // Generates Tac instructions to perform a negation of src
   // returning the location of the result
-  Location *GenNot(Location* src, Frame_allocator* frame_allocator);
+  Location *GenNot(Location *src, Frame_allocator *frame_allocator);
 
   // Generates Tac instructions to perform a complex binary ops
   // made up of two or more Tac-native binary ops
   // identified by string name, such as "+" or "==".  Returns a
   // Location object for the new temporary where the result
   // was stored.
-  Location *GenComplexBinaryOp(const char *opName, Location *op1, Location *op2, Frame_allocator* frame_allocator);
-
+  Location *GenComplexBinaryOp(const char *opName, Location *op1, Location *op2,
+                               Frame_allocator *frame_allocator);
 
   // Generates the Tac instruction for pushing a single
   // parameter. Used to set up for ACall and LCall instructions.
   // The Decaf convention is that parameters are pushed right
   // to left (so the first argument is pushed last)
   void GenPushParam(Location *param);
-
   // Generates the Tac instruction for popping parameters to
   // clean up after an ACall or LCall instruction. All parameters
   // are removed with one adjustment of the stack pointer.
@@ -127,14 +136,16 @@ public:
   // true,  a new temp var is created, the fn result is stored
   // there and that Location is returned. If false, no temp is
   // created and NULL is returned
-  Location *GenLCall(const char *label, bool fnHasReturnValue, Frame_allocator* frame_allocator);
+  Location *GenLCall(const char *label, bool fnHasReturnValue,
+                     Frame_allocator *frame_allocator);
 
   // Generates the Tac instructions for ACall, a jump to an
   // address computed at runtime. Works similarly to LCall,
   // described above, in terms of return type.
   // The fnAddr Location is expected to hold the address of
   // the code to jump to (typically it was read from the vtable)
-  Location *GenACall(Location *fnAddr, bool fnHasReturnValue, Frame_allocator* frame_allocator);
+  Location *GenACall(Location *fnAddr, bool fnHasReturnValue,
+                     Frame_allocator *frame_allocator);
 
   // Generates the Tac instructions to call one of
   // the built-in functions (Read, Print, Alloc, etc.) Although
@@ -145,7 +156,8 @@ public:
   // for the new temp var holding the result.  For those
   // built-ins with no return value (Print/Halt), no temporary
   // is created and NULL is returned.
-  Location *GenBuiltInCall(BuiltIn b, Frame_allocator* frame_allocator, Location *arg1 = NULL, Location *arg2 = NULL);
+  Location *GenBuiltInCall(BuiltIn b, Frame_allocator *frame_allocator,
+                           Location *arg1 = NULL, Location *arg2 = NULL);
 
   // These methods generate the Tac instructions for various
   // control flow (branches, jumps, returns, labels)
@@ -158,7 +170,6 @@ public:
   void GenFnLabel(const char *label);
   void GenLabel(const char *label);
 
-
   // These methods generate the Tac instructions that mark the start
   // and end of a function/method definition.
   BeginFunc *GenBeginFunc();
@@ -169,8 +180,10 @@ public:
   // methods in the order they should be laid out.  The vtable
   // is tagged with a label of the class name, so when you later
   // need access to the vtable, you use LoadLabel of class name.
-  void GenVTable(const char *className, List<const char*> *methodLabels);
+  void GenVTable(const char *className, List<const char *> *methodLabels);
 
+  // Generates a runtime error
+  void GenRuntimeError(Runtime_error error, Frame_allocator *frame_allocator);
 
   // Emits the final "object code" for the program by
   // translating the sequence of Tac instructions into their mips

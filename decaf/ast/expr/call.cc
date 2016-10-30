@@ -55,6 +55,11 @@ bool Call::call_is_to_primitive_or_array_length() {
   return false;
 }
 
+bool Call::call_is_to_array() {
+  auto array_type = dynamic_cast<ArrayType*>(base_type);
+  return array_type && field->getName() == "length" && actuals->NumElements() == 0;
+}
+
 void Call::check_args_length_and_types() {
   base_table = calling_table->get_table_for_functions(base_type);
   if (!base_table) {
@@ -98,6 +103,8 @@ void Call::call_on_scope() {
 
 Type* Call::evaluate_type(Symbol_table* symbol_table) {
   FnDecl* function = nullptr;
+  if (call_is_to_array())
+    return Type::intType;
   if (!base) {
     function = symbol_table->check_function_declared(field);
   } else {
@@ -113,6 +120,10 @@ Type* Call::evaluate_type(Symbol_table* symbol_table) {
 
 void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
                 Symbol_table *symbol_table) {
+  if (call_is_to_array()) {
+    base->emit(codegen, frame_allocator, symbol_table);
+    frame_location = codegen->GenLoad(base->get_frame_location(), frame_allocator);
+  }
   if (!base) {
     auto function = symbol_table->check_function_declared(field);
     auto label = function->getName();
