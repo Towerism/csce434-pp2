@@ -40,6 +40,9 @@ echo "${NC}"
 
 for SAMPLE in $SAMPLEIN; do
     EXPECTEDOUT=$(echo "$SAMPLE" | sed -e "s/\.frag/\.out/g" | sed -e "s/\.decaf/\.out/g" )
+    if [ ! -f $EXPECTEDOUT ]; then
+        continue
+    fi
 
     printf "${GREEN}[ Test $SAMPLE ]${NC}"
 
