@@ -1,0 +1,9 @@
+int main() {
+    asdf(1, "hi", true);
+}
+
+void asdf(int a, string b, bool c) {
+     Print(a);
+     Print(b);
+     Print(c);
+}
