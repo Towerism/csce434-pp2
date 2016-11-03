@@ -38,6 +38,16 @@ void Node::Print(int indentLevel, const char *label) {
   PrintChildren(indentLevel);
 }
 
+Location *Node::assign(Location *source, CodeGenerator *codegen) {
+  if (needs_dereference()) {
+    codegen->GenStore(reference, source);
+    return frame_location;
+  } else {
+    codegen->GenAssign(frame_location, source);
+    return frame_location;
+  }
+}
+
 Node *Node::find_loop_node() {
   auto current = this;
   do {

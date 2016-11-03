@@ -112,7 +112,6 @@ Location *CodeGenerator::GenComplexBinaryOp(const char *opName, Location *op1,
   return complex_op_factory.make_complex_op(opName, op1, op2);
 }
 
-#include <iostream>
 void CodeGenerator::GenFnLabel(const char *label) {
   std::string transformed_label;
   if (Linker::check_label_for_main_linkage(label))
@@ -222,9 +221,9 @@ void CodeGenerator::GenVTable(const char *className, List<const char *> *methodL
 }
 
 void CodeGenerator::GenRuntimeError(Runtime_error error, Frame_allocator *frame_allocator) {
-  // we only have one runtime error right now so need to check error enum yet
-  auto error_string = GenLoadConstant("Decaf runtime error: Array size is <= 0", frame_allocator);
-  GenBuiltInCall(PrintString, frame_allocator, error_string);
+  auto error_message = Error_message_factory::for_runtime_error(error);
+  auto message_location = GenLoadConstant(error_message, frame_allocator);
+  GenBuiltInCall(PrintString, frame_allocator, message_location);
   GenBuiltInCall(Halt, frame_allocator);
 }
 

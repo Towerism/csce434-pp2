@@ -14,6 +14,8 @@
 #ifndef _H_codegen
 #define _H_codegen
 
+#include "error_message_factory.hh"
+
 #include <cstdlib>
 #include <list>
 
@@ -31,8 +33,6 @@ typedef enum {
   Halt,
   NumBuiltIns
 } BuiltIn;
-
-enum class Runtime_error { Array_size };
 
 class Frame_allocator;
 class CodeGenerator {

@@ -14,6 +14,5 @@ void AssignExpr::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, 
   CompoundExpr::emit(codegen, frame_allocator, symbol_table);
   auto left_location = left->get_frame_location();
   auto right_location = right->get_frame_location();
-  codegen->GenAssign(left_location, right_location);
-  frame_location = left_location;
+  frame_location = left->assign(right_location, codegen);
 }

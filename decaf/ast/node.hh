@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include <parse/location.hh>
+#include <arch/tac.hh>
 #include <util/errors.hh>
 
 #include "analyzable.hh"
@@ -14,6 +15,8 @@ protected:
   yyltype *location;
   Node *parent;
   bool is_break_node = false;
+  Location* reference = nullptr;
+  Location* frame_location = nullptr;
 
 public:
   Node(yyltype loc);
@@ -46,6 +49,8 @@ public:
     return false;
   }
 
+  virtual bool needs_dereference() { return false; }
+
   // pass in the reason for analyzing
   virtual void analyze(reasonT focus) override {}
 
@@ -53,9 +58,14 @@ public:
     analyze(focus);
   }
 
+  // assigns source to the reference or frame_location of this node
+  // returns the assigned location
+  Location* assign(Location* source, CodeGenerator* codegen);
+
   Node *find_loop_node();
 
   Node *get_parent() { return parent; }
+  Location* get_frame_location() { return frame_location; }
 };
 
 #endif /* NODE_H */

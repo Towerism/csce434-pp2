@@ -1,6 +1,7 @@
 set(CODEGEN_SRCS
   codegen.cc
   complex_op_factory.cc
+  error_message_factory.cc
   frame_allocator.cc
   label_transformer.cc
   linker.cc

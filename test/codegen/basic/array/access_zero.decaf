@@ -1,0 +1,6 @@
+int main() {
+    int[] a;
+    a = NewArray(5, int);
+    a[0] = 2;
+    Print(a[0]);
+}
