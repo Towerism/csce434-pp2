@@ -12,7 +12,6 @@
 #include "complex_op_factory.hh"
 #include "frame_allocator.hh"
 #include "label_transformer.hh"
-#include "linker.hh"
 
 #include <arch/mips/mips.hh>
 #include <arch/tac.hh>
@@ -113,11 +112,7 @@ Location *CodeGenerator::GenComplexBinaryOp(const char *opName, Location *op1,
 }
 
 void CodeGenerator::GenFnLabel(const char *label) {
-  std::string transformed_label;
-  if (Linker::check_label_for_main_linkage(label))
-    transformed_label = std::string(label);
-  else
-    transformed_label = Label_transformer::get_for_function(label);
+  auto transformed_label = Label_transformer::get_for_function(label);
   GenLabel(transformed_label.c_str());
 }
 

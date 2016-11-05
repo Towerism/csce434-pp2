@@ -123,16 +123,33 @@ void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
   if (call_is_to_array()) {
     base->emit(codegen, frame_allocator, symbol_table);
     frame_location = codegen->GenLoad(base->get_frame_location(), frame_allocator);
+    return;
   }
+  actuals->Apply([&](Expr* arg) {
+      arg->emit(codegen, frame_allocator, symbol_table);
+    });
   if (!base) {
     auto function = symbol_table->check_function_declared(field);
     auto label = function->getName();
     auto hasReturn = function->hasReturn();
     actuals->Apply([&](Expr* arg) {
-        arg->emit(codegen, frame_allocator, symbol_table);
-        auto arg_location = arg->get_frame_location();
-        codegen->GenPushParam(arg_location);
+        codegen->GenPushParam(arg->get_frame_location());
       });
     frame_location = codegen->GenLCall(label.c_str(), hasReturn, frame_allocator);
+    codegen->GenPopParams(4 * actuals->NumElements());
+  } else {
+    base->emit(codegen, frame_allocator, symbol_table);
+    auto vptr = codegen->GenLoad(base->get_frame_location(), frame_allocator);
+    auto base_table = symbol_table->get_table_for_functions(base_type);
+    auto method = base_table->check_function_declared(field);
+    auto vtable_offset = method->get_offset();
+    auto method_location = codegen->GenLoad(vptr, frame_allocator, 4 * vtable_offset);
+
+    codegen->GenPushParam(base->get_frame_location());
+    actuals->Apply([&](Expr* arg) {
+        codegen->GenPushParam(arg->get_frame_location());
+      });
+    codegen->GenACall(method_location, method->hasReturn(), frame_allocator);
+    codegen->GenPopParams(4 * (actuals->NumElements() + 1));
   }
 }

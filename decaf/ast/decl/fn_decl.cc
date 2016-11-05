@@ -2,6 +2,9 @@
 
 #include <codegen/codegen.hh>
 #include <codegen/frame_allocator.hh>
+#include <codegen/label_transformer.hh>
+
+#include "class_decl.hh"
 
 FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
   Assert(n != NULL && r!= NULL && d != NULL);
@@ -63,7 +66,7 @@ bool FnDecl::matches_signature(FnDecl* other) {
 }
 
 void FnDecl::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) {
-  codegen->GenFnLabel(id->getName().c_str());
+  codegen->GenLabel(get_label());
   auto function = codegen->GenBeginFunc();
   auto body_allocator = new Frame_allocator(fpRelative, Frame_growth::Downwards);
   auto formals_allocator = new Frame_allocator(fpRelative, Frame_growth::Upwards);
@@ -73,4 +76,12 @@ void FnDecl::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symb
   body->emit(codegen, body_allocator, &this->symbol_table);
   function->SetFrameSize(body_allocator->size());
   codegen->GenEndFunc();
+}
+
+const char* FnDecl::get_label() {
+  auto parent_is_class = dynamic_cast<ClassDecl*>(parent);
+  if (parent_is_class)
+    // this is why using char* instead of c++ string
+    return strdup(Label_transformer::get_for_method(parent_is_class->getName(), getName()).c_str());
+  return strdup(Label_transformer::get_for_function(getName().c_str()).c_str());
 }

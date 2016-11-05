@@ -12,6 +12,7 @@ class Decl : public Node, public Closeable, public Emittable
 protected:
   Identifier *id;
   Location* frame_location;
+  int offset;
 
 public:
   Decl(Identifier *name);
@@ -26,6 +27,10 @@ public:
   virtual void set_parent(Symbol_table& other) override {}
   virtual Type* get_type() = 0;
   Location* get_frame_location() { return frame_location; }
+  int get_offset() { return offset; }
+  void set_offset(int value) { offset = value; }
+
+  Identifier *get_id() { return id; }
 };
 
 #endif /* DECL_H */

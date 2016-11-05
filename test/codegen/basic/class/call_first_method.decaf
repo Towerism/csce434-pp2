@@ -1,0 +1,23 @@
+class Asdf {
+      int print_one() {
+          Print(1);
+      }
+      int print_two() {
+          Print(2);
+      }
+      int print_three() {
+          Print(3);
+      }
+      int print_four() {
+          Print(4);
+      }
+      int print_five() {
+          Print(5);
+      }
+}
+
+int main() {
+    Asdf b;
+    b = New(Asdf);
+    b.print_five();
+}

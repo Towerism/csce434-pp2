@@ -40,6 +40,8 @@ public:
   void set_parent(Symbol_table &other) override;
   Type *get_type() override { return returnType; }
   List<VarDecl *> *get_formals() { return formals; }
+
+  const char* get_label();
 };
 
 #endif /* FN_DECL_H */

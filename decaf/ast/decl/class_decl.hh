@@ -1,36 +1,49 @@
 #ifndef CLASS_DECL_H
 #define CLASS_DECL_H
 
-#include <ast/symbol_table.hh>
 #include <ast/decl/decl.hh>
+#include <ast/symbol_table.hh>
 #include <ast/type/ast_type.hh>
+
+#include <codegen/frame_allocator.hh>
 
 #include <util/list.hh>
 
-class ClassDecl : public Decl
-{
+class ClassDecl : public Decl {
 protected:
-  List<Decl*> *members;
+  List<Decl *> *members;
   NamedType *extends;
-  List<NamedType*> *implements;
+  List<NamedType *> *implements;
   Symbol_table symbol_table;
+  List<const char *> vtable;
 
 public:
-  ClassDecl(Identifier *name, NamedType *extends,
-            List<NamedType*> *implements, List<Decl*> *members);
+  ClassDecl(Identifier *name, NamedType *extends, List<NamedType *> *implements,
+            List<Decl *> *members);
   const char *GetPrintNameForNode() override { return "ClassDecl"; }
   void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
-  void set_parent(Symbol_table& other) override { symbol_table.set_parent(other); }
-  Type* get_type() override { return new NamedType(id); }
-  Type* get_extends() { return extends; }
-  List<NamedType*>* get_implements() { return implements; }
-  Symbol_table* get_table() { return &symbol_table; }
+  void emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
+            Symbol_table *symbol_table) override;
+  void set_parent(Symbol_table &other) override {
+    symbol_table.set_parent(other);
+  }
+  Type *get_type() override { return new NamedType(id); }
+  Type *get_extends() { return extends; }
+  List<NamedType *> *get_implements() { return implements; }
+  Symbol_table *get_table() { return &symbol_table; }
+
+  int get_size() { return field_allocator.size(); }
 
 private:
+  Frame_allocator field_allocator;
+
+  ClassDecl *parent_class;
   void add_virtuals();
   void extend();
+
+  void add_field(Decl *decl);
 };
 
 #endif /* CLASS_DECL_H */

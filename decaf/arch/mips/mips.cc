@@ -26,7 +26,7 @@
 #include <cstring>
 #include <util/utility.hh>
 
-
+#include <codegen/label_transformer.hh>
 
 // Helper to check if two variable locations are one and the same
 // (same name, segment, and offset)
@@ -391,7 +391,8 @@ void Mips::EmitVTable(const char *label, List<const char*> *methodLabels)
 {
   Emit(".data");
   Emit(".align 2");
-  Emit("%s:\t\t# label for class %s vtable", label, label);
+  auto transformed_label = Label_transformer::get_for_class(label);
+  Emit("%s:", transformed_label.c_str());
   for (int i = 0; i < methodLabels->NumElements(); i++)
     Emit(".word %s\n", methodLabels->Nth(i));
   Emit(".text");

@@ -12,4 +12,6 @@ public:
   void PrintChildren(int indentLevel) override;
   void analyze(Symbol_table* symbol_table, reasonT focus) override;
   Type* evaluate_type(Symbol_table* symbol_table) override { return cType; }
+  void emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
+            Symbol_table *symbol_table) override;
 };
