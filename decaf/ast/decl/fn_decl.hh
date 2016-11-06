@@ -42,6 +42,10 @@ public:
   List<VarDecl *> *get_formals() { return formals; }
 
   const char* get_label();
+  void set_label_override(const char* value) { label_override = strdup(value); }
+
+private:
+  char* label_override = nullptr;
 };
 
 #endif /* FN_DECL_H */

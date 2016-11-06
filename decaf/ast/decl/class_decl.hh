@@ -24,6 +24,7 @@ public:
   void PrintChildren(int indentLevel) override;
   void build_table() override;
   void analyze(reasonT focus) override;
+  void prepare_for_emission(CodeGenerator *codegen, Symbol_table *symbol_table);
   void emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
             Symbol_table *symbol_table) override;
   void set_parent(Symbol_table &other) override {
@@ -34,16 +35,20 @@ public:
   List<NamedType *> *get_implements() { return implements; }
   Symbol_table *get_table() { return &symbol_table; }
 
-  int get_size() { return field_allocator.size(); }
+  int get_size() { return field_allocator->size(); }
+  List<VarDecl *> *get_fields();
 
-private:
-  Frame_allocator field_allocator;
+      private : Frame_allocator *field_allocator;
 
   ClassDecl *parent_class;
   void add_virtuals();
   void extend();
 
   void add_field(Decl *decl);
+private:
+  List<FnDecl *> methods;
+  List<FnDecl *> effective_methods;
+  List<VarDecl *> fields;
 };
 
 #endif /* CLASS_DECL_H */

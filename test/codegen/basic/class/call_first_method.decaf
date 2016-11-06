@@ -19,5 +19,5 @@ class Asdf {
 int main() {
     Asdf b;
     b = New(Asdf);
-    b.print_five();
+    b.print_one();
 }

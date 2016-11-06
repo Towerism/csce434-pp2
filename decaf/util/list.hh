@@ -83,6 +83,11 @@ template<class Element> class List {
       action(elem);
     }
   }
+  void CopyFrom(List<Element>* other) {
+    other->Apply([&](Element& element) {
+        this->Append(element);
+      });
+  }
 
   typename std::deque<Element>::iterator begin() { return elems.begin(); }
   typename std::deque<Element>::iterator end() { return elems.end(); }

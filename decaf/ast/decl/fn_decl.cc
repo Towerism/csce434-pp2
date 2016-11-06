@@ -1,5 +1,4 @@
 #include "fn_decl.hh"
-
 #include <codegen/codegen.hh>
 #include <codegen/frame_allocator.hh>
 #include <codegen/label_transformer.hh>
@@ -81,7 +80,7 @@ void FnDecl::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symb
 const char* FnDecl::get_label() {
   auto parent_is_class = dynamic_cast<ClassDecl*>(parent);
   if (parent_is_class)
-    // this is why using char* instead of c++ string
-    return strdup(Label_transformer::get_for_method(parent_is_class->getName(), getName()).c_str());
+    // this is why using char* instead of c++ string is terrible
+    return strdup(Label_transformer::get_for_method(label_override ? label_override : parent_is_class->getName(), getName()).c_str());
   return strdup(Label_transformer::get_for_function(getName().c_str()).c_str());
 }
