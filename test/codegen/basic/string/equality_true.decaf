@@ -1,0 +1,7 @@
+int main() {
+    string a;
+    string b;
+    a = "asdf";
+    b = "asdf";
+    Print(a == b);
+}

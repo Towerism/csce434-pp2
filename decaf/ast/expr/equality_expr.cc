@@ -13,5 +13,9 @@ void EqualityExpr::emit(CodeGenerator* codegen, Frame_allocator* frame_allocator
   CompoundExpr::emit(codegen, frame_allocator, symbol_table);
   Location* left_location = left->get_frame_location();
   Location* right_location = right->get_frame_location();
+  if (left->evaluate_type(symbol_table)->equal(Type::stringType)) {
+    frame_location = codegen->GenBuiltInCall(StringEqual, frame_allocator, left_location, right_location);
+    return;
+  }
   frame_location = codegen->GenComplexBinaryOp(op->get_token_string(), left_location, right_location, frame_allocator);
 }
