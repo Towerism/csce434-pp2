@@ -7,7 +7,6 @@
 
 #include <codegen/codegen.hh>
 
-#include <iostream>
 void This::analyze(Symbol_table *symbol_table, reasonT focus) {
   auto type = evaluate_type(symbol_table);
   if (type == Type::errorType) {

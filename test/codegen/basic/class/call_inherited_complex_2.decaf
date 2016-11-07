@@ -1,0 +1,27 @@
+class Squash extends Vegetable {
+   void Grow()
+   {
+      Print(1);
+   }
+}
+
+class Vegetable {
+    void Eat(Vegetable veg)
+    {
+       veg.Grow();
+    }
+
+   void Grow()
+   {
+      Print(2);
+   }
+}
+
+void main()
+{
+   Vegetable veggie;
+   Squash squash;
+   veggie = New(Vegetable);
+   squash = New(Squash);
+   veggie.Eat(squash);
+}

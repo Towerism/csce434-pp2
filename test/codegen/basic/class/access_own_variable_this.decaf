@@ -1,0 +1,13 @@
+class Asdf {
+      int a;
+      void print_one() {
+           this.a = 1;
+           Print(a);
+      }
+}
+
+int main() {
+    Asdf a;
+    a = New(Asdf);
+    a.print_one();
+}

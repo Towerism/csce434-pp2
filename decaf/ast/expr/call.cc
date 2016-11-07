@@ -118,6 +118,7 @@ Type *Call::evaluate_type(Symbol_table *symbol_table) {
 
 void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
                 Symbol_table *symbol_table) {
+  auto param_count = actuals->NumElements();
   if (call_is_to_array()) {
     base->emit(codegen, frame_allocator, symbol_table);
     frame_location =
@@ -130,8 +131,9 @@ void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
   if (function && !function->get_is_method()) {
     auto label = function->getName();
     auto hasReturn = function->hasReturn();
-    actuals->Apply(
-        [&](Expr *arg) { codegen->GenPushParam(arg->get_frame_location()); });
+    for (int i = param_count - 1; i >= 0; --i) {
+      codegen->GenPushParam(actuals->Nth(i)->get_frame_location());
+    }
     frame_location =
         codegen->GenLCall(label.c_str(), hasReturn, frame_allocator);
     codegen->GenPopParams(4 * actuals->NumElements());
@@ -150,9 +152,11 @@ void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
   auto method_location =
       codegen->GenLoad(vptr, frame_allocator, 4 * vtable_offset);
 
+  for (int i = param_count - 1; i >= 0; --i) {
+    codegen->GenPushParam(actuals->Nth(i)->get_frame_location());
+  }
+  ++param_count;
   codegen->GenPushParam(base->get_frame_location());
-  actuals->Apply(
-      [&](Expr *arg) { codegen->GenPushParam(arg->get_frame_location()); });
   codegen->GenACall(method_location, method->hasReturn(), frame_allocator);
-  codegen->GenPopParams(4 * (actuals->NumElements() + 1));
+  codegen->GenPopParams(4 * param_count);
 }
