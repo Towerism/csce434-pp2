@@ -20,10 +20,12 @@ public:
   void analyze(Symbol_table* symbol_table, reasonT focus) override;
   Type* evaluate_type(Symbol_table* symbol_table) override;
   void emit(CodeGenerator* codegen, Frame_allocator* frame_allocator, Symbol_table* symbol_table) override;
+  bool needs_dereference() override { return needs_dereference_; }
 private:
   Type* base_type;
   Symbol_table* accessing_table = nullptr;
   Symbol_table* base_table = nullptr;
+  bool needs_dereference_ = false;
 
   void access_on_base();
   void access_on_scope();

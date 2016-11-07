@@ -35,7 +35,7 @@ public:
   List<NamedType *> *get_implements() { return implements; }
   Symbol_table *get_table() { return &symbol_table; }
 
-  int get_size() { return field_allocator->size(); }
+  int get_size() { return next_instance_variable_offset; }
   List<VarDecl *> *get_fields();
 
       private : Frame_allocator *field_allocator;
@@ -46,6 +46,8 @@ public:
 
   void add_field(Decl *decl);
 private:
+  int next_instance_variable_offset = 0;
+
   List<FnDecl *> methods;
   List<FnDecl *> effective_methods;
   List<VarDecl *> fields;

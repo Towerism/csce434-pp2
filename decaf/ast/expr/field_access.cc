@@ -6,6 +6,8 @@
 #include <ast/expr/this.hh>
 #include <ast/symbol_table.hh>
 
+#include <codegen/codegen.hh>
+
 FieldAccess::FieldAccess(Expr *b, Identifier *f)
     : LValue(b ? Join(b->GetLocation(), f->GetLocation()) : *f->GetLocation()) {
   Assert(f != NULL); // b can be be NULL (just means no explicit base)
@@ -87,17 +89,22 @@ Type *FieldAccess::evaluate_type(Symbol_table *symbol_table) {
 
 void FieldAccess::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
                        Symbol_table *symbol_table) {
-  if (!base) {
-    auto variable = symbol_table->check_variable_declared(field);
+  auto variable = symbol_table->check_variable_declared(field);
+  if (!variable->get_is_field()) {
     auto location = variable->get_frame_location();
     frame_location = location;
     return;
   }
-  base = new This(*GetLocation());
-  base->SetParent(this);
+  if (!base) {
+    base = new This(*field->GetLocation());
+    base->SetParent(this);
+  }
   base->emit(codegen, frame_allocator, symbol_table);
-  auto base_type = base->evaluate_type(symbol_table);
-  auto base_table = symbol_table->get_table_for_functions(base_type);
-  auto variable = base_table->check_variable_declared(field);
-  frame_location = variable->get_frame_location();
+  auto base_location = base->get_frame_location();
+  auto variable_offset = codegen->GenLoadConstant(variable->get_offset(), frame_allocator);
+  reference = codegen->GenBinaryOp("+", base_location, variable_offset, frame_allocator);
+  frame_location =
+      codegen->GenLoad(reference, frame_allocator);
+  needs_dereference_ = true;
+  Assert(frame_location);
 }

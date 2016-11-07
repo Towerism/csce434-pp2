@@ -16,6 +16,7 @@ set(EXPR_SRCS
   arithmetic_expr.cc
   relational_expr.cc
   equality_expr.cc
+  null_constant.cc
   )
 
 add_library(expr OBJECT ${EXPR_SRCS})

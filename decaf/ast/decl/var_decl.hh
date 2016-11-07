@@ -18,6 +18,12 @@ public:
 
   Type* getType() { return type; }
   Type* get_type() override { return type; }
+
+  bool get_is_field() { return is_field; }
+  void set_is_field() { is_field = true; }
+
+private:
+  bool is_field;
 };
 
 #endif /* VAR_DECL_H */

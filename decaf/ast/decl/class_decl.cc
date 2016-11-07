@@ -70,7 +70,7 @@ void ClassDecl::extend() {
 
 void ClassDecl::prepare_for_emission(CodeGenerator *codegen,
                                      Symbol_table *symbol_table) {
-  if (field_allocator)
+  if (next_instance_variable_offset > 0)
     return;
   if (extends) {
     parent_class->prepare_for_emission(codegen, symbol_table);
@@ -78,11 +78,10 @@ void ClassDecl::prepare_for_emission(CodeGenerator *codegen,
     auto parent_fields = parent_class->get_fields();
     methods.CopyFrom(&parent_methods);
     fields.CopyFrom(parent_fields);
-    field_allocator = new Frame_allocator(*parent_class->field_allocator);
+    next_instance_variable_offset = parent_class->next_instance_variable_offset;
   } else {
-    field_allocator = new Frame_allocator(fpRelative, Frame_growth::Upwards);
+    next_instance_variable_offset = 4;
   }
-  field_allocator->allocate(4, strdup("vtable"));
   FnDecl *method = nullptr;
   VarDecl *field = nullptr;
   members->Apply([&](Decl *decl) {
@@ -108,7 +107,9 @@ void ClassDecl::prepare_for_emission(CodeGenerator *codegen,
     } else {
       field = dynamic_cast<VarDecl *>(decl);
       fields.Append(field);
-      field->emit(codegen, field_allocator, &this->symbol_table);
+      field->set_offset(next_instance_variable_offset);
+      field->set_is_field();
+      next_instance_variable_offset += 4;
     }
   });
 }

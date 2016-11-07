@@ -157,6 +157,7 @@ void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
   }
   ++param_count;
   codegen->GenPushParam(base->get_frame_location());
-  codegen->GenACall(method_location, method->hasReturn(), frame_allocator);
+  frame_location =
+      codegen->GenACall(method_location, method->hasReturn(), frame_allocator);
   codegen->GenPopParams(4 * param_count);
 }
