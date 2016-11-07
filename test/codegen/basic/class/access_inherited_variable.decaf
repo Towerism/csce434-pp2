@@ -1,0 +1,16 @@
+class Qwer {
+     int a;
+}
+
+class Asdf extends Qwer {
+     void print_one() {
+          a = 1;
+          Print(a);
+     }
+}
+
+int main() {
+    Asdf a;
+    a = New(Asdf);
+    a.print_one();
+}

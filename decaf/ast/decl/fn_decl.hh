@@ -34,6 +34,7 @@ public:
   void build_table() override;
   void analyze(reasonT focus) override;
   bool matches_signature(FnDecl *other);
+  bool matches_prototype(FnDecl *other);
 
   void emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
             Symbol_table *symbol_table) override;
@@ -43,9 +44,12 @@ public:
 
   const char* get_label();
   void set_label_override(const char* value) { label_override = strdup(value); }
+  void set_is_method() { is_method = true; }
+  bool get_is_method() { return is_method; }
 
 private:
   char* label_override = nullptr;
+  bool is_method = false;
 };
 
 #endif /* FN_DECL_H */

@@ -1,0 +1,15 @@
+class Asdf {
+      void print_one() {
+           this.actually_print_one();
+      }
+
+      void actually_print_one() {
+           Print(1);
+      }
+}
+
+int main() {
+    Asdf a;
+    a = New(Asdf);
+    a.print_one();
+}

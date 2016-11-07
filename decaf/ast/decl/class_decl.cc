@@ -89,8 +89,8 @@ void ClassDecl::prepare_for_emission(CodeGenerator *codegen,
     method = dynamic_cast<FnDecl *>(decl);
     if (method) {
       int j;
-      for (j = 0; j < methods.NumElements() && extends; ++j) {
-        if (method->matches_signature(methods.Nth(j))) {
+      for (j = 0; j < methods.NumElements(); ++j) {
+        if (method->matches_prototype(methods.Nth(j))) {
           methods.RemoveAt(j);
           methods.InsertAt(method, j);
           method->set_offset(j);
@@ -99,7 +99,8 @@ void ClassDecl::prepare_for_emission(CodeGenerator *codegen,
           break;
         }
       }
-      if (j >= methods.NumElements() || !extends) {
+      if (j >= methods.NumElements()) {
+        method->set_is_method();
         method->set_offset(methods.NumElements());
         methods.Append(method);
         effective_methods.Append(method);

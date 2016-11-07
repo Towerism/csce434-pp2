@@ -66,6 +66,7 @@ public:
 
   Node *get_parent() { return parent; }
   Location* get_frame_location() { return frame_location; }
+  void set_frame_location(Location *value) { frame_location = value; }
 };
 
 #endif /* NODE_H */
