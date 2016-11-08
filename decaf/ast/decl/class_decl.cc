@@ -93,6 +93,7 @@ void ClassDecl::prepare_for_emission(CodeGenerator *codegen,
           methods.RemoveAt(j);
           methods.InsertAt(method, j);
           method->set_offset(j);
+          method->SetParent(this);
           method->set_label_override(getName().c_str());
           effective_methods.Append(method);
           break;

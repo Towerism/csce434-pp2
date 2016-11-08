@@ -128,7 +128,7 @@ void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
   actuals->Apply(
       [&](Expr *arg) { arg->emit(codegen, frame_allocator, symbol_table); });
   auto function = symbol_table->check_function_declared(field);
-  if (function && !function->get_is_method()) {
+  if (!base && !function->get_is_method()) {
     auto label = function->getName();
     auto hasReturn = function->hasReturn();
     for (int i = param_count - 1; i >= 0; --i) {
@@ -142,9 +142,9 @@ void Call::emit(CodeGenerator *codegen, Frame_allocator *frame_allocator,
   if (!base) {
     base = new This(*field->GetLocation());
     base->SetParent(this);
-    base_type = base->evaluate_type(symbol_table);
   }
   base->emit(codegen, frame_allocator, symbol_table);
+  base_type = base->evaluate_type(symbol_table);
   auto vptr = codegen->GenLoad(base->get_frame_location(), frame_allocator);
   auto base_table = symbol_table->get_table_for_functions(base_type);
   auto method = base_table->check_function_declared(field);
