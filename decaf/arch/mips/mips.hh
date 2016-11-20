@@ -37,12 +37,19 @@ private:
     bool isGeneralPurpose;
   } regs[NumRegs];
 
-  Register rs, rt, rd;
-
   typedef enum { ForRead, ForWrite } Reason;
+  typedef struct RegContents RegContents;
 
-  void FillRegister(Location *src, Register reg);
   void SpillRegister(Location *dst, Register reg);
+  void SpillRegisters();
+  void SpillFallbackRegisters();
+  Register AllocateRegister(Location *loc, bool setDirty = false, bool requiresLoad = true);
+  Register GetRegister(Location *loc);
+  void FillRegister(Location *src, Register reg);
+  void SetRegisterDirty(Register reg) { regs[reg].isDirty = true; }
+  void SetRegisterClean(Register reg) { regs[reg].isDirty = false; }
+  void SetRegisterLocation(Register reg, Location *loc) { regs[reg].var = loc; }
+  void ResetRegister(Register reg) { SetRegisterClean(reg), SetRegisterLocation(reg, NULL); }
 
   void EmitCallInstr(Location *dst, const char *fn, bool isL);
 
@@ -110,4 +117,3 @@ private:
 
 
 #endif
-
